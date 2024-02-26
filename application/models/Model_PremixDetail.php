@@ -2,9 +2,9 @@
 class Model_PremixDetail extends CI_Model
 {
 	var $table = 'premix_detail';
-	var $column_order = array('pxd_id', 'mtl_nama', 'pxd_qty','pxd_hpp', 'pxd_harga'); //set column field database for datatable orderable
-	var $column_search = array('pxd_id', 'mtl_nama'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('pxd_nama' => 'asc'); // default order
+	var $column_order = array('pxd_id', 'pxd_mtl_nama', 'pxd_qty', 'pxd_hpp', 'pxd_harga'); //set column field database for datatable orderable
+	var $column_search = array('pxd_id', 'pxd_mtl_nama'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $order = array('pxd_id' => 'asc'); // default order
 
 	public function __construct()
 	{
@@ -12,9 +12,11 @@ class Model_PremixDetail extends CI_Model
 		$this->load->database();
 	}
 
-	private function _get_datatables_query()
+	private function _get_datatables_query($id)
 	{
 		$this->db->from($this->table);
+		$this->db->join("premix", "pmx_id = pxd_pmx_id", "left");
+		$this->db->where("pxd_pmx_id", $id);
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 
@@ -45,18 +47,18 @@ class Model_PremixDetail extends CI_Model
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($id)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($id);
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($id)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($id);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -80,6 +82,16 @@ class Model_PremixDetail extends CI_Model
 	{
 		$this->db->from($this->table);
 		$this->db->where('pxd_id', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	public function getTotal($id)
+	{
+		$this->db->select("SUM(pxd_harga) as total");
+		$this->db->from($this->table);
+		$this->db->where('pxd_pmx_id', $id);
 		$query = $this->db->get();
 
 		return $query->row();

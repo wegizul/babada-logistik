@@ -10,7 +10,7 @@
 						</div>
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp; Tambah Premix</a>
+								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Tambah</a>
 							</div>
 						</div>
 					</div>
@@ -20,11 +20,9 @@
 						<thead>
 							<tr>
 								<th>No</th>
-								<th>Gambar</th>
-								<th>Nama Material</th>
-								<th>Stok</th>
-								<th>Harga Modal</th>
-								<th>Harga Jual</th>
+								<th>Nama Premix</th>
+								<th>Harga</th>
+								<th>Status</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -40,74 +38,45 @@
 	</div>
 </div>
 
-<div class="modal fade" id="modal_material" role="dialog">
-	<div class="modal-dialog modal-lg">
+<div class="modal fade" id="modal_premix" role="dialog">
+	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Material</h6>
+				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Premix</h6>
 				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
 			</div>
-			<form role="form col-lg" name="TambahEdit" id="frm_material">
+			<form role="form col-md" name="TambahEdit" id="frm_premix">
 				<div class="modal-body form">
 					<div class="row">
-						<input type="hidden" id="mtl_id" name="mtl_id" value="">
-						<div class="col-lg-6">
+						<input type="hidden" id="pmx_id" name="pmx_id" value="">
+						<div class="col-lg-8">
 							<div class="form-group">
 								<label>Nama Premix</label>
-								<select class="form-control select2" name="mtl_nama" id="mtl_nama" style="width:100%;line-height:100px;" required>
-									<option value="">Pilih</option>
-									<?php foreach ($premix as $p) { ?>
-										<option value="<?= $p->pmx_nama ?>"><?= $p->pmx_nama ?></option>
-									<?php } ?>
+								<input type="text" class="form-control" name="pmx_nama" id="pmx_nama" required>
+							</div>
+						</div>
+						<!-- <div class="col-lg-6">
+							<label>Harga Premix</label>
+							<div class="input-group col-lg">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Rp. </span>
+								</div>
+								<input type="number" min="0" class="form-control" name="pmx_harga" id="pmx_harga" required>
+							</div>
+						</div> -->
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label>Status</label>
+								<select class="form-control" name="pmx_status" id="pmx_status">
+									<option value="1">Aktif</option>
+									<option value="0">Tidak Aktif</option>
 								</select>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label>Jumlah Stok</label>
-								<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok" required>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label>Satuan</label>
-								<select class="form-control" name="mtl_satuan" id="mtl_satuan" required>
-									<option value="">Pilih</option>
-									<?php foreach ($satuan as $s) { ?>
-										<option value="<?= $s->smt_id ?>"><?= $s->smt_nama ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label>Deskripsi</label>
-								<textarea rows="4" class="form-control" name="mtl_deskripsi" id="mtl_deskripsi"></textarea>
-							</div>
-						</div>
-						<div class="input-group input-group col-lg-6 mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Rp. </span>
-							</div>
-							<input type="number" min="0" class="form-control" name="mtl_harga_modal" id="mtl_harga_modal" placeholder="Harga Modal" required>
-						</div>
-						<div class="input-group input-group col-lg-6 mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Rp. </span>
-							</div>
-							<input type="number" min="0" class="form-control" name="mtl_harga_jual" id="mtl_harga_jual" placeholder="Harga Jual" required>
-						</div>
-						<div class="col-lg-6">
-							<div class="form-group">
-								<label>Foto Material</label><small><i> (ukuran foto 1080 x 1080 pixel)</i></small>
-								<div id="preview"></div>
-								<input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="mtl_foto" id="mtl_foto">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" id="mtl_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
+					<button type="submit" id="pmx_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
 				</div>
 			</form>
 		</div>
@@ -133,9 +102,8 @@
 <script src="<?= base_url("assets"); ?>/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url("assets"); ?>/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-
 <!-- Select 2 -->
-<script src="<?= base_url("assets"); ?>/plugins/select2/js/select2.full.js"></script>
+<script src="<?= base_url("assets"); ?>/plugins/select2/select2.js"></script>
 
 <!-- Toastr -->
 <script src="<?= base_url("assets"); ?>/plugins/toastr/toastr.min.js"></script>
@@ -159,7 +127,7 @@
 			"searching": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_material/",
+				"url": "ajax_list_premix/",
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -175,18 +143,18 @@
 	}
 
 	function tambah() {
-		$("#mtl_id").val(0);
-		$("frm_material").trigger("reset");
-		$('#modal_material').modal({
+		$("#pmx_id").val(0);
+		$("frm_premix").trigger("reset");
+		$('#modal_premix').modal({
 			show: true,
 			keyboard: false,
 			backdrop: 'static'
 		});
 	}
 
-	$("#frm_material").submit(function(e) {
+	$("#frm_premix").submit(function(e) {
 		e.preventDefault();
-		$("#mtl_simpan").html("Menyimpan...");
+		$("#pmx_simpan").html("Menyimpan...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
 			type: "POST",
@@ -201,24 +169,24 @@
 					toastr.success(res.desc);
 					drawTable();
 					reset_form();
-					$("#modal_material").modal("hide");
+					$("#modal_premix").modal("hide");
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#mtl_simpan").html("Simpan");
+				$("#pmx_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#mtl_simpan").html("Simpan");
+				$("#pmx_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
 		});
 	});
 
-	function hapus_material(id) {
+	function hapus_premix(id) {
 		event.preventDefault();
-		$("#mtl_id").val(id);
+		$("#pmx_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -228,25 +196,25 @@
 		});
 	}
 
-	function ubah_material(id) {
+	function ubah_premix(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
 			url: "cari",
-			data: "mtl_id=" + id,
+			data: "pmx_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
 				obj.map((dt) => {
-					if (dt[0] == "mtl_foto") {
-						$("#preview").append('<img src="<?= base_url('assets/files/material/') ?>' + dt[1] + '" width="100px">');
-						$("#mtl_foto").val();
+					if (dt[0] == "pmx_foto") {
+						$("#preview").append('<img src="<?= base_url('assets/files/premix/') ?>' + dt[1] + '" width="100px">');
+						$("#pmx_foto").val();
 					} else {
 						$("#" + dt[0]).val(dt[1]);
 					}
 				});
 				$(".inputan").attr("disabled", false);
-				$("#modal_material").modal({
+				$("#modal_premix").modal({
 					show: true,
 					keyboard: false,
 					backdrop: 'static'
@@ -257,13 +225,13 @@
 	}
 
 	function reset_form() {
-		$("#mtl_id").val(0);
-		$("#frm_material")[0].reset();
+		$("#pmx_id").val(0);
+		$("#frm_premix")[0].reset();
 		$("#preview").html('');
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#mtl_id").val();
+		var id = $("#pmx_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
@@ -295,10 +263,6 @@
 		singleDatePicker: true,
 		"autoApply": true,
 		opens: 'left'
-	});
-
-	$('.select2').select2({
-		className: "form-control"
 	});
 
 	$(document).ready(function() {

@@ -13,6 +13,7 @@ class Premix extends CI_Controller
 		$this->load->model('Model_SatuanMaterial', 'satuan_material');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Premix', 'premix');
+		$this->load->model('Model_PremixDetail', 'premix_detail');
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
@@ -38,14 +39,16 @@ class Premix extends CI_Controller
 		$no = $_POST['start'];
 		foreach ($list as $premix) {
 			$no++;
+			$total = 0;
+			$harga = $this->premix_detail->getTotal($premix->pmx_id);
+			if ($harga->total) $total = number_format($harga->total, 0);
+
 			$row = array();
 			$row[] = $no;
-			$row[] = "<img src= " . base_url("assets/files/premix/{$premix->mtl_foto}") . " width='50px'>";
-			$row[] = $premix->mtl_nama;
-			$row[] = $premix->mtl_stok . ' ' . $premix->smt_nama;
-			$row[] = "Rp. " . number_format($premix->mtl_harga_modal, 0);
-			$row[] = "Rp. " . number_format($premix->mtl_harga_jual, 0);
-			$row[] = "<a href='#' onClick='ubah_premix(" . $premix->mtl_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_premix(" . $premix->mtl_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
+			$row[] = "<a href='" . base_url('PremixDetail/tampil/') . $premix->pmx_id . "'>" . $premix->pmx_nama . "</a>";
+			$row[] = "Rp. " . $total;
+			$row[] = $premix->pmx_status == 1 ? "<span class='badge badge-dark'>Aktif</span>" : "<span class='badge badge-danger'>Tidak Aktif</span>";
+			$row[] = "<a href='#' onClick='ubah_premix(" . $premix->pmx_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_premix(" . $premix->pmx_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
 
@@ -61,45 +64,20 @@ class Premix extends CI_Controller
 
 	public function cari()
 	{
-		$id = $this->input->post('mtl_id');
-		$data = $this->premix->cari_premix($id);
-		echo json_encode($data);
-	}
-
-	public function detail()
-	{
-		$id = $this->input->post('mtl_id');
+		$id = $this->input->post('pmx_id');
 		$data = $this->premix->cari_premix($id);
 		echo json_encode($data);
 	}
 
 	public function simpan()
 	{
-		$id = $this->input->post('mtl_id');
+		$id = $this->input->post('pmx_id');
 		$data = $this->input->post();
-
-		$nmfile = "mtl_" . time();
-
-		$config['upload_path'] = 'assets/files/premix/';
-		$config['allowed_types'] = 'jpg|png|jpeg';
-		$config['file_name'] = $nmfile;
-
-		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-
-		if ($_FILES['mtl_foto']['name']) {
-			if (!$this->upload->do_upload('mtl_foto')) {
-				$error = array('error' => $this->upload->display_errors());
-				$resp['errorFoto'] = $error;
-			} else {
-				$data['mtl_foto'] = $this->upload->data('file_name');
-			}
-		}
 
 		if ($id == 0) {
 			$insert = $this->premix->simpan("premix", $data);
 		} else {
-			$insert = $this->premix->update("premix", array('mtl_id' => $id), $data);
+			$insert = $this->premix->update("premix", array('pmx_id' => $id), $data);
 		}
 
 		$error = $this->db->error();
@@ -121,7 +99,7 @@ class Premix extends CI_Controller
 
 	public function hapus($id)
 	{
-		$delete = $this->premix->delete('premix', 'mtl_id', $id);
+		$delete = $this->premix->delete('premix', 'pmx_id', $id);
 		if ($delete) {
 			$resp['status'] = 1;
 			$resp['desc'] = "<i class='fa fa-exclamation-circle text-success'></i>&nbsp;&nbsp;&nbsp; Berhasil menghapus data";
@@ -130,21 +108,5 @@ class Premix extends CI_Controller
 			$resp['desc'] = "Gagal menghapus data !";
 		}
 		echo json_encode($resp);
-	}
-
-	public function ecommerce()
-	{
-		$d = [
-			'page' => 'E-Commerce',
-			'satuan' => $this->satuan_premix->get_satuan_premix(),
-			'data' => $this->premix->get_premix(),
-		];
-		$notif = [
-			'notifikasi' => $this->penjualan->notifikasi(),
-		];
-		$this->load->helper('url');
-		$this->load->view('background_atas', $notif);
-		$this->load->view('ecommerce', $d);
-		$this->load->view('background_bawah');
 	}
 }

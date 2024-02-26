@@ -12,6 +12,7 @@ class Material extends CI_Controller
 		$this->load->model('Model_Material', 'material');
 		$this->load->model('Model_SatuanMaterial', 'satuan_material');
 		$this->load->model('Model_Penjualan', 'penjualan');
+		$this->load->model('Model_Premix', 'premix');
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
@@ -20,6 +21,7 @@ class Material extends CI_Controller
 		$d = [
 			'page' => 'Data Material',
 			'satuan' => $this->satuan_material->get_satuan_material(),
+			'premix' => $this->premix->get_premix(),
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),
