@@ -21,7 +21,6 @@ class Material extends CI_Controller
 		$d = [
 			'page' => 'Data Material',
 			'satuan' => $this->satuan_material->get_satuan_material(),
-			'premix' => $this->premix->get_premix(),
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),

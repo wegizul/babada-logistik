@@ -9,7 +9,6 @@ class Premix extends CI_Controller
 		if (!isset($this->session->userdata['id_user'])) {
 			redirect(base_url("login"));
 		}
-		$this->load->model('Model_Material', 'material');
 		$this->load->model('Model_SatuanMaterial', 'satuan_material');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Premix', 'premix');
@@ -22,6 +21,7 @@ class Premix extends CI_Controller
 		$d = [
 			'page' => 'Data Premix',
 			'satuan' => $this->satuan_material->get_satuan_material(),
+			'premix' => $this->premix->get_premix(),
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),
@@ -46,7 +46,9 @@ class Premix extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = "<a href='" . base_url('PremixDetail/tampil/') . $premix->pmx_id . "'>" . $premix->pmx_nama . "</a>";
-			$row[] = "Rp. " . $total;
+			$row[] = "Rp. " . number_format($premix->pmx_harga, 0);
+			$row[] = $premix->pmx_harga_jual ? "Rp. " . number_format($premix->pmx_harga_jual, 0) : "Rp. 0";
+			$row[] = $premix->pmx_stok . " Karung";
 			$row[] = $premix->pmx_status == 1 ? "<span class='badge badge-dark'>Aktif</span>" : "<span class='badge badge-danger'>Tidak Aktif</span>";
 			$row[] = "<a href='#' onClick='ubah_premix(" . $premix->pmx_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_premix(" . $premix->pmx_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
@@ -106,6 +108,35 @@ class Premix extends CI_Controller
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Gagal menghapus data !";
+		}
+		echo json_encode($resp);
+	}
+
+	public function stok_premix()
+	{
+		$id = $this->input->post('pxs_pmx_id');
+		$data = $this->input->post();
+		$data['pxs_user'] = $this->session->userdata('id_user');
+
+		$getPremix = $this->premix->cari_premix($id);
+		$data2['pmx_stok'] = $getPremix->pmx_stok + $data['pxs_qty'];
+
+		$insert = $this->premix->update("premix", array('pmx_id' => $id), $data2);
+		if ($insert) $this->premix->simpan("premix_stok", $data);
+
+		$error = $this->db->error();
+		if (!empty($error)) {
+			$err = $error['message'];
+		} else {
+			$err = "";
+		}
+		if ($insert) {
+			$resp['status'] = 1;
+			$resp['desc'] = "Berhasil update stok premix";
+		} else {
+			$resp['status'] = 0;
+			$resp['desc'] = "Ada kesalahan dalam penyimpanan!";
+			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
 	}

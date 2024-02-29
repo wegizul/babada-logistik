@@ -228,7 +228,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-navy elevation-4">
       <a href="<?= base_url() ?>" class="brand-link" style="background-color:#fff;">
-      <!-- <a href="<?= base_url() ?>" class="brand-link" style="background-color:#010536;"> -->
+        <!-- <a href="<?= base_url() ?>" class="brand-link" style="background-color:#010536;"> -->
         <img src="<?= base_url("assets"); ?>/files/logo.png" alt="Logo" class="brand-image">
         <span class="brand-text font-weight-dark" style="color: #010536;"><b>System</b></span>
         <!-- <span class="brand-text font-weight-dark" style="color: #e3e3e3;"><b>System</b></span> -->
@@ -271,14 +271,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="<?= base_url("LacakPaket/tampil") ?>" class="nav-link">
                 <i class="nav-icon fas fa-search"></i>
                 <p>
                   Lacak Paket
                 </p>
               </a>
-            </li>
+            </li> -->
             <?php if ($this->session->userdata("level") == 1) : ?>
               <li class="nav-item">
                 <a href="" class="nav-link">
@@ -289,20 +289,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("Premix/tampil") ?>" class="nav-link">
+                    <a href="<?= base_url("JenisProduk/tampil") ?>" class="nav-link">
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
-                        Data Premix
+                        Jenis Produk
                       </p>
                     </a>
                   </li>
                 </ul>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("JenisProduk/tampil") ?>" class="nav-link">
+                    <a href="<?= base_url("SatuanMaterial/tampil") ?>" class="nav-link">
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
-                        Jenis Produk
+                        Satuan Material
                       </p>
                     </a>
                   </li>
@@ -323,16 +323,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
                         Tipe Alamat
-                      </p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("SatuanMaterial/tampil") ?>" class="nav-link">
-                      <i class="nav-icon fas fa-cube"></i>
-                      <p>
-                        Satuan Material
                       </p>
                     </a>
                   </li>
@@ -375,8 +365,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<?= base_url("Premix/tampil") ?>" class="nav-link">
+                  <i class="nav-icon fas fa-cube"></i>
+                  <p>
+                    Data Premix
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url("Supplier/tampil") ?>" class="nav-link">
+                  <i class="nav-icon fas fa-building"></i>
+                  <p>
+                    Data Supplier
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= base_url("Pembelian/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-boxes"></i>
+                  <i class="nav-icon fas fa-cart-plus"></i>
                   <p>
                     Pembelian
                   </p>
@@ -384,7 +390,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
               <li class="nav-item">
                 <a href="<?= base_url("Penjualan/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-boxes"></i>
+                  <i class="nav-icon fas fa-truck-fast"></i>
                   <p>
                     Penjualan
                   </p>

@@ -71,7 +71,7 @@
 						</div>
 						<div class="col-lg-6">
 							<label>Qty</label>
-							<div class="input-group col-lg">
+							<div class="input-group">
 								<input type="number" min="0" class="form-control" name="pxd_qty" id="pxd_qty" required>
 								<div class="input-group-prepend">
 									<span class="input-group-text">gram</span>
@@ -80,7 +80,7 @@
 						</div>
 						<div class="col-lg-6">
 							<label>HPP</label>
-							<div class="input-group col-lg">
+							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Rp. </span>
 								</div>

@@ -10,7 +10,7 @@
 						</div>
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp; Tambah Premix</a>
+								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp; Produk Baru</a>
 							</div>
 						</div>
 					</div>
@@ -53,13 +53,8 @@
 						<input type="hidden" id="mtl_id" name="mtl_id" value="">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label>Nama Premix</label>
-								<select class="form-control select2" name="mtl_nama" id="mtl_nama" style="width:100%;line-height:100px;" required>
-									<option value="">Pilih</option>
-									<?php foreach ($premix as $p) { ?>
-										<option value="<?= $p->pmx_nama ?>"><?= $p->pmx_nama ?></option>
-									<?php } ?>
-								</select>
+								<label>Nama Material</label>
+								<input type="text" class="form-control" name="mtl_nama" id="mtl_nama" required>
 							</div>
 						</div>
 						<div class="col-lg-3">
@@ -113,6 +108,7 @@
 		</div>
 	</div>
 </div>
+
 <!-- DataTables -->
 <script src="<?= base_url("assets"); ?>/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= base_url("assets"); ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -167,7 +163,7 @@
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
