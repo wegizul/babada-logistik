@@ -1,10 +1,10 @@
 <?php
-class Model_Premix extends CI_Model
+class Model_Supplier extends CI_Model
 {
-	var $table = 'premix';
-	var $column_order = array('pmx_id', 'pmx_nama', 'pmx_harga','pmx_status'); //set column field database for datatable orderable
-	var $column_search = array('pmx_id', 'pmx_nama', 'pmx_harga'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('pmx_nama' => 'asc'); // default order
+	var $table = 'supplier';
+	var $column_order = array('spl_id', 'spl_nama', 'spl_notelp', 'spl_alamat'); //set column field database for datatable orderable
+	var $column_search = array('spl_id', 'spl_nama', 'spl_notelp', 'spl_alamat'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $order = array('spl_nama' => 'asc'); // default order
 
 	public function __construct()
 	{
@@ -68,7 +68,7 @@ class Model_Premix extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	public function get_premix()
+	public function get_supplier()
 	{
 		$this->db->from($this->table);
 		$query = $this->db->get();
@@ -76,10 +76,10 @@ class Model_Premix extends CI_Model
 		return $query->result();
 	}
 
-	public function cari_premix($id)
+	public function cari_supplier($id)
 	{
 		$this->db->from($this->table);
-		$this->db->where('pmx_id', $id);
+		$this->db->where('spl_id', $id);
 		$query = $this->db->get();
 
 		return $query->row();

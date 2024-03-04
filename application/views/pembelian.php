@@ -5,131 +5,47 @@
 			<div class="card-header">
 				<h3 class="card-title"><i class="fas fa-cart-plus fa-sm"></i> Pembelian / Barang Masuk</h3>
 			</div>
-			<form role="form col-lg" name="Booking" id="frm_booking" method="post" enctype="multipart/form-data">
+			<form role="form col-lg" name="Pembelian" id="frm_pembelian">
 				<div class="card-body form">
 					<div class="row">
-						<input type="hidden" id="bk_id" name="bk_id" value="">
-
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label>Produk Pengiriman</label> <span class="text-danger">*</span>
-								<select class="form-control form-control-sm" name="bk_jenis_produk" id="bk_jenis_produk" style="width:30%;line-height:100px;" required>
-									<option value="">Pilih Produk</option>
-									<?php foreach ($jenisproduk as $jp) { ?>
-										<option value="<?= $jp->jp_id ?>"><?= strtoupper($jp->jp_nama) ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
+						<input type="hidden" id="pbl_id" name="pbl_id" value="">
 						<hr size="2" width="100%">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label>Nama Pengirim</label> <span class="text-danger">*</span>
-								<input type="text" class="form-control form-control-sm" name="bk_nama_pengirim" id="bk_nama_pengirim" autocomplete="off" placeholder="Masukan nama pengirim" required>
-							</div>
-							<label>No. Handphone Pengirim</label> <span class="text-danger">*</span>
-							<div class="input-group input-group-sm mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fas fa-phone"></i></span>
-								</div>
-								<input type="number" min="0" class="form-control form-control-sm" name="bk_notelp_pengirim" id="bk_notelp_pengirim" autocomplete="off" placeholder="cth. 0812345678" required>
-							</div>
-							<div class="form-group">
-								<label>Alamat Pengirim</label> <span class="text-danger">*</span>
-								<textarea rows="3" class="form-control form-control-sm" name="bk_alamat_pengirim" id="bk_alamat_pengirim" autocomplete="off" placeholder="Masukan alamat pengirim" required></textarea>
-							</div>
-							<div class="form-group">
-								<label>Kecamatan, Kota Asal</label> <span class="text-danger">*</span>
-								<select class="form-control form-control-sm select2" name="bk_kota_asal" id="bk_kota_asal" style="width:100%;line-height:100px;" required>
-									<option value="">Pilih Kota Asal</option>
-									<?php foreach ($kota as $kt) { ?>
-										<option value="<?= $kt->kec_nama . ', ' . $kt->kot_nama . ', ' . $kt->prov_nama ?>"><?= strtoupper($kt->kec_nama . ', ' . $kt->kot_nama . ', ' . $kt->prov_nama) ?></option>
+								<label>Nama Supplier</label> <span class="text-danger">*</span>
+								<select class="form-control select2" name="pbl_supplier" id="pbl_supplier" style="width:100%;line-height:100px;" required>
+									<option value="">Pilih Supplier</option>
+									<?php foreach ($supplier as $s) { ?>
+										<option value="<?= $s->spl_nama ?>"><?= strtoupper($s->spl_nama) ?></option>
 									<?php } ?>
 								</select>
+							</div>
+							<label>Nomor Faktur</label> <span class="text-danger">*</span>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-receipt"></i></span>
+								</div>
+								<input type="text" class="form-control" name="pbl_no_faktur" id="pbl_no_faktur" autocomplete="off" required>
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<div class="form-group">
-								<label>Nama Penerima</label> <span class="text-danger">*</span>
-								<input type="text" class="form-control form-control-sm" name="bk_nama_penerima" id="bk_nama_penerima" autocomplete="off" placeholder="Masukan nama penerima" required>
-							</div>
-							<label>No. Handphone Penerima</label> <span class="text-danger">*</span>
-							<div class="input-group input-group-sm mb-3">
+							<label>Tanggal</label> <span class="text-danger">*</span>
+							<div class="input-group mb-3">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="fas fa-phone"></i></span>
+									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
 								</div>
-								<input type="number" min="0" class="form-control form-control-sm" name="bk_notelp_penerima" id="bk_notelp_penerima" autocomplete="off" placeholder="cth. 0812345678" required>
+								<input type="date" class="form-control" name="pbl_tanggal" id="pbl_tanggal" autocomplete="off" required>
 							</div>
-							<div class="form-group">
-								<label>Alamat Penerima</label> <span class="text-danger">*</span>
-								<textarea rows="3" class="form-control form-control-sm" name="bk_alamat_penerima" id="bk_alamat_penerima" autocomplete="off" placeholder="Masukan alamat penerima" required></textarea>
-							</div>
-							<div class="form-group">
-								<label>Kecamatan, Kota Tujuan</label> <span class="text-danger">*</span>
-								<select class="form-control form-control-sm select2" name="bk_kota_tujuan" id="bk_kota_tujuan" style="width:100%;line-height:100px;" required>
-									<option value="">Pilih Kota Tujuan</option>
-									<?php foreach ($kota as $kt) { ?>
-										<option value="<?= $kt->kec_nama . ', ' . $kt->kot_nama . ', ' . $kt->prov_nama ?>"><?= strtoupper($kt->kec_nama . ', ' . $kt->kot_nama . ', ' . $kt->prov_nama) ?></option>
-									<?php } ?>
-								</select>
-							</div>
-							<div class="form-group">
-								<label>Tipe Alamat</label> <span class="text-danger">*</span>
-								<select class="form-control form-control-sm" name="bk_tipe_alamat" id="bk_tipe_alamat" style="width:100%;line-height:100px;" required>
-									<option value="">Pilih Tipe Alamat</option>
-									<?php foreach ($tipealamat as $ta) { ?>
-										<option value="<?= $ta->ta_id ?>"><?= $ta->ta_nama ?></option>
-									<?php } ?>
-								</select>
+							<label>Total Harga</label> <span class="text-danger">*</span>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Rp</span>
+								</div>
+								<input type="number" min="0" class="form-control" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
 							</div>
 						</div>
-						<hr size="2" width="100%">
-						<div class="col-lg-12">
-							<h4><b>Detail Barang</b></h4>
-							<div class="form-group">
-								<table class="table">
-									<tr>
-										<th>
-											<label>Tipe Komoditas</label> <span class="text-danger">*</span>
-										</th>
-										<th>
-											<label>Estimasi Harga Barang</label> <span class="text-danger">*</span>
-										</th>
-										<th>
-											<label>Ongkos Kirim</label> <span class="text-danger">*</span>
-										</th>
-									</tr>
-									<tr>
-										<td>
-											<select class="form-control form-control-sm" name="bk_tipe_komoditas" id="bk_tipe_komoditas" style="width:80%; line-height:100px;" required>
-												<option value="">Pilih Tipe Komoditas</option>
-												<?php foreach ($tipekomoditas as $tk) { ?>
-													<option value="<?= $tk->tk_id ?>"><?= strtoupper($tk->tk_nama) ?></option>
-												<?php } ?>
-											</select>
-										</td>
-										<td>
-											<div class="input-group input-group-sm mb-3" style="width:80%;">
-												<div class="input-group-prepend">
-													<span class="input-group-text">Rp. </span>
-												</div>
-												<input type="number" min="0" class="form-control" name="bk_harga_barang" id="bk_harga_barang" required>
-											</div>
-										</td>
-										<td>
-											<div class="input-group input-group-sm mb-3" style="width:80%;">
-												<div class="input-group-prepend">
-													<span class="input-group-text">Rp. </span>
-												</div>
-												<input type="number" min="0" class="form-control" name="bk_biaya" id="bk_biaya" required>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-
-						<div class="col-lg-12">
+						<div class="col-lg-12" style="margin-top: 20px;">
+							<h5><b>Detail Barang</b></h5>
 							<div class="form-group">
 								<table class="table">
 									<tr id="dynamic_field"></tr>
@@ -140,7 +56,7 @@
 				</div>
 				<div class="card-footer">
 					<div class="col-lg-12" style="float:right;">
-						<button type="submit" id="bk_simpan" class="btn btn-dark" style="float: right;"><i class="fas fa-check-circle"></i> Buat Booking</button>
+						<button type="submit" id="pbl_simpan" class="btn btn-dark" style="float: right;"><i class="fas fa-check-circle"></i> Simpan</button>
 					</div>
 				</div>
 			</form>
@@ -176,9 +92,10 @@
 	var save_method; //for save method string
 	var table;
 
-	$("#frm_booking").submit(function(e) {
+	$("#frm_pembelian").submit(function(e) {
+		$("#pbl_id").val(0);
 		e.preventDefault();
-		$("#bk_simpan").html("Menyimpan...");
+		$("#pbl_simpan").html("Menyimpan...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
 			type: "POST",
@@ -196,28 +113,22 @@
 						'success'
 					).then((result) => {
 						if (!result.isConfirmed) {
-							window.open("<?= base_url('Booking/cetak_resi/') ?>", "_blank");
-							window.location.href = "<?= base_url('Booking/riwayat') ?>";
+							window.location.href = "<?= base_url('Pembelian/riwayat') ?>";
 						} else {}
 					})
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#bk_simpan").html("Simpan");
+				$("#pbl_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#bk_simpan").html("Simpan");
+				$("#pbl_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
 		});
 	});
-
-	function reset_form() {
-		$("#bk_id").val(0);
-		$("#frm_booking")[0].reset();
-	}
 
 	$('.tgl').daterangepicker({
 		locale: {
@@ -238,62 +149,79 @@
 	function tambah() {
 		i++;
 		$('#dynamic_field').append('<tr id="row' + i + '" class="dynamic-added">' +
-			`<td>` + i + `</td>
-		<td><input type="decimal" id="bd_berat_barang` + i + `" name="bd_berat_barang[]" class="form-control"></td>
-		<td class="input-group input-group mb-3">
-							<input type="number" min="0" id="bd_panjang` + i + `" name="bd_panjang[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> x </span>
-							</div>
-							<input type="number" min="0" id="bd_lebar` + i + `" name="bd_lebar[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> x </span>
-							</div>
-							<input type="number" min="0" id="bd_tinggi` + i + `" name="bd_tinggi[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> cm</span>
-							</div>
-						</td>` +
-			'<td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove"><i class="fas fa-minus-circle"></i></button></td></tr>');
+			`<td><select id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" class="form-control">
+					<option value="">Pilih Item</option>
+					<?php foreach ($material as $m) { ?>
+						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
+					<?php } ?>
+				</select>
+			</td>
+			<td>
+				<input type="number" min="0" id="pbd_qty` + i + `" name="pbd_qty[]" class="form-control">
+			</td>
+			<td><select id="pbd_smt_id` + i + `" name="pbd_smt_id[]" class="form-control">
+					<option value="">Pilih Satuan</option>
+					<?php foreach ($satuan_material as $sm) { ?>
+						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
+					<?php } ?>
+				</select>
+			</td>
+			<td class="input-group input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Rp</span>
+				</div>
+				<input type="number" min="0" id="pbd_harga` + i + `" name="pbd_harga[]" class="form-control">
+			</td>
+			<td>
+			<button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove btn-xs"><i class="fas fa-minus-circle"></i></button></td>` +
+			'</tr>'
+		);
 	}
-	// <td><input type="number" id="bd_berat_volume` + i + `" name="bd_berat_volume[]" class="form-control"></td> ` +
 
 	$(document).on('click', '.btn_remove', function() {
+		i--;
 		var button_id = $(this).attr("id");
 		$('#row' + button_id + '').remove();
 	});
 
 	function nilai() {
-		i = 1;
-		// <th>Berat Volume <small class="text-secondary">(Kg)</small></th>
 		$("#dynamic_field").html(`<tr>
-		<th>No</th>
-		<th>Berat Barang <small class="text-secondary">(Kg)</small> <span class="text-danger">*</span></th>
-		<th>Dimensi/Paket <small class="text-secondary">(P x L x T)</small> <span class="text-danger">*</span></th>
+			<th width="35%">Item <span class="text-danger">*</span></th>
+			<th width="15%">Qty <span class="text-danger">*</span></th>
+			<th width="15%">Satuan <span class="text-danger">*</span></th>
+			<th width="25%">Harga <span class="text-danger">*</span></th>
+			<td width="10%"><button type="button" name="add" id="add" onclick="tambah()" class="btn btn-dark btn-xs"><i class="fas fa-plus-circle"></i></button></td>
 		</tr>
 		<tr>
-		<td>` + i + `</td>
-		<td><input type="decimal" id="bd_berat_barang" name="bd_berat_barang[]" class="form-control"></td>
-		<td class="input-group input-group mb-3">
-							<input type="number" min="0" id="bd_panjang" name="bd_panjang[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> x </span>
-							</div>
-							<input type="number" min="0" id="bd_lebar" name="bd_lebar[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> x </span>
-							</div>
-							<input type="number" min="0" id="bd_tinggi" name="bd_tinggi[]" class="form-control col-lg-2">
-							<div class="input-group-prepend">
-								<span class="input-group-text"> cm</span>
-							</div>
-						</td>
-						<td><button type="button" name="add" id="add" onclick="tambah()" class="btn btn-dark"><i class="fas fa-plus-circle"></button></td>		
-						</tr>`);
+			<td><select id="pbd_mtl_id" name="pbd_mtl_id[]" class="form-control">
+					<option value="">Pilih Item</option>
+					<?php foreach ($material as $m) { ?>
+						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
+					<?php } ?>
+				</select>
+			</td>
+			<td>
+				<input type="number" min="0" id="pbd_qty" name="pbd_qty[]" class="form-control">
+			</td>
+			<td><select id="pbd_smt_id" name="pbd_smt_id[]" class="form-control">
+					<option value="">Pilih Satuan</option>
+					<?php foreach ($satuan_material as $sm) { ?>
+						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
+					<?php } ?>
+				</select>
+			</td>
+			<td class="input-group input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Rp</span>
+				</div>
+				<input type="number" min="0" id="pbd_harga" name="pbd_harga[]" class="form-control">
+			</td>	
+		</tr>`);
 	}
-	// <td><input type="text" id="bd_berat_volume" name="bd_berat_volume[]" class="form-control"></td>
 
 	function reset_form() {
+		$("#pbl_id").val(0);
+		$("#frm_pembelian")[0].reset();
 		nilai();
 	}
 

@@ -38,40 +38,28 @@
     ?>
 
     <center>
-        <h1>Laporan Booking <?= $bulan ?></h1>
+        <h1>Laporan Pembelian <?= $bulan ?></h1>
     </center>
 
     <table border="1">
         <tr>
             <th>Tanggal</th>
-            <th>Kode Booking</th>
-            <th>Jenis Produk</th>
-            <th>Nama Pengirim</th>
-            <th>Notelp Pengirim</th>
-            <th>Alamat Pengirim</th>
-            <th>Nama Penerima</th>
-            <th>Notelp Penerima</th>
-            <th>Alamat Penerima</th>
-            <th>Kota Asal</th>
-            <th>Kota Tujuan</th>
-            <th>Tipe Komoditas</th>
-            <th>Ongkos Kirim</th>
+            <th>Supplier</th>
+            <th>Nomor Faktur</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Satuan</th>
+            <th>Total Harga</th>
         </tr>
         <?php foreach ($data as $dt) { ?>
             <tr>
-                <td><?= $dt->bk_tanggal ?></td>
-                <td><?= $dt->bk_kode ?></td>
-                <td><?= $dt->jp_nama ?></td>
-                <td><?= $dt->bk_nama_pengirim ?></td>
-                <td><?= $dt->bk_notelp_pengirim ?></td>
-                <td><?= $dt->bk_alamat_pengirim ?></td>
-                <td><?= $dt->bk_nama_penerima ?></td>
-                <td><?= $dt->bk_notelp_penerima ?></td>
-                <td><?= $dt->bk_alamat_penerima ?></td>
-                <td><?= $dt->bk_kota_asal ?></td>
-                <td><?= $dt->bk_kota_tujuan ?></td>
-                <td><?= $dt->tk_nama ?></td>
-                <td><?= $dt->bk_biaya ?></td>
+                <td><?= $dt->pbl_tanggal ?></td>
+                <td><?= $dt->pbl_supplier ?></td>
+                <td><?= $dt->pbl_no_faktur ?></td>
+                <td><?= $dt->mtl_nama ?></td>
+                <td><?= $dt->pbd_qty ?></td>
+                <td><?= $dt->smt_nama ?></td>
+                <td><?= $dt->pbd_harga ?></td>
             </tr>
         <?php } ?>
     </table>

@@ -12,20 +12,21 @@ class Pembelian extends CI_Controller
 		if ($this->session->userdata("level") > 3) {
 			redirect(base_url("Dashboard"));
 		}
-		$this->load->model('Model_Pembelian', 'pembelian');
 		$this->load->model('Model_Login', 'pengguna');
-		$this->load->model('Model_Kecamatan', 'kecamatan');
-		$this->load->model('Model_JenisProduk', 'jenis_produk');
+		$this->load->model('Model_Pembelian', 'pembelian');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Material', 'material');
+		$this->load->model('Model_SatuanMaterial', 'satuan_material');
+		$this->load->model('Model_Supplier', 'supplier');
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
 	public function tampil()
 	{
 		$d = [
-			'kota' => $this->kecamatan->get_kota(),
-			'jenisproduk' => $this->jenis_produk->get_jenis_produk(),
+			'supplier' => $this->supplier->get_supplier(),
+			'material' => $this->material->get_material(),
+			'satuan_material' => $this->satuan_material->get_satuan_material(),
 			'page' => 'Pembelian / Barang Masuk',
 		];
 		$notif = [
@@ -80,7 +81,7 @@ class Pembelian extends CI_Controller
 			$row[] = $pembelian->pbl_supplier;
 			$row[] = $pembelian->pbl_no_faktur;
 			$row[] = $pembelian->log_nama;
-			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "' class='btn btn-default btn-sm mb-1' title='Detail'><i class='fa fa-boxes'></i></a> <a href='" . base_url('Pembelian/cetak_resi2/') . $pembelian->pbl_id . "' class='btn btn-warning btn-sm mb-1' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a> <a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-sm mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
+			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "' class='btn btn-default btn-sm mb-1' title='Detail'><i class='fa fa-boxes'></i></a> <a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-sm mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
 
@@ -106,13 +107,13 @@ class Pembelian extends CI_Controller
 		$id = $this->input->post('pbl_id');
 		$data = $this->input->post();
 
-		$data['pbl_tanggal'] = date('Y-m-d');
 		$data['pbl_user'] = $this->session->userdata('id_user');
 
 		unset($data['pbd_mtl_id']);
 		unset($data['pbd_qty']);
+		unset($data['pbd_smt_id']);
 		unset($data['pbd_harga']);
-
+		
 		if ($id == 0) {
 			$insert = $this->pembelian->simpan("pembelian", $data);
 
@@ -124,15 +125,19 @@ class Pembelian extends CI_Controller
 					"pbd_pbl_id" => $get_id_pembelian->pbl_id,
 					"pbd_mtl_id" => $data2['pbd_mtl_id'][$idx],
 					"pbd_qty" => $data2['pbd_qty'][$idx],
+					"pbd_smt_id" => $data2['pbd_smt_id'][$idx],
 					"pbd_harga" => $data2['pbd_harga'][$idx],
 				];
 				if ($data2['pbd_qty']) $insert = $this->pembelian->simpan("pembelian_detail", $detail);
 
-				$data3['mtl_stok'] = $data2['pbd_qty'];
+				$get_material = $this->material->cari_material($data2['pbd_mtl_id'][$idx]);
+
+				$data3['mtl_stok'] = $get_material->mtl_stok + $data2['pbd_qty'][$idx];
 				$data3['mtl_date_updated'] = date('Y-m-d H:i:s');
 
-				if ($insert) $this->material->update("material", array('pbd_mtl_id' => $data2['pbd_mtl_id']), $data3);
+				if ($insert) $this->material->update("material", array('mtl_id' => $data2['pbd_mtl_id'][$idx]), $data3);
 			}
+
 		} else {
 			$insert = $this->pembelian->update("pembelian", array('pbl_id' => $id), $data);
 		}

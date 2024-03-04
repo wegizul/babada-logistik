@@ -18,7 +18,7 @@ class Penjualan extends CI_Controller
 	public function tampil()
 	{
 		$d = [
-			'page' => 'Data Pembelian',
+			'page' => 'Data Penjualan',
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),

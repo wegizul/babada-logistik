@@ -16,21 +16,20 @@ $bulan = [
 ?>
 <div class="inner">
 	<div class="row" id="isidata">
-		<input type="hidden" name="bk_id" id="bk_id">
+		<input type="hidden" name="pbl_id" id="pbl_id">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
 				<div class="card-header">
-					<i class="fas fa-cube mb-3"></i> <?= $page ?>
 					<div class="row">
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<input type="text" class="form-control tgl" name="filter" id="filter">
+								<input type="text" class="form-control form-control-sm tgl" name="filter" id="filter">
 							</div>
 						</div>
 						<div class="col-md-2 col-xs-12">
 							<div class="form-group">
-								<button class="btn btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
+								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
 							</div>
 						</div>
 					</div>
@@ -39,14 +38,11 @@ $bulan = [
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
-								<th>Kode</th>
+								<th width="5%">No</th>
 								<th>Tanggal</th>
-								<th>Jenis Produk</th>
-								<th>Nama Pengirim</th>
-								<th>Telp. Pengirim</th>
-								<th>Nama Penerima</th>
-								<th>Telp. Penerima</th>
+								<th>Supplier</th>
+								<th>Nomor Faktur</th>
+								<th>User Input</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -66,15 +62,15 @@ $bulan = [
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-user"></i> Rincian Booking</h6>
+				<h6 class="modal-title"><i class="fas fa-user"></i> Rincian pembelian</h6>
 				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
 			</div>
 			<table class="table table-bordered" width="100%" style="font-size:120%;">
 				<thead>
 					<tr>
 						<th>
-							<input type="text" class="form-control" name="bk_kode" id="bk_kode" required>
-							<h1><b id="bk_id"></b></h1>
+							<input type="text" class="form-control" name="pbl_kode" id="pbl_kode" required>
+							<h1><b id="pbl_id"></b></h1>
 						</th>
 						<th>
 							<img src="<?= base_url('assets/files/logo.png') ?>" width="150px" style="float: right;">
@@ -113,8 +109,6 @@ $bulan = [
 <script src="<?= base_url("assets"); ?>/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url("assets"); ?>/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Select 2 -->
-<script src="<?= base_url("assets"); ?>/plugins/select2/select2.js"></script>
 
 <!-- Toastr -->
 <script src="<?= base_url("assets"); ?>/plugins/toastr/toastr.min.js"></script>
@@ -139,7 +133,7 @@ $bulan = [
 			"serverSide": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_booking/" + bulan,
+				"url": "ajax_list_pembelian/" + bulan,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -147,16 +141,16 @@ $bulan = [
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
 		});
 	}
 
-	function hapus_booking(id) {
+	function hapus_pembelian(id) {
 		event.preventDefault();
-		$("#bk_id").val(id);
+		$("#pbl_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -166,12 +160,12 @@ $bulan = [
 		});
 	}
 
-	function lihat_booking(id) {
+	function lihat_pembelian(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
 			url: "lihat",
-			data: "bk_id=" + id,
+			data: "pbl_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
@@ -191,12 +185,12 @@ $bulan = [
 	}
 
 	function reset_form() {
-		$("#bk_id").val(0);
-		$("#frm_booking")[0].reset();
+		$("#pbl_id").val(0);
+		$("#frm_pembelian")[0].reset();
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#bk_id").val();
+		var id = $("#pbl_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
@@ -233,7 +227,7 @@ $bulan = [
 	function ekspor() {
 		var tgl = $('#filter').val();
 		if (!tgl) tgl = null;
-		window.open("<?= base_url('Booking/laporan/') ?>" + tgl);
+		window.open("<?= base_url('Pembelian/laporan/') ?>" + tgl);
 	}
 
 	$(document).ready(function() {

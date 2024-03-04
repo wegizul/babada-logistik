@@ -1,28 +1,32 @@
+<input type="hidden" name="pbl_id" id="pbl_id" value="<?= $pbl_id ?>">
 <div class="inner">
 	<div class="row" id="isidata">
+		<input type="hidden" name="pbd_pbl_id" id="pbd_pbl_id">
 		<div class="col-lg-12">
-			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / Data Master / <b class="text-dark"><?= $page ?></b></span>
-			<div class="card mt-3">
+			<div class="card">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-10 pl-0">
-							<i class="fas fa-cube mb-3"></i> <?= $page ?>
-						</div>
-						<div class="col-md-2 pl-0">
+						<div class="col-md-2">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Tambah</a>
+								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm" style="width: 100%"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
 							</div>
 						</div>
 					</div>
+					Data Detail Pembelian
 				</div>
 				<div class="card-body table-responsive">
-					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
+					<table class="table table-striped table-bordered table-hover" id="tabel-pembelian-detail" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
-								<th>Jenis</th>
-								<th>Keterangan</th>
-								<th>Aksi</th>
+								<th width="5%">No</th>
+								<th>Item</th>
+								<th>Qty</th>
+								<th>Satuan</th>
+								<th>Harga</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -33,39 +37,6 @@
 					</table>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="modal_jenis_produk" role="dialog">
-	<div class="modal-dialog modal-md">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Jenis Produk</h6>
-				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
-			</div>
-			<form role="form col-lg" name="TambahEdit" id="frm_jenis_produk">
-				<div class="modal-body form">
-					<div class="row">
-						<input type="hidden" id="jp_id" name="jp_id" value="">
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label>Jenis Produk</label>
-								<input type="text" class="form-control" name="jp_nama" id="jp_nama" required>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label>Keterangan</label>
-								<input type="text" class="form-control" name="jp_ket" id="jp_ket">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" id="jp_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
-				</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -90,8 +61,6 @@
 <script src="<?= base_url("assets"); ?>/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url("assets"); ?>/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Select 2 -->
-<script src="<?= base_url("assets"); ?>/plugins/select2/select2.js"></script>
 
 <!-- Toastr -->
 <script src="<?= base_url("assets"); ?>/plugins/toastr/toastr.min.js"></script>
@@ -99,11 +68,11 @@
 <script>
 	var save_method;
 	var table;
+	var pbl_id = $("#pbl_id").val();
 
 	function drawTable() {
-		$('#tabel-data').DataTable({
+		$('#tabel-pembelian-detail').DataTable({
 			"destroy": true,
-			dom: 'Bfrtip',
 			lengthMenu: [
 				[10, 25, 50, -1],
 				['10 rows', '25 rows', '50 rows', 'Show all']
@@ -113,10 +82,9 @@
 			"sort": true,
 			"processing": true,
 			"serverSide": true,
-			"searching": false,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_jenis_produk/",
+				"url": "../ajax_list_pembelian_detail/" + pbl_id,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -131,51 +99,9 @@
 		});
 	}
 
-	function tambah() {
-		$("#jp_id").val(0);
-		$("frm_jenis_produk").trigger("reset");
-		$('#modal_jenis_produk').modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
-	}
-
-	$("#frm_jenis_produk").submit(function(e) {
-		e.preventDefault();
-		$("#jp_simpan").html("Menyimpan...");
-		$(".btn").attr("disabled", true);
-		$.ajax({
-			type: "POST",
-			url: "simpan",
-			data: new FormData(this),
-			processData: false,
-			contentType: false,
-			success: function(d) {
-				var res = JSON.parse(d);
-				var msg = "";
-				if (res.status == 1) {
-					toastr.success(res.desc);
-					drawTable();
-					reset_form();
-					$("#modal_jenis_produk").modal("hide");
-				} else {
-					toastr.error(res.desc);
-				}
-				$("#jp_simpan").html("Simpan");
-				$(".btn").attr("disabled", false);
-			},
-			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#jp_simpan").html("Simpan");
-				$(".btn").attr("disabled", false);
-				alert('Error get data from ajax');
-			}
-		});
-	});
-
-	function hapus_jenis_produk(id) {
+	function hapus_pembelian_detail(id) {
 		event.preventDefault();
-		$("#jp_id").val(id);
+		$("#pbd_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -185,12 +111,12 @@
 		});
 	}
 
-	function ubah_jenis_produk(id) {
+	function ubah_pembelian_detail(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
-			url: "cari",
-			data: "jp_id=" + id,
+			url: "../cari",
+			data: "pbd_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
@@ -198,7 +124,7 @@
 					$("#" + dt[0]).val(dt[1]);
 				});
 				$(".inputan").attr("disabled", false);
-				$("#modal_jenis_produk").modal({
+				$("#modal_pembelian_detail").modal({
 					show: true,
 					keyboard: false,
 					backdrop: 'static'
@@ -209,17 +135,17 @@
 	}
 
 	function reset_form() {
-		$("#jp_id").val(0);
-		$("#frm_jenis_produk")[0].reset();
+		$("#pbd_id").val(0);
+		$("#frm_pembelian_detail")[0].reset();
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#jp_id").val();
+		var id = $("#pbd_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
 			type: "GET",
-			url: "hapus/" + id,
+			url: "../hapus/" + id,
 			success: function(d) {
 				var res = JSON.parse(d);
 				var msg = "";
@@ -236,16 +162,6 @@
 				alert('Error get data from ajax');
 			}
 		});
-	});
-
-	$('.tgl').daterangepicker({
-		locale: {
-			format: 'DD/MM/YYYY'
-		},
-		showDropdowns: true,
-		singleDatePicker: true,
-		"autoApply": true,
-		opens: 'left'
 	});
 
 	$(document).ready(function() {

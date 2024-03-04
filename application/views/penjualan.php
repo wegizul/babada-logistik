@@ -20,9 +20,8 @@ $bulan = [
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
-				<div class="card-header">
-					<i class="fas fa-cube mb-3"></i> <?= $page ?>
-					<!-- <div class="row">
+				<!-- <div class="card-header">
+					<div class="row">
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
 								<input type="text" class="form-control tgl" name="filter" id="filter">
@@ -33,8 +32,8 @@ $bulan = [
 								<button class="btn btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
 							</div>
 						</div>
-					</div> -->
-				</div>
+					</div>
+				</div> -->
 				<div class="card-body table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
@@ -64,7 +63,7 @@ $bulan = [
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-exclamation-circle"></i> Konfirmasi pembelian ini</h6>
+				<h6 class="modal-title"><i class="fas fa-exclamation-circle"></i> Konfirmasi penjualan ini</h6>
 				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
 			</div>
 			<form role="form col-lg" name="TambahEdit" id="frm_konfirm">
@@ -74,8 +73,8 @@ $bulan = [
 							<div class="form-group">
 								<input type="hidden" name="pjl_id" id="pjl_id" value="">
 								<select class="form-control" name="pjl_status" id="pjl_status">
-									<option value="2">Konfirmasi Pembelian</option>
-									<option value="3">Tolak Pembelian</option>
+									<option value="2">Konfirmasi Penjualan</option>
+									<option value="3">Tolak Penjualan</option>
 								</select>
 							</div>
 						</div>

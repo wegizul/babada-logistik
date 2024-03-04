@@ -1,7 +1,7 @@
 <div class="inner">
 	<div class="row" id="isidata">
 		<div class="col-lg-12">
-			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / Data Master / <b class="text-dark"><?= $page ?></b></span>
+			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
 				<div class="card-header">
 					<div class="row">
@@ -10,7 +10,7 @@
 						</div>
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Tambah</a>
+								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Supplier Baru</a>
 							</div>
 						</div>
 					</div>
@@ -19,9 +19,10 @@
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
-								<th>Jenis</th>
-								<th>Keterangan</th>
+								<th width="5%">No</th>
+								<th>Nama Supplier</th>
+								<th>No. Telepon</th>
+								<th>Alamat</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -37,33 +38,39 @@
 	</div>
 </div>
 
-<div class="modal fade" id="modal_jenis_produk" role="dialog">
-	<div class="modal-dialog modal-md">
+<div class="modal fade" id="modal_supplier" role="dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Jenis Produk</h6>
+				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Supplier</h6>
 				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
 			</div>
-			<form role="form col-lg" name="TambahEdit" id="frm_jenis_produk">
+			<form role="form col-lg" name="TambahEdit" id="frm_supplier">
 				<div class="modal-body form">
 					<div class="row">
-						<input type="hidden" id="jp_id" name="jp_id" value="">
-						<div class="col-lg-12">
+						<input type="hidden" id="spl_id" name="spl_id" value="">
+						<div class="col-lg-8">
 							<div class="form-group">
-								<label>Jenis Produk</label>
-								<input type="text" class="form-control" name="jp_nama" id="jp_nama" required>
+								<label>Nama Supplier</label>
+								<input type="text" class="form-control" name="spl_nama" id="spl_nama" required>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label>No. Telepon</label>
+								<input type="text" class="form-control" name="spl_notelp" id="spl_notelp">
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
-								<label>Keterangan</label>
-								<input type="text" class="form-control" name="jp_ket" id="jp_ket">
+								<label>Alamat</label>
+								<input type="text" class="form-control" name="spl_alamat" id="spl_alamat">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" id="jp_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
+					<button type="submit" id="spl_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
 				</div>
 			</form>
 		</div>
@@ -103,7 +110,6 @@
 	function drawTable() {
 		$('#tabel-data').DataTable({
 			"destroy": true,
-			dom: 'Bfrtip',
 			lengthMenu: [
 				[10, 25, 50, -1],
 				['10 rows', '25 rows', '50 rows', 'Show all']
@@ -113,10 +119,10 @@
 			"sort": true,
 			"processing": true,
 			"serverSide": true,
-			"searching": false,
+			"searching": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_jenis_produk/",
+				"url": "ajax_list_supplier/",
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -132,18 +138,18 @@
 	}
 
 	function tambah() {
-		$("#jp_id").val(0);
-		$("frm_jenis_produk").trigger("reset");
-		$('#modal_jenis_produk').modal({
+		$("#spl_id").val(0);
+		$("frm_supplier").trigger("reset");
+		$('#modal_supplier').modal({
 			show: true,
 			keyboard: false,
 			backdrop: 'static'
 		});
 	}
 
-	$("#frm_jenis_produk").submit(function(e) {
+	$("#frm_supplier").submit(function(e) {
 		e.preventDefault();
-		$("#jp_simpan").html("Menyimpan...");
+		$("#spl_simpan").html("Menyimpan...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
 			type: "POST",
@@ -158,24 +164,24 @@
 					toastr.success(res.desc);
 					drawTable();
 					reset_form();
-					$("#modal_jenis_produk").modal("hide");
+					$("#modal_supplier").modal("hide");
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#jp_simpan").html("Simpan");
+				$("#spl_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#jp_simpan").html("Simpan");
+				$("#spl_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
 		});
 	});
 
-	function hapus_jenis_produk(id) {
+	function hapus_supplier(id) {
 		event.preventDefault();
-		$("#jp_id").val(id);
+		$("#spl_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -185,12 +191,12 @@
 		});
 	}
 
-	function ubah_jenis_produk(id) {
+	function ubah_supplier(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
 			url: "cari",
-			data: "jp_id=" + id,
+			data: "spl_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
@@ -198,7 +204,7 @@
 					$("#" + dt[0]).val(dt[1]);
 				});
 				$(".inputan").attr("disabled", false);
-				$("#modal_jenis_produk").modal({
+				$("#modal_supplier").modal({
 					show: true,
 					keyboard: false,
 					backdrop: 'static'
@@ -209,12 +215,12 @@
 	}
 
 	function reset_form() {
-		$("#jp_id").val(0);
-		$("#frm_jenis_produk")[0].reset();
+		$("#spl_id").val(0);
+		$("#frm_supplier")[0].reset();
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#jp_id").val();
+		var id = $("#spl_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({

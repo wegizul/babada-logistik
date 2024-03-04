@@ -1,10 +1,10 @@
 <?php
-class Model_Pembelian extends CI_Model
+class Model_PembelianDetail extends CI_Model
 {
-	var $table = 'pembelian';
-	var $column_order = array('pbl_id', 'pbl_tanggal', 'pbl_supplier', 'pbl_no_faktur', 'log_nama'); //set column field database for datatable orderable
-	var $column_search = array('pbl_id', 'pbl_tanggal', 'pbl_supplier', 'pbl_no_faktur'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('pbl_tanggal' => 'desc'); // default order
+	var $table = 'pembelian_detail';
+	var $column_order = array('pbd_id', 'mtl_nama', 'pbd_qty', 'smt_nama', 'pbd_harga'); //set column field database for datatable orderable
+	var $column_search = array('pbd_id', 'mtl_nama'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $order = array('pbd_id' => 'asc'); // default order
 
 	public function __construct()
 	{
@@ -12,10 +12,13 @@ class Model_Pembelian extends CI_Model
 		$this->load->database();
 	}
 
-	private function _get_datatables_query()
+	private function _get_datatables_query($id)
 	{
 		$this->db->from($this->table);
-		$this->db->join("sys_login", "log_id = pbl_user", "left");
+		$this->db->join("pembelian", "pbl_id = pbd_pbl_id", "left");
+		$this->db->join("material", "mtl_id = pbd_mtl_id", "left");
+		$this->db->join("satuan_material", "smt_id = pbd_smt_id", "left");
+		$this->db->where("pbd_pbl_id", $id);
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 
@@ -46,18 +49,18 @@ class Model_Pembelian extends CI_Model
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($id)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($id);
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($id)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($id);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -69,7 +72,7 @@ class Model_Pembelian extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	public function get_pembelian()
+	public function get_pembelian_detail()
 	{
 		$this->db->from($this->table);
 		$query = $this->db->get();
@@ -77,57 +80,13 @@ class Model_Pembelian extends CI_Model
 		return $query->result();
 	}
 
-	public function cari_pembelian($id)
+	public function cari_pembelian_detail($id)
 	{
 		$this->db->from($this->table);
-		$this->db->where('pbl_id', $id);
+		$this->db->where('pbd_id', $id);
 		$query = $this->db->get();
 
 		return $query->row();
-	}
-
-	public function get_last_pembelian()
-	{
-		$this->db->from($this->table);
-		$this->db->order_by('pbl_id', 'desc');
-		$this->db->limit(1);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-
-	public function ambil_pembelian($pbl_id)
-	{
-		$this->db->from('pembelian_detail');
-		$this->db->join('pembelian', 'pbl_id = pbd_pbl_id', 'left');
-		$this->db->where('pbl_id', $pbl_id);
-		$query = $this->db->get();
-
-		return $query->result();
-	}
-
-	public function get_jumlah_pbd($id)
-	{
-		$this->db->from('pembelian_detail');
-		$this->db->where('pbd_pbl_id', $id);
-		$query = $this->db->get();
-
-		return $query->num_rows();
-	}
-
-	public function ekspor_excel($tgl)
-	{
-		$this->db->from($this->table);
-		$this->db->join('pembelian_detail', 'pbd_pbl_id = pbl_id', 'left');
-		$this->db->join('material', 'mtl_id = pbd_mtl_id', 'left');
-		$this->db->join('satuan_material', 'smt_id = pbd_smt_id', 'left');
-		// $this->db->join('jenis_produk', 'jp_id = pbl_jenis_produk', 'left');
-		if ($tgl != 'null') {
-			$this->db->where('pbl_tanggal', $tgl);
-		}
-		$query = $this->db->get();
-
-		return $query->result();
 	}
 
 	public function getlastquery()
