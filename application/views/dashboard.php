@@ -11,7 +11,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="card" style="padding:15px 15px 15px 15px;">
-				<h6 style="text-align:center; font-weight:bold">Grafik Jumlah Booking perbulan</h6>
+				<h6 style="text-align:center; font-weight:bold">Grafik Jumlah Penjualan perbulan</h6>
 				<select id="filter_tahun" class="filterr" onChange="filter_tahun()">
 					<option value="0">== Filter Tahun ==</option>
 					<?php

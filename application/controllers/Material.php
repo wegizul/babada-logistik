@@ -43,8 +43,8 @@ class Material extends CI_Controller
 			$row[] = "<img src= " . base_url("assets/files/material/{$material->mtl_foto}") . " width='50px'>";
 			$row[] = $material->mtl_nama;
 			$row[] = $material->mtl_stok . ' ' . $material->smt_nama;
-			$row[] = "Rp. " . number_format($material->mtl_harga_modal, 0);
-			$row[] = "Rp. " . number_format($material->mtl_harga_jual, 0);
+			$row[] = "Rp. " . number_format($material->mtl_harga_modal, 2, ",", ".");
+			$row[] = "Rp. " . number_format($material->mtl_harga_jual, 2, ",", ".");
 			$row[] = "<a href='#' onClick='ubah_material(" . $material->mtl_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_material(" . $material->mtl_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}

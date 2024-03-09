@@ -54,13 +54,13 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>Nama Material</label>
-								<input type="text" class="form-control" name="mtl_nama" id="mtl_nama" required>
+								<input type="text" class="form-control" name="mtl_nama" id="mtl_nama" autocomplete="off" required>
 							</div>
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label>Jumlah Stok</label>
-								<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok" required>
+								<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok">
 							</div>
 						</div>
 						<div class="col-lg-3">
@@ -84,13 +84,13 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text">Rp. </span>
 							</div>
-							<input type="number" min="0" class="form-control" name="mtl_harga_modal" id="mtl_harga_modal" placeholder="Harga Modal" required>
+							<input type="text" class="form-control" name="mtl_harga_modal" id="mtl_harga_modal" placeholder="Harga Modal" required>
 						</div>
 						<div class="input-group input-group col-lg-6 mb-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text">Rp. </span>
 							</div>
-							<input type="number" min="0" class="form-control" name="mtl_harga_jual" id="mtl_harga_jual" placeholder="Harga Jual" required>
+							<input type="text" class="form-control" name="mtl_harga_jual" id="mtl_harga_jual" placeholder="Harga Jual" required>
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">

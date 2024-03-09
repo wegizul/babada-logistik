@@ -87,6 +87,15 @@ class Model_PremixDetail extends CI_Model
 		return $query->row();
 	}
 
+	public function ambil_premix_detail($id)
+	{
+		$this->db->from($this->table);
+		$this->db->where('pxd_pmx_id', $id);
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
 	public function getTotal($id)
 	{
 		$this->db->select("SUM(pxd_harga) as total");

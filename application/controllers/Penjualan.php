@@ -10,6 +10,7 @@ class Penjualan extends CI_Controller
 			redirect(base_url("login"));
 		}
 		$this->load->model('Model_Material', 'material');
+		$this->load->model('Model_SatuanMaterial', 'satuan_material');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_RiwayatPesanan', 'riwayat');
 		date_default_timezone_set('Asia/Jakarta');
@@ -18,6 +19,9 @@ class Penjualan extends CI_Controller
 	public function tampil()
 	{
 		$d = [
+			'customer' => $this->penjualan->get_biller_dreampos(),
+			'material' => $this->material->get_material(),
+			'satuan_material' => $this->satuan_material->get_satuan_material(),
 			'page' => 'Data Penjualan',
 		];
 		$notif = [

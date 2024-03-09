@@ -328,7 +328,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="nav-icon fas fa-globe-asia"></i>
                   <p>
@@ -355,7 +355,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                   </li>
                 </ul>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="<?= base_url("Material/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-database"></i>

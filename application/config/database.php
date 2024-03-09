@@ -96,6 +96,28 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
+$db['dreampos'] = array(
+	'dsn'          => '',
+	'hostname'     => 'localhost',
+	'username'     => 'root',
+	'password'     => '',
+	'database'     => 'posbabada-new',
+	'dbdriver'     => 'mysqli',
+	'dbprefix'     => 'sma_',
+	'pconnect'     => false,
+	'db_debug'     => false,
+	'cache_on'     => false,
+	'cachedir'     => '',
+	'char_set'     => 'utf8',
+	'dbcollat'     => 'utf8_general_ci',
+	'swap_pre'     => '',
+	'encrypt'      => false,
+	'compress'     => false,
+	'stricton'     => false,
+	'failover'     => [],
+	'save_queries' => false,
+);
+
 $db['wilayah'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost', // Nama host

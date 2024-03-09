@@ -72,7 +72,6 @@ class Model_Material extends CI_Model
 	public function get_material()
 	{
 		$this->db->from($this->table);
-		$this->db->where('mtl_stok > 1');
 		$query = $this->db->get();
 
 		return $query->result();
@@ -85,6 +84,15 @@ class Model_Material extends CI_Model
 		$query = $this->db->get();
 
 		return $query->row();
+	}
+
+	public function ambil_material()
+	{
+		$this->db->from($this->table);
+		$this->db->where('mtl_stok > 1');
+		$query = $this->db->get();
+
+		return $query->result();
 	}
 
 	public function getlastquery()

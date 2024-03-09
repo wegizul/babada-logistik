@@ -50,7 +50,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<label>Nama Satuan</label>
-								<input type="text" class="form-control" name="smt_nama" id="smt_nama" required>
+								<input type="text" class="form-control" name="smt_nama" id="smt_nama" autocomplete="off" required>
 							</div>
 						</div>
 					</div>

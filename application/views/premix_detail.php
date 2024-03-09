@@ -84,7 +84,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">Rp. </span>
 								</div>
-								<input type="number" min="0" class="form-control" name="pxd_hpp" id="pxd_hpp" required>
+								<input type="text" class="form-control" name="pxd_hpp" id="pxd_hpp" required>
 							</div>
 						</div>
 						<!-- <div class="col-lg-6">
