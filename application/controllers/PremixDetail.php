@@ -80,8 +80,6 @@ class PremixDetail extends CI_Controller
 		$data['pxd_mtl_nama'] = $get_material->mtl_nama;
 		$data['pxd_harga'] = $data['pxd_qty'] * $data['pxd_hpp'];
 
-		$data3['mtl_stok'] = $get_material->mtl_stok - $data['pxd_qty'];
-
 		if ($id == 0) {
 			$insert = $this->premix->simpan("premix_detail", $data);
 
@@ -89,7 +87,6 @@ class PremixDetail extends CI_Controller
 			$data2['pmx_harga'] = $getHarga->total;
 
 			$this->premix->update("premix", array('pmx_id' => $data['pxd_pmx_id']), $data2);
-			$this->material->update("material", array('mtl_id' => $data['pxd_mtl_id']), $data3);
 		} else {
 			$insert = $this->premix->update("premix_detail", array('pxd_id' => $id), $data);
 
@@ -97,7 +94,6 @@ class PremixDetail extends CI_Controller
 			$data2['pmx_harga'] = $getHarga->total;
 
 			$this->premix->update("premix", array('pmx_id' => $data['pxd_pmx_id']), $data2);
-			$this->material->update("material", array('mtl_id' => $data['pxd_mtl_id']), $data3);
 		}
 
 		$error = $this->db->error();

@@ -76,6 +76,14 @@ class Premix extends CI_Controller
 		$id = $this->input->post('pmx_id');
 		$data = $this->input->post();
 
+		$get_premix_detail = $this->premix_detail->cari_premix_detail($data['pmx_id']);
+
+		foreach ($get_premix_detail as $pd) {
+			$get_material = $this->material->cari_material($pd->pxd_mtl_id);
+			$data3['mtl_stok'] = $get_material->mtl_stok - $pd->pxd_qty;
+			$this->material->update("material", array('mtl_id' => $pd->pxd_mtl_id), $data3);
+		}
+
 		if ($id == 0) {
 			$insert = $this->premix->simpan("premix", $data);
 		} else {

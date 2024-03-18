@@ -149,7 +149,7 @@
 	function tambah() {
 		i++;
 		$('#dynamic_field').append('<tr id="row' + i + '" class="dynamic-added">' +
-			`<td><select id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" class="form-control">
+			`<td><select id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" class="form-control select2">
 					<option value="">Pilih Item</option>
 					<?php foreach ($material as $m) { ?>
 						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
@@ -193,8 +193,8 @@
 			<td width="10%"><button type="button" name="add" id="add" onclick="tambah()" class="btn btn-dark btn-xs"><i class="fas fa-plus-circle"></i></button></td>
 		</tr>
 		<tr>
-			<td><select id="pbd_mtl_id" name="pbd_mtl_id[]" class="form-control">
-					<option value="">Pilih Item</option>
+			<td><select class="form-control select2" id="pbd_mtl_id" name="pbd_mtl_id[]">
+				<option value="">Pilih Item</option>
 					<?php foreach ($material as $m) { ?>
 						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
 					<?php } ?>
