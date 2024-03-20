@@ -13,6 +13,7 @@ class Premix extends CI_Controller
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Premix', 'premix');
 		$this->load->model('Model_PremixDetail', 'premix_detail');
+		$this->load->model('Model_Material', 'material');
 		date_default_timezone_set('Asia/Jakarta');
 	}
 
@@ -76,14 +77,6 @@ class Premix extends CI_Controller
 		$id = $this->input->post('pmx_id');
 		$data = $this->input->post();
 
-		$get_premix_detail = $this->premix_detail->cari_premix_detail($data['pmx_id']);
-
-		foreach ($get_premix_detail as $pd) {
-			$get_material = $this->material->cari_material($pd->pxd_mtl_id);
-			$data3['mtl_stok'] = $get_material->mtl_stok - $pd->pxd_qty;
-			$this->material->update("material", array('mtl_id' => $pd->pxd_mtl_id), $data3);
-		}
-
 		if ($id == 0) {
 			$insert = $this->premix->simpan("premix", $data);
 		} else {
@@ -127,7 +120,25 @@ class Premix extends CI_Controller
 		$data['pxs_user'] = $this->session->userdata('id_user');
 
 		$getPremix = $this->premix->cari_premix($id);
-		$data2['pmx_stok'] = $getPremix->pmx_stok + $data['pxs_qty'];
+		$get_premix_detail = $this->premix_detail->ambil_premix_detail($id);
+
+		if ($data['pxs_tipe'] == 1) {
+			$data2['pmx_stok'] = $getPremix->pmx_stok + $data['pxs_qty'];
+
+			foreach ($get_premix_detail as $pd) {
+				$get_material = $this->material->cari_material($pd->pxd_mtl_id);
+				$data3['mtl_stok'] = $get_material->mtl_stok - $pd->pxd_qty;
+				$this->material->update("material", array('mtl_id' => $pd->pxd_mtl_id), $data3);
+			}
+		} else {
+			$data2['pmx_stok'] = $getPremix->pmx_stok - $data['pxs_qty'];
+
+			foreach ($get_premix_detail as $pd) {
+				$get_material = $this->material->cari_material($pd->pxd_mtl_id);
+				$data3['mtl_stok'] = $get_material->mtl_stok + $pd->pxd_qty;
+				$this->material->update("material", array('mtl_id' => $pd->pxd_mtl_id), $data3);
+			}
+		}
 
 		$insert = $this->premix->update("premix", array('pmx_id' => $id), $data2);
 		if ($insert) $this->premix->simpan("premix_stok", $data);

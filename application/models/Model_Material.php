@@ -80,6 +80,7 @@ class Model_Material extends CI_Model
 	public function cari_material($id)
 	{
 		$this->db->from($this->table);
+		$this->db->join("satuan_material", "smt_id = mtl_satuan", "left");
 		$this->db->where('mtl_id', $id);
 		$query = $this->db->get();
 

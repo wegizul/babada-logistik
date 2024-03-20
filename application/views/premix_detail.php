@@ -16,7 +16,7 @@
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Tambah</a>
+								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;Tambah</a>
 							</div>
 						</div>
 					</div>

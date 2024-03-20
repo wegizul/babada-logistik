@@ -16,6 +16,7 @@ class Model_PremixDetail extends CI_Model
 	{
 		$this->db->from($this->table);
 		$this->db->join("premix", "pmx_id = pxd_pmx_id", "left");
+		// $this->db->join("satuan_material", "smt_id = pxd_smt_id", "left");
 		$this->db->where("pxd_pmx_id", $id);
 		$i = 0;
 

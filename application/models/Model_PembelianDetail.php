@@ -17,7 +17,7 @@ class Model_PembelianDetail extends CI_Model
 		$this->db->from($this->table);
 		$this->db->join("pembelian", "pbl_id = pbd_pbl_id", "left");
 		$this->db->join("material", "mtl_id = pbd_mtl_id", "left");
-		$this->db->join("satuan_material", "smt_id = pbd_smt_id", "left");
+		$this->db->join("satuan_material", "smt_id = pbd_satuan", "left");
 		$this->db->where("pbd_pbl_id", $id);
 		$i = 0;
 

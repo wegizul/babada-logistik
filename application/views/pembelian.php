@@ -9,11 +9,10 @@
 				<div class="card-body form">
 					<div class="row">
 						<input type="hidden" id="pbl_id" name="pbl_id" value="">
-						<hr size="2" width="100%">
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>Nama Supplier</label> <span class="text-danger">*</span>
-								<select class="form-control select2" name="pbl_supplier" id="pbl_supplier" style="width:100%;line-height:100px;" required>
+								<select class="form-control form-control-sm select2" name="pbl_supplier" id="pbl_supplier" style="width:100%;line-height:100px;" required>
 									<option value="">Pilih Supplier</option>
 									<?php foreach ($supplier as $s) { ?>
 										<option value="<?= $s->spl_nama ?>"><?= strtoupper($s->spl_nama) ?></option>
@@ -21,32 +20,51 @@
 								</select>
 							</div>
 							<label>Nomor Faktur</label> <span class="text-danger">*</span>
-							<div class="input-group mb-3">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fas fa-receipt"></i></span>
 								</div>
-								<input type="text" class="form-control" name="pbl_no_faktur" id="pbl_no_faktur" autocomplete="off" required>
+								<input type="text" class="form-control form-control-sm" name="pbl_no_faktur" id="pbl_no_faktur" autocomplete="off" required>
 							</div>
 						</div>
 						<div class="col-lg-6">
 							<label>Tanggal</label> <span class="text-danger">*</span>
-							<div class="input-group mb-3">
+							<div class="input-group input-group-sm mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
 								</div>
-								<input type="date" class="form-control" name="pbl_tanggal" id="pbl_tanggal" autocomplete="off" required>
+								<input type="date" class="form-control form-control-sm" name="pbl_tanggal" id="pbl_tanggal" autocomplete="off" required>
 							</div>
 							<label>Total Harga</label> <span class="text-danger">*</span>
-							<div class="input-group mb-3">
+							<div class="input-group input-group-sm">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Rp</span>
 								</div>
-								<input type="number" min="0" class="form-control" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
+								<input type="number" min="0" class="form-control form-control-sm" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
 							</div>
 						</div>
-						<div class="col-lg-12" style="margin-top: 20px;">
+						<div class="col-lg-4" style="margin-top: 20px;">
 							<h5><b>Detail Barang</b></h5>
+						</div>
+						<div class="col-lg-8" style="margin-top: 20px;">
+							<select class="form-control select2" onChange="cari_material(this.value)">
+								<option value="">Pilih Item</option>
+								<?php foreach ($material as $m) { ?>
+									<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="col-lg-12" style="margin-top: 20px;">
 							<div class="form-group">
+								<table class="table">
+									<tr>
+										<th width="45%">Item <span class="text-danger">*</span></th>
+										<th width="15%">Qty <span class="text-danger">*</span></th>
+										<th width="15%">Satuan <span class="text-danger">*</span></th>
+										<th width="20%">Harga <span class="text-danger">*</span></th>
+										<th></th>
+									</tr>
+								</table>
 								<table class="table">
 									<tr id="dynamic_field"></tr>
 								</table>
@@ -62,10 +80,6 @@
 			</form>
 		</div>
 	</div>
-</div>
-
-<div class="row">
-
 </div>
 
 <!-- date-range-picker -->
@@ -144,36 +158,43 @@
 		className: "form-control"
 	});
 
+	function cari_material(id) {
+		event.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: "cari_material",
+			data: "mtl_id=" + id,
+			dataType: "json",
+			success: function(data) {
+				tambah(data);
+				return false;
+			}
+		});
+	}
+
 	var i = 1;
 
-	function tambah() {
+	function tambah(val) {
 		i++;
 		$('#dynamic_field').append('<tr id="row' + i + '" class="dynamic-added">' +
-			`<td><select id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" class="form-control select2">
-					<option value="">Pilih Item</option>
-					<?php foreach ($material as $m) { ?>
-						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
-					<?php } ?>
-				</select>
+			`<td width="45%">
+				` + val.mtl_nama + `
+				<input type="hidden" id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" value="` + val.mtl_id + `" class="form-control form-control-sm" readonly>
 			</td>
-			<td>
-				<input type="number" min="0" id="pbd_qty` + i + `" name="pbd_qty[]" class="form-control">
+			<td width="15%">
+				<input type="number" min="0" id="pbd_qty` + i + `" name="pbd_qty[]" class="form-control form-control-sm">
 			</td>
-			<td><select id="pbd_smt_id` + i + `" name="pbd_smt_id[]" class="form-control">
-					<option value="">Pilih Satuan</option>
-					<?php foreach ($satuan_material as $sm) { ?>
-						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
-					<?php } ?>
-				</select>
+			<td width="15%">
+				<input type="text" id="pbd_satuan` + i + `" name="pbd_satuan[]" value="` + val.smt_nama + `" class="form-control form-control-sm" readonly>
 			</td>
-			<td class="input-group input-group mb-3">
+			<td width="20%" class="input-group input-group input-group-sm">
 				<div class="input-group-prepend">
-					<span class="input-group-text">Rp</span>
+					<span class="input-group-text input-group-sm">Rp</span>
 				</div>
-				<input type="number" min="0" id="pbd_harga` + i + `" name="pbd_harga[]" class="form-control">
+				<input type="number" min="0" id="pbd_harga` + i + `" name="pbd_harga[]" class="form-control form-control-sm" onchange="total(this.value)">
 			</td>
 			<td>
-			<button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove btn-xs"><i class="fas fa-minus-circle"></i></button></td>` +
+			<span name="remove" id="` + i + `" class="btn_remove"><i class="fas fa-trash-alt"></i></span></td>` +
 			'</tr>'
 		);
 	}
@@ -184,48 +205,16 @@
 		$('#row' + button_id + '').remove();
 	});
 
-	function nilai() {
-		$("#dynamic_field").html(`<tr>
-			<th width="35%">Item <span class="text-danger">*</span></th>
-			<th width="15%">Qty <span class="text-danger">*</span></th>
-			<th width="15%">Satuan <span class="text-danger">*</span></th>
-			<th width="25%">Harga <span class="text-danger">*</span></th>
-			<td width="10%"><button type="button" name="add" id="add" onclick="tambah()" class="btn btn-dark btn-xs"><i class="fas fa-plus-circle"></i></button></td>
-		</tr>
-		<tr>
-			<td><select class="form-control select2" id="pbd_mtl_id" name="pbd_mtl_id[]">
-				<option value="">Pilih Item</option>
-					<?php foreach ($material as $m) { ?>
-						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
-					<?php } ?>
-				</select>
-			</td>
-			<td>
-				<input type="number" min="0" id="pbd_qty" name="pbd_qty[]" class="form-control">
-			</td>
-			<td><select id="pbd_smt_id" name="pbd_smt_id[]" class="form-control">
-					<option value="">Pilih Satuan</option>
-					<?php foreach ($satuan_material as $sm) { ?>
-						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
-					<?php } ?>
-				</select>
-			</td>
-			<td class="input-group input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text">Rp</span>
-				</div>
-				<input type="number" min="0" id="pbd_harga" name="pbd_harga[]" class="form-control">
-			</td>	
-		</tr>`);
+	function total(harga) {
+		var totall = $('#pbl_total_harga').val();
+		var total_harga = Number(totall) + Number(harga);
+		$('#pbl_total_harga').val(total_harga);
 	}
 
 	function reset_form() {
 		$("#pbl_id").val(0);
 		$("#frm_pembelian")[0].reset();
-		nilai();
 	}
 
-	$(document).ready(function() {
-		nilai();
-	});
+	$(document).ready(function() {});
 </script>

@@ -102,6 +102,13 @@ class Pembelian extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function cari_material()
+	{
+		$id = $this->input->post('mtl_id');
+		$data = $this->material->cari_material($id);
+		echo json_encode($data);
+	}
+
 	public function simpan()
 	{
 		$id = $this->input->post('pbl_id');
@@ -111,7 +118,7 @@ class Pembelian extends CI_Controller
 
 		unset($data['pbd_mtl_id']);
 		unset($data['pbd_qty']);
-		unset($data['pbd_smt_id']);
+		unset($data['pbd_satuan']);
 		unset($data['pbd_harga']);
 		
 		if ($id == 0) {
@@ -125,7 +132,7 @@ class Pembelian extends CI_Controller
 					"pbd_pbl_id" => $get_id_pembelian->pbl_id,
 					"pbd_mtl_id" => $data2['pbd_mtl_id'][$idx],
 					"pbd_qty" => $data2['pbd_qty'][$idx],
-					"pbd_smt_id" => $data2['pbd_smt_id'][$idx],
+					"pbd_satuan" => $data2['pbd_satuan'][$idx],
 					"pbd_harga" => $data2['pbd_harga'][$idx],
 				];
 				if ($data2['pbd_qty']) $insert = $this->pembelian->simpan("pembelian_detail", $detail);
