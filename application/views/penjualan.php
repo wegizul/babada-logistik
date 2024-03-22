@@ -15,7 +15,7 @@ $bulan = [
 ]
 ?>
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
@@ -38,7 +38,7 @@ $bulan = [
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<a href="javascript:tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp; Tambah Penjualan</a>
+								<a href="javascript:add_penjualan()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp; Tambah Penjualan</a>
 							</div>
 						</div>
 					</div>
@@ -69,7 +69,7 @@ $bulan = [
 </div>
 
 <div class="modal fade" id="modal_penjualan" role="dialog">
-	<div class="modal-dialog modal-xl">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h6 class="modal-title"><i class="fas fa-cart-plus"></i> Form Penjualan</h6>
@@ -82,7 +82,7 @@ $bulan = [
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Customer</label> <span class="text-danger">*</span>
-								<select class="form-control select2" name="pjl_customer" id="pjl_customer" style="width:100%;line-height:100px;" required>
+								<select class="form-control form-control-sm select2" name="pjl_customer" id="pjl_customer" style="width:100%;line-height:100px;" required>
 									<option value="">Pilih Customer</option>
 									<?php foreach ($customer as $s) { ?>
 										<option value="<?= $s->name ?>"><?= strtoupper($s->name) ?></option>
@@ -96,50 +96,50 @@ $bulan = [
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
 								</div>
-								<input type="date" class="form-control" name="pjl_tanggal" id="pjl_tanggal" autocomplete="off" required>
+								<input type="date" class="form-control form-control-sm" name="pjl_tanggal" id="pjl_tanggal" autocomplete="off" required>
 							</div>
 						</div>
-						<div class="col-lg-4">
+						<!-- <div class="col-lg-4">
 							<label>Total Harga</label> <span class="text-danger">*</span>
-							<div class="input-group mb-3">
+							<div class="input-group input-group-sm mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text">Rp</span>
 								</div>
-								<input type="number" min="0" class="form-control" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
+								<input type="number" min="0" class="form-control form-control-sm" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
 							</div>
-						</div>
-						<div class="col-lg-3">
+						</div> -->
+						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Jenis Harga</label>
-								<select class="form-control" name="pjl_jenis_harga" id="pjl_jenis_harga">
+								<select class="form-control form-control-sm" name="pjl_jenis_harga" id="pjl_jenis_harga">
 									<option value="1">Mark Up 4%</option>
 									<option value="2">HPP</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-lg-3">
+						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Tipe Pembayaran</label>
-								<select class="form-control" name="pjl_jenis_bayar" id="pjl_jenis_bayar">
+								<select class="form-control form-control-sm" name="pjl_jenis_bayar" id="pjl_jenis_bayar">
 									<option value="1">Transfer</option>
 									<option value="2">Cash</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-lg-3">
+						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Status Pembayaran</label>
-								<select class="form-control" name="pjl_status_bayar" id="pjl_status_bayar">
+								<select class="form-control form-control-sm" name="pjl_status_bayar" id="pjl_status_bayar">
 									<option value="0">Tertunda</option>
 									<option value="1">Jatuh Tempo</option>
 									<option value="2">Lunas</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-lg-3">
+						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Status Penjualan</label>
-								<select class="form-control" name="pjl_status" id="pjl_status">
+								<select class="form-control form-control-sm" name="pjl_status" id="pjl_status">
 									<option value="1">Menunggu Konfirmasi</option>
 									<option value="2">Dikirim</option>
 									<option value="3">Ditolak</option>
@@ -147,11 +147,30 @@ $bulan = [
 								</select>
 							</div>
 						</div>
-						<div class="col-lg-12" style="margin-top: 20px;">
+						<div class="col-lg-4" style="margin-top: 20px;">
 							<h5><b>Detail Barang</b></h5>
+						</div>
+						<div class="col-lg-8" style="margin-top: 20px;">
+							<select class="form-control select2" style="width: 100%;" onChange="cari_material(this.value)">
+								<option value="">Pilih Item</option>
+								<?php foreach ($material as $m) { ?>
+									<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="col-lg-12" style="margin-top: 20px;">
 							<div class="form-group">
 								<table class="table">
-									<tr id="dynamic_field"></tr>
+									<tr>
+										<th width="45%">Item <span class="text-danger">*</span></th>
+										<th width="30%">Qty <span class="text-danger">*</span></th>
+										<th width="20%">Satuan <span class="text-danger">*</span></th>
+										<!-- <th width="20%">Harga <span class="text-danger">*</span></th> -->
+										<th></th>
+									</tr>
+								</table>
+								<table class="table">
+									<tr id="list_item"></tr>
 								</table>
 							</div>
 						</div>
@@ -227,9 +246,6 @@ $bulan = [
 <script src="<?= base_url("assets"); ?>/plugins/toastr/toastr.min.js"></script>
 
 <script>
-	var save_method;
-	var table;
-
 	function drawTable() {
 		var bulan = $('#bulan').val();
 		if (!bulan) bulan = null;
@@ -256,7 +272,6 @@ $bulan = [
 			"initComplete": function(settings, json) {
 				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
-				$("#isidata").fadeIn();
 			}
 		});
 	}
@@ -283,7 +298,6 @@ $bulan = [
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
@@ -292,19 +306,16 @@ $bulan = [
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
 		});
 	});
 
-	function tambah() {
-		nilai();
+	function add_penjualan() {
 		$("#pjl_id").val(0);
 		$("frm_penjualan").trigger("reset");
 		$('#modal_penjualan').modal({
@@ -340,11 +351,9 @@ $bulan = [
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#pjl_simpan").html("<i class='fas fa-paper-plane'></i> Kirim");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#pjl_simpan").html("<i class='fas fa-paper-plane'></i> Kirim");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -355,88 +364,66 @@ $bulan = [
 		className: "form-control"
 	});
 
+	function cari_material(id) {
+		event.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: "cari_material",
+			data: "mtl_id=" + id,
+			dataType: "json",
+			success: function(data) {
+				tambah(data);
+				return false;
+			}
+		});
+	}
+
 	var i = 1;
 
-	function tambah_item() {
+	function tambah(val) {
 		i++;
-		$('#dynamic_field').append('<tr id="row' + i + '" class="dynamic-added">' +
-			`<td><select id="pbd_mtl_id` + i + `" name="pbd_mtl_id[]" class="form-control">
-					<option value="">Pilih Item</option>
-					<?php foreach ($material as $m) { ?>
-						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
-					<?php } ?>
-				</select>
+		$('#list_item').append('<tr id="row' + i + '">' +
+			`<td width="45%">
+				` + val.mtl_nama + `
+				<input type="hidden" id="pjd_mtl_id` + i + `" name="pjd_mtl_id[]" value="` + val.mtl_id + `" class="form-control form-control-sm" readonly>
+			</td>
+			<td width="30%">
+				<input type="number" min="0" id="pjd_qty` + i + `" name="pjd_qty[]" class="form-control form-control-sm">
+			</td>
+			<td width="20%">
+				` + val.smt_nama + `
+				<input type="hidden" id="pjd_smt_id` + i + `" name="pjd_smt_id[]" value="` + val.smt_id + `" class="form-control form-control-sm">
 			</td>
 			<td>
-				<input type="number" min="0" id="pbd_qty` + i + `" name="pbd_qty[]" class="form-control">
-			</td>
-			<td><select id="pbd_smt_id` + i + `" name="pbd_smt_id[]" class="form-control">
-					<option value="">Pilih Satuan</option>
-					<?php foreach ($satuan_material as $sm) { ?>
-						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
-					<?php } ?>
-				</select>
-			</td>
-			<td class="input-group input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text">Rp</span>
-				</div>
-				<input type="number" min="0" id="pbd_harga` + i + `" name="pbd_harga[]" class="form-control">
-			</td>
-			<td>
-			<button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove btn-xs"><i class="fas fa-minus-circle"></i></button></td>` +
+			<span name="hapus" id="` + i + `" class="hapus"><i class="fas fa-trash-alt"></i></span></td>` +
 			'</tr>'
 		);
 	}
 
-	$(document).on('click', '.btn_remove', function() {
+	$(document).on('click', '.hapus', function() {
 		i--;
-		var button_id = $(this).attr("id");
-		$('#row' + button_id + '').remove();
+		var btn_hapus = $(this).attr("id");
+		$('#row' + btn_hapus + '').remove();
 	});
 
-	function nilai() {
-		$("#dynamic_field").html(`<tr>
-			<th width="35%">Item <span class="text-danger">*</span></th>
-			<th width="15%">Qty <span class="text-danger">*</span></th>
-			<th width="15%">Satuan <span class="text-danger">*</span></th>
-			<th width="25%">Harga <span class="text-danger">*</span></th>
-			<td width="10%"><button type="button" name="add" id="add" onclick="tambah_item()" class="btn btn-dark btn-xs"><i class="fas fa-plus-circle"></i></button></td>
-		</tr>
-		<tr>
-			<td><select id="pbd_mtl_id" name="pbd_mtl_id[]" class="form-control">
-					<option value="">Pilih Item</option>
-					<?php foreach ($material as $m) { ?>
-						<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
-					<?php } ?>
-				</select>
-			</td>
-			<td>
-				<input type="number" min="0" id="pbd_qty" name="pbd_qty[]" class="form-control">
-			</td>
-			<td><select id="pbd_smt_id" name="pbd_smt_id[]" class="form-control">
-					<option value="">Pilih Satuan</option>
-					<?php foreach ($satuan_material as $sm) { ?>
-						<option value="<?= $sm->smt_id ?>"><?= $sm->smt_nama ?></option>
-					<?php } ?>
-				</select>
-			</td>
-			<td class="input-group input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text">Rp</span>
-				</div>
-				<input type="number" min="0" id="pbd_harga" name="pbd_harga[]" class="form-control">
-			</td>	
-		</tr>`);
+	function total(harga) {
+		var totall = $('#pbl_total_harga').val();
+		var total_harga = Number(totall) + Number(harga);
+		$('#pbl_total_harga').val(total_harga);
 	}
 
 	function reset_form() {
 		$("#frm_konfirm")[0].reset();
-		// nilai();
 	}
 
 	$(document).ready(function() {
 		drawTable();
-		// nilai();
 	});
 </script>
+
+<!-- <td width="20%" class="input-group input-group input-group-sm">
+				<div class="input-group-prepend">
+					<span class="input-group-text input-group-sm">Rp</span>
+				</div>
+				<input type="number" min="0" id="pjd_harga` + i + `" name="pjd_harga[]" value="` + val.mtl_harga_jual + `" class="form-control form-control-sm" onchange="total(this.value)">
+			</td> -->

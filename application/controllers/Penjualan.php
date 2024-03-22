@@ -152,24 +152,60 @@ class Penjualan extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function cari_material()
+	{
+		$id = $this->input->post('mtl_id');
+		$data = $this->material->cari_material($id);
+		echo json_encode($data);
+	}
+	
 	public function simpan()
 	{
-		$mtl_id = $this->input->post('pjd_mtl_id');
+		$user = $this->session->userdata('id_user');
 
-		$data2 = [
-			'pjd_mtl_id' => $mtl_id,
-			'pjd_jumlah' => 1,
-			'pjd_user' => $this->session->userdata('id_user'),
-			'pjd_status' => 1
-		];
+		$data = $this->input->post();
+		$data['pjl_user'] = $user;
 
-		$ambil_stok = $this->material->cari_material($mtl_id);
-		$stok = [
-			'mtl_stok' => $ambil_stok->mtl_stok - 1,
-		];
+		unset($data['pjd_mtl_id']);
+		unset($data['pjd_qty']);
+		unset($data['pjd_smt_id']);
 
-		$insert = $this->penjualan->simpan("penjualan_detail", $data2);
-		if ($insert) $this->penjualan->update("material", array('mtl_id' => $mtl_id), $stok);
+		$insert = $this->penjualan->simpan("penjualan", $data);
+
+		$data2 = $this->input->post();
+		$getLastPenjualan = $this->penjualan->getLast($user);
+		$total_harga = 0;
+
+		foreach ($data2['pjd_qty'] as $idx => $kd) {
+			$getMaterial = $this->material->cari_material($data2['pjd_mtl_id'][$idx]);
+
+			if ($data['pjl_jenis_harga'] == 1) {
+				$harga = $getMaterial->mtl_harga_jual;
+			} else {
+				$harga = $getMaterial->mtl_harga_modal;
+			}
+
+			$detail = [
+				'pjd_pjl_id' => $getLastPenjualan->pjl_id,
+				'pjd_mtl_id' => $data2['pjd_mtl_id'][$idx],
+				'pjd_qty' => $data2['pjd_qty'][$idx],
+				'pjd_smt_id' => $data2['pjd_smt_id'][$idx],
+				'pjd_harga' => $harga * $data2['pjd_qty'][$idx],
+				'pjd_status' => $data['pjl_status']
+			];
+
+			$data3['mtl_stok'] = $getMaterial->mtl_stok - $data2['pjd_qty'][$idx];
+
+			if ($insert) $insert_detail = $this->penjualan->simpan("penjualan_detail", $detail);
+			if ($insert_detail) $this->material->update("material", array('mtl_id' => $data2['pjd_mtl_id'][$idx]), $data3);
+
+			$total_harga += ($harga * $data2['pjd_qty'][$idx]);
+		}
+
+		print_r($total_harga);
+		die();
+		$update['pjl_jumlah_bayar'] = $total_harga;
+		$this->penjualan->update("penjualan", array('pjl_id' => $data['pjl_id']), $update);
 
 		$error = $this->db->error();
 		if (!empty($error)) {
@@ -177,9 +213,10 @@ class Penjualan extends CI_Controller
 		} else {
 			$err = "";
 		}
-		if ($insert) {
+
+		if ($insert_detail) {
 			$resp['status'] = 1;
-			$resp['desc'] = "Berhasil menambahkan ke keranjang";
+			$resp['desc'] = "Transaksi penjualan berhasil";
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Ada kesalahan dalam penyimpanan!";

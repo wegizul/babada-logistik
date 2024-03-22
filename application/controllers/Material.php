@@ -77,6 +77,7 @@ class Material extends CI_Controller
 	{
 		$id = $this->input->post('mtl_id');
 		$data = $this->input->post();
+		$data['mtl_date_created'] = date('Y-m-d H:i:s');
 
 		$nmfile = "mtl_" . time();
 
