@@ -13,6 +13,7 @@ class Premix extends CI_Controller
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Premix', 'premix');
 		$this->load->model('Model_PremixDetail', 'premix_detail');
+		$this->load->model('Model_PremixStok', 'premix_stok');
 		$this->load->model('Model_Material', 'material');
 		date_default_timezone_set('Asia/Jakarta');
 	}
@@ -40,10 +41,6 @@ class Premix extends CI_Controller
 		$no = $_POST['start'];
 		foreach ($list as $premix) {
 			$no++;
-			$total = 0;
-			$harga = $this->premix_detail->getTotal($premix->pmx_id);
-			if ($harga->total) $total = number_format($harga->total, 0);
-
 			$row = array();
 			$row[] = $no;
 			$row[] = "<a href='" . base_url('PremixDetail/tampil/') . $premix->pmx_id . "'>" . $premix->pmx_nama . "</a>";
@@ -104,6 +101,7 @@ class Premix extends CI_Controller
 	{
 		$delete = $this->premix->delete('premix', 'pmx_id', $id);
 		if ($delete) {
+			$this->premix->delete('premix_detail', 'pxd_pmx_id', $id);
 			$resp['status'] = 1;
 			$resp['desc'] = "<i class='fa fa-exclamation-circle text-success'></i>&nbsp;&nbsp;&nbsp; Berhasil menghapus data";
 		} else {
@@ -158,5 +156,63 @@ class Premix extends CI_Controller
 			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
+	}
+
+	public function laporan()
+	{
+		$d = [
+			'page' => 'Laporan Penyesuaian Stok Premix',
+		];
+		$notif = [
+			'notifikasi' => $this->penjualan->notifikasi(),
+		];
+		$this->load->helper('url');
+		$this->load->view('background_atas', $notif);
+		$this->load->view('laporan_premix', $d);
+		$this->load->view('background_bawah');
+	}
+
+	public function ajax_list_penyesuaian_premix($bln)
+	{
+		$list = $this->premix_stok->get_datatables($bln);
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $premix) {
+			$no++;
+
+			$row = array();
+			$row[] = $no;
+			$row[] = $premix->pxs_date_created;
+			$row[] = $premix->pmx_nama;
+			$row[] = $premix->pxs_tipe == 1 ? "<span class='badge badge-dark'>Penambahan</span>" : "<span class='badge badge-danger'>Pengurangan</span>";
+			$row[] = $premix->pxs_qty . " Karung";
+			$row[] = $premix->log_nama;
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->premix_stok->count_all(),
+			"recordsFiltered" => $this->premix_stok->count_filtered($bln),
+			"data" => $data,
+			"query" => $this->premix_stok->getlastquery(),
+		);
+		echo json_encode($output);
+	}
+
+	public function export($bln)
+	{
+		if ($bln == 'null') {
+			$nama_bulan = 'All Data';
+		} else {
+			$nama_bulan = $bln;
+		}
+		$d = [
+			'page' => 'Laporan Penyesuaian Stok Premix',
+			'bulan' => $nama_bulan,
+			'data' => $this->premix_stok->export_excel($bln),
+		];
+		$this->load->helper('url');
+		$this->load->view('export_stok_premix', $d);
 	}
 }

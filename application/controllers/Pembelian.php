@@ -12,7 +12,6 @@ class Pembelian extends CI_Controller
 		if ($this->session->userdata("level") > 3) {
 			redirect(base_url("Dashboard"));
 		}
-		$this->load->model('Model_Login', 'pengguna');
 		$this->load->model('Model_Pembelian', 'pembelian');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Material', 'material');
@@ -38,48 +37,51 @@ class Pembelian extends CI_Controller
 		$this->load->view('background_bawah');
 	}
 
-	public function riwayat()
+	public function laporan()
 	{
 		$d = [
-			'page' => 'Riwayat Pembelian',
+			'page' => 'Laporan Pembelian',
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),
 		];
 		$this->load->helper('url');
 		$this->load->view('background_atas', $notif);
-		$this->load->view('riwayat', $d);
+		$this->load->view('laporan_pembelian', $d);
 		$this->load->view('background_bawah');
 	}
 
-	public function laporan($tgl)
+	public function export($bln)
 	{
-		if ($tgl == 'null') {
+		if ($bln == 'null') {
 			$nama_bulan = 'All Data';
 		} else {
-			$nama_bulan = $tgl;
+			$nama_bulan = $bln;
 		}
 		$d = [
 			'page' => 'Laporan Pembelian',
 			'bulan' => $nama_bulan,
-			'data' => $this->pembelian->ekspor_excel($tgl),
+			'data' => $this->pembelian->export_excel($bln),
 		];
 		$this->load->helper('url');
-		$this->load->view('ekspor_excel', $d);
+		$this->load->view('export_pembelian', $d);
 	}
 
-	public function ajax_list_pembelian()
+	public function ajax_list_pembelian($bln)
 	{
-		$list = $this->pembelian->get_datatables();
+		$list = $this->pembelian->get_datatables($bln);
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $pembelian) {
+			$total_item = $this->pembelian->get_jumlah_pbd($pembelian->pbl_id);
 			$no++;
 			$row = array();
 			$row[] = $no;
 			$row[] = $pembelian->pbl_tanggal;
-			$row[] = $pembelian->pbl_supplier;
 			$row[] = $pembelian->pbl_no_faktur;
+			$row[] = $pembelian->pbl_supplier;
+			$row[] = $total_item . " Item";
+			$row[] = "Rp. " . number_format($pembelian->pbl_total_harga, 0);
 			$row[] = $pembelian->log_nama;
 			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "' class='btn btn-default btn-sm mb-1' title='Detail'><i class='fa fa-boxes'></i></a> <a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-sm mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
@@ -88,7 +90,7 @@ class Pembelian extends CI_Controller
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->pembelian->count_all(),
-			"recordsFiltered" => $this->pembelian->count_filtered(),
+			"recordsFiltered" => $this->pembelian->count_filtered($bln),
 			"data" => $data,
 			"query" => $this->pembelian->getlastquery(),
 		);

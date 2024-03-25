@@ -396,6 +396,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="nav-icon fas fa-file-excel"></i>
+                  <p>
+                    Laporan
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Premix/laporan") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Premix
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Pembelian/laporan") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Pembelian
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Penjualan/laporan") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Penjualan
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Manifest/laporan") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Pengiriman
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
             <?php endif;
             if ($this->session->userdata('level') == 3) : ?>
               <li class="nav-item">

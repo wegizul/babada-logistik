@@ -13,6 +13,7 @@ class PembelianDetail extends CI_Controller
 			redirect(base_url("Dashboard"));
 		}
 		$this->load->model('Model_PembelianDetail', 'pembelian_detail');
+		$this->load->model('Model_Pembelian', 'pembelian');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		date_default_timezone_set('Asia/Jakarta');
 	}
@@ -22,6 +23,7 @@ class PembelianDetail extends CI_Controller
 		$d = [
 			'pbl_id' => $id,
 			'page' => 'Pembelian Detail',
+			'faktur' => $this->pembelian->cari_pembelian($id)
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),

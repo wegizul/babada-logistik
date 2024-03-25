@@ -1,32 +1,56 @@
-<input type="hidden" name="pbl_id" id="pbl_id" value="<?= $pbl_id ?>">
+<?php
+$bulan = [
+	'1' => 'Januari',
+	'2' => 'Februari',
+	'3' => 'Maret',
+	'4' => 'April',
+	'5' => 'Mei',
+	'6' => 'Juni',
+	'7' => 'Juli',
+	'8' => 'Agustus',
+	'9' => 'September',
+	'10' => 'Oktober',
+	'11' => 'November',
+	'12' => 'Desember',
+]
+?>
 <div class="inner">
-	<div class="row" id="isidata">
-		<input type="hidden" name="pbd_pbl_id" id="pbd_pbl_id">
+	<div class="row">
+		<input type="hidden" name="pbl_id" id="pbl_id">
 		<div class="col-lg-12">
-			<div class="card">
+			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
+			<div class="card mt-3">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-2">
+						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm" style="width: 100%"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
+								<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
+									<option value="">Pilih Bulan</option>
+									<?php foreach ($bulan as $key => $val) { ?>
+										<option value="<?= $key ?>"><?= $val ?></option>
+									<?php } ?>
+								</select>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 col-xs-12">
 							<div class="form-group">
+								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
 							</div>
 						</div>
 					</div>
-					Detail Pembelian #<?= $faktur->pbl_no_faktur ?>
 				</div>
 				<div class="card-body table-responsive">
-					<table class="table table-striped table-bordered table-hover" id="tabel-pembelian-detail" width="100%" style="font-size:100%;">
+					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
 								<th width="5%">No</th>
-								<th>Item</th>
-								<th>Qty</th>
-								<th>Satuan</th>
-								<th>Harga</th>
+								<th>Tanggal</th>
+								<th>Nomor Faktur</th>
+								<th>Supplier</th>
+								<th>Total Item</th>
+								<th>Total Harga</th>
+								<th>User Input</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -37,6 +61,37 @@
 					</table>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_rincian" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title"><i class="fas fa-user"></i> Rincian pembelian</h6>
+				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
+			</div>
+			<table class="table table-bordered" width="100%" style="font-size:120%;">
+				<thead>
+					<tr>
+						<th>
+							<input type="text" class="form-control" name="pbl_kode" id="pbl_kode" required>
+							<h1><b id="pbl_id"></b></h1>
+						</th>
+						<th>
+							<img src="<?= base_url('assets/files/logo.png') ?>" width="150px" style="float: right;">
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="2">
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
@@ -68,10 +123,11 @@
 <script>
 	var save_method;
 	var table;
-	var pbl_id = $("#pbl_id").val();
 
 	function drawTable() {
-		$('#tabel-pembelian-detail').DataTable({
+		var bulan = $('#filter').val();
+		if (!bulan) bulan = null;
+		$('#tabel-data').DataTable({
 			"destroy": true,
 			lengthMenu: [
 				[10, 25, 50, -1],
@@ -84,7 +140,7 @@
 			"serverSide": true,
 			"order": [],
 			"ajax": {
-				"url": "../ajax_list_pembelian_detail/" + pbl_id,
+				"url": "ajax_list_pembelian/" + bulan,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -99,9 +155,9 @@
 		});
 	}
 
-	function hapus_pembelian_detail(id) {
+	function hapus_pembelian(id) {
 		event.preventDefault();
-		$("#pbd_id").val(id);
+		$("#pbl_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -111,20 +167,21 @@
 		});
 	}
 
-	function ubah_pembelian_detail(id) {
+	function lihat_pembelian(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
-			url: "../cari",
-			data: "pbd_id=" + id,
+			url: "lihat",
+			data: "pbl_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
+				console.log(data);
 				obj.map((dt) => {
 					$("#" + dt[0]).val(dt[1]);
 				});
 				$(".inputan").attr("disabled", false);
-				$("#modal_pembelian_detail").modal({
+				$("#modal_rincian").modal({
 					show: true,
 					keyboard: false,
 					backdrop: 'static'
@@ -135,17 +192,17 @@
 	}
 
 	function reset_form() {
-		$("#pbd_id").val(0);
-		$("#frm_pembelian_detail")[0].reset();
+		$("#pbl_id").val(0);
+		$("#frm_pembelian")[0].reset();
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#pbd_id").val();
+		var id = $("#pbl_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
 			type: "GET",
-			url: "../hapus/" + id,
+			url: "hapus/" + id,
 			success: function(d) {
 				var res = JSON.parse(d);
 				var msg = "";
@@ -163,6 +220,22 @@
 			}
 		});
 	});
+
+	$('.tgl').daterangepicker({
+		locale: {
+			format: 'YYYY-MM-DD'
+		},
+		showDropdowns: true,
+		singleDatePicker: true,
+		"autoApply": true,
+		opens: 'left'
+	});
+
+	function ekspor() {
+		var bln = $('#filter').val();
+		if (!bln) bln = null;
+		window.open("<?= base_url('Pembelian/export/') ?>" + bln);
+	}
 
 	$(document).ready(function() {
 		drawTable();

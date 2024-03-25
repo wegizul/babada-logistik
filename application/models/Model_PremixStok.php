@@ -1,10 +1,10 @@
 <?php
-class Model_Pembelian extends CI_Model
+class Model_PremixStok extends CI_Model
 {
-	var $table = 'pembelian';
-	var $column_order = array('pbl_id', 'pbl_tanggal', 'pbl_supplier', 'pbl_no_faktur', 'log_nama'); //set column field database for datatable orderable
-	var $column_search = array('pbl_id', 'pbl_tanggal', 'pbl_supplier', 'pbl_no_faktur'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('pbl_tanggal' => 'desc'); // default order
+	var $table = 'premix_stok';
+	var $column_order = array('pxs_id', 'pxs_date_created', 'pmx_nama', 'pxs_tipe', 'pxs_qty'); //set column field database for datatable orderable
+	var $column_search = array('pxs_id', 'pxs_date_created', 'pmx_nama', 'pxs_tipe', 'pxs_qty'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $order = array('pxs_date_created' => 'desc'); // default order
 
 	public function __construct()
 	{
@@ -15,9 +15,10 @@ class Model_Pembelian extends CI_Model
 	private function _get_datatables_query($bln)
 	{
 		$this->db->from($this->table);
-		$this->db->join("sys_login", "log_id = pbl_user", "left");
+		$this->db->join("premix", "pmx_id = pxs_pmx_id", "left");
+		$this->db->join("sys_login", "log_id = pxs_user", "left");
 		if ($bln != 'null') {
-			$this->db->where('MONTH(pbl_tanggal)', $bln);
+			$this->db->where('MONTH(pxs_date_created)', $bln);
 		}
 		$i = 0;
 
@@ -72,7 +73,7 @@ class Model_Pembelian extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	public function get_pembelian()
+	public function get_premix_stok()
 	{
 		$this->db->from($this->table);
 		$query = $this->db->get();
@@ -80,53 +81,22 @@ class Model_Pembelian extends CI_Model
 		return $query->result();
 	}
 
-	public function cari_pembelian($id)
+	public function cari_premix_stok($id)
 	{
 		$this->db->from($this->table);
-		$this->db->where('pbl_id', $id);
+		$this->db->where('pxs_id', $id);
 		$query = $this->db->get();
 
 		return $query->row();
-	}
-
-	public function get_last_pembelian()
-	{
-		$this->db->from($this->table);
-		$this->db->order_by('pbl_id', 'desc');
-		$this->db->limit(1);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-
-	public function ambil_pembelian($pbl_id)
-	{
-		$this->db->from('pembelian_detail');
-		$this->db->join('pembelian', 'pbl_id = pbd_pbl_id', 'left');
-		$this->db->where('pbl_id', $pbl_id);
-		$query = $this->db->get();
-
-		return $query->result();
-	}
-
-	public function get_jumlah_pbd($id)
-	{
-		$this->db->from('pembelian_detail');
-		$this->db->where('pbd_pbl_id', $id);
-		$query = $this->db->get();
-
-		return $query->num_rows();
 	}
 
 	public function export_excel($bln)
 	{
 		$this->db->from($this->table);
-		$this->db->join('pembelian_detail', 'pbd_pbl_id = pbl_id', 'left');
-		$this->db->join('material', 'mtl_id = pbd_mtl_id', 'left');
-		$this->db->join('satuan_material', 'smt_id = pbd_satuan', 'left');
-		$this->db->join('sys_login', 'log_id = pbl_user', 'left');
+		$this->db->join("premix", "pmx_id = pxs_pmx_id", "left");
+		$this->db->join("sys_login", "log_id = pxs_user", "left");
 		if ($bln != 'null') {
-			$this->db->where('MONTH(pbl_tanggal)', $bln);
+			$this->db->where('MONTH(pxs_date_created)', $bln);
 		}
 		$query = $this->db->get();
 
