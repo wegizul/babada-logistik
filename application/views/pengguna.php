@@ -1,7 +1,5 @@
 <div class="inner">
 	<div class="row">
-	</div>
-	<div class="row" id="isidata">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
@@ -12,7 +10,7 @@
 						</div>
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<a href="javascript:log_tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-plus-circle"></i> &nbsp;&nbsp;&nbsp; Tambah</a>
+								<a href="javascript:log_tambah()" class="btn btn-dark btn-block btn-sm"><i class="fa fa-user-plus"></i> &nbsp;&nbsp; Tambah User</a>
 							</div>
 						</div>
 					</div>
@@ -21,11 +19,11 @@
 					<table class="table table-striped table-bordered table-hover" id="tabel-pengguna" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
+								<th style="width: 5%;">No</th>
 								<th>Nama</th>
 								<th>Username</th>
 								<th>Level</th>
-								<th>Alamat Agen</th>
+								<th>Unit Kerja</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -75,10 +73,9 @@
 							<div class="form-group">
 								<label>Level</label>
 								<select class="form-control" name="log_level" id="log_level">
-									<option value="2">Admin</option>
-									<option value="3">POS</option>
-									<option value="4">HUB</option>
-									<option value="5">SUBHUB</option>
+									<option value="2">Admin Logistik</option>
+									<option value="3">Admin Gudang</option>
+									<option value="4">Konsumen</option>
 								</select>
 							</div>
 						</div>
@@ -93,8 +90,8 @@
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
-								<label>Alamat Agen</label>
-								<input type="text" class="form-control" name="log_agen" id="log_agen" required>
+								<label>Unit Kerja</label>
+								<input type="text" class="form-control" name="log_unit_kerja" id="log_unit_kerja" required>
 							</div>
 						</div>
 					</div>
@@ -161,7 +158,7 @@
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
@@ -200,11 +197,9 @@
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#log_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#log_simpan").html("Simpan");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -246,7 +241,7 @@
 				$("#log_nama").val(data.log_nama);
 				$("#log_user").val(data.log_user);
 				$("#log_level").val(data.log_level);
-				$("#log_agen").val(data.log_agen);
+				$("#log_unit_kerja").val(data.log_unit_kerja);
 				$(".inputan").attr("disabled", false);
 				$("#modal_pengguna").modal({
 					show: true,
@@ -266,12 +261,12 @@
 	$("#showPass").click(function() {
 		var st = $(this).attr("st");
 		if (st == 0) {
-			$("#log_passnya").attr("type", "text");
+			$("#log_pass").attr("type", "text");
 			$("#matanya").removeClass("fa-eye");
 			$("#matanya").addClass("fa-eye-slash");
 			$(this).attr("st", 1);
 		} else {
-			$("#log_passnya").attr("type", "password");
+			$("#log_pass").attr("type", "password");
 			$("#matanya").removeClass("fa-eye-slash");
 			$("#matanya").addClass("fa-eye");
 			$(this).attr("st", 0);

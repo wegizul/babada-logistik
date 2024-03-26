@@ -3,7 +3,7 @@ class Model_Login extends CI_Model
 {
 	var $table = 'sys_login';
 	var $column_order = array('log_id', 'log_nama', 'log_user', 'log_level'); //set column field database for datatable orderable
-	var $column_search = array('log_id', 'log_nama', 'log_user', 'log_level'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $column_search = array('log_id', 'log_nama', 'log_user', 'log_level', 'log_unit_kerja'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('log_nama' => 'asc'); // default order  	private $db_sts;
 
 	public function __construct()
@@ -103,7 +103,7 @@ class Model_Login extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_agen()
+	public function get_unit_kerja()
 	{
 		$this->db->from("sys_login");
 		$this->db->where("log_level >", 1);

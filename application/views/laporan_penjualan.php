@@ -15,35 +15,41 @@ $bulan = [
 ]
 ?>
 <div class="inner">
-	<div class="row" id="isidata">
-		<input type="hidden" name="bk_id" id="bk_id">
+	<div class="row">
+		<input type="hidden" name="pjl_id" id="pjl_id">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
 				<div class="card-header">
-					<i class="fas fa-cube mb-3"></i> <?= $page ?>
-					<!-- <div class="row">
+					<div class="row">
 						<div class="col-md-2 pl-0">
 							<div class="form-group">
-								<input type="text" class="form-control tgl" name="filter" id="filter">
+								<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
+									<option value="">Pilih Bulan</option>
+									<?php foreach ($bulan as $key => $val) { ?>
+										<option value="<?= $key ?>"><?= $val ?></option>
+									<?php } ?>
+								</select>
 							</div>
 						</div>
 						<div class="col-md-2 col-xs-12">
 							<div class="form-group">
-								<button class="btn btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
+								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
 							</div>
 						</div>
-					</div> -->
+					</div>
 				</div>
 				<div class="card-body table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
-								<th>Tanggal Pesanan</th>
-								<th>Nama Pemesan</th>
+								<th style="width: 5%;">No</th>
+								<th>Tanggal</th>
+								<th>Invoice</th>
+								<th>Customer</th>
 								<th>Total Item</th>
 								<th>Jumlah Bayar</th>
+								<th>Pembayaran</th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -90,7 +96,7 @@ $bulan = [
 	var table;
 
 	function drawTable() {
-		var bulan = $('#bulan').val();
+		var bulan = $('#filter').val();
 		if (!bulan) bulan = null;
 		$('#tabel-data').DataTable({
 			"destroy": true,
@@ -105,7 +111,7 @@ $bulan = [
 			"serverSide": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_riwayat",
+				"url": "ajax_list_laporan/" + bulan,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -113,31 +119,19 @@ $bulan = [
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
 		});
 	}
 
-	function hapus_booking(id) {
-		event.preventDefault();
-		$("#bk_id").val(id);
-		$("#jdlKonfirm").html("Konfirmasi hapus data");
-		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
-		$("#frmKonfirm").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
-	}
-
-	function lihat_booking(id) {
+	function lihat_penjualan(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
 			url: "lihat",
-			data: "bk_id=" + id,
+			data: "pjl_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
@@ -157,34 +151,9 @@ $bulan = [
 	}
 
 	function reset_form() {
-		$("#bk_id").val(0);
-		$("#frm_booking")[0].reset();
+		$("#pjl_id").val(0);
+		$("#frm_penjualan")[0].reset();
 	}
-
-	$("#yaKonfirm").click(function() {
-		var id = $("#bk_id").val();
-		$("#isiKonfirm").html("Sedang menghapus data...");
-		$(".btn").attr("disabled", true);
-		$.ajax({
-			type: "GET",
-			url: "hapus/" + id,
-			success: function(d) {
-				var res = JSON.parse(d);
-				var msg = "";
-				if (res.status == 1) {
-					toastr.success(res.desc);
-					$("#frmKonfirm").modal("hide");
-					drawTable();
-				} else {
-					toastr.error(res.desc + "[" + res.err + "]");
-				}
-				$(".btn").attr("disabled", false);
-			},
-			error: function(jqXHR, namaStatus, errorThrown) {
-				alert('Error get data from ajax');
-			}
-		});
-	});
 
 	$('.tgl').daterangepicker({
 		locale: {
@@ -197,9 +166,9 @@ $bulan = [
 	});
 
 	function ekspor() {
-		var tgl = $('#filter').val();
-		if (!tgl) tgl = null;
-		window.open("<?= base_url('Booking/laporan/') ?>" + tgl);
+		var bln = $('#filter').val();
+		if (!bln) bln = null;
+		window.open("<?= base_url('Penjualan/laporan/') ?>" + bln);
 	}
 
 	$(document).ready(function() {

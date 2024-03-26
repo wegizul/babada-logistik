@@ -44,8 +44,8 @@ class Premix extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = "<a href='" . base_url('PremixDetail/tampil/') . $premix->pmx_id . "'>" . $premix->pmx_nama . "</a>";
-			$row[] = "Rp. " . number_format($premix->pmx_harga, 0);
-			$row[] = $premix->pmx_harga_jual ? "Rp. " . number_format($premix->pmx_harga_jual, 0) : "Rp. 0";
+			$row[] = "Rp " . number_format($premix->pmx_harga, 2, ",", ".");
+			$row[] = $premix->pmx_harga_jual ? "Rp " . number_format($premix->pmx_harga_jual, 2, ",", ".") : "Rp. 0";
 			$row[] = $premix->pmx_stok . " Karung";
 			$row[] = $premix->pmx_status == 1 ? "<span class='badge badge-dark'>Aktif</span>" : "<span class='badge badge-danger'>Tidak Aktif</span>";
 			$row[] = "<a href='#' onClick='ubah_premix(" . $premix->pmx_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_premix(" . $premix->pmx_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";

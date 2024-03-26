@@ -12,15 +12,20 @@ class Model_RiwayatPesanan extends CI_Model
 		$this->load->database();
 	}
 
-	private function _get_datatables_query()
+	private function _get_datatables_query($bln)
 	{
 		$user = $this->session->userdata("id_user");
 		$this->db->from($this->table);
 		$this->db->join("sys_login", "log_id = pjl_user", "left");
 		$this->db->join("penjualan_detail", "pjd_pjl_id = pjl_id", "left");
 		$this->db->join("material", "mtl_id = pjd_mtl_id", "left");
-		$this->db->where('pjl_user', $user);
-		$this->db->group_by("pjl_id");
+		$this->db->group_by("pjl_faktur");
+		if ($this->session->userdata('level') > 2) {
+			$this->db->where('pjl_user', $user);
+		}
+		if ($bln != 'null') {
+			$this->db->where('MONTH(pjl_tanggal)', $bln);
+		}
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 
@@ -51,18 +56,18 @@ class Model_RiwayatPesanan extends CI_Model
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($bln)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln);
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($bln)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}

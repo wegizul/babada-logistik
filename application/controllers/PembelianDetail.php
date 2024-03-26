@@ -46,7 +46,7 @@ class PembelianDetail extends CI_Controller
 			$row[] = $pembelian_detail->mtl_nama;
 			$row[] = $pembelian_detail->pbd_qty;
 			$row[] = $pembelian_detail->pbd_satuan;
-			$row[] = "Rp. " . number_format($pembelian_detail->pbd_harga, 0);
+			$row[] = "Rp " . number_format($pembelian_detail->pbd_harga, 0, ",", ".");
 			$data[] = $row;
 		}
 

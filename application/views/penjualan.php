@@ -23,7 +23,7 @@ $bulan = [
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<select class="form-control form-control-sm" name="bulan" id="bulan">
+								<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
 									<option value="">Pilih Bulan</option>
 									<?php foreach ($bulan as $key => $val) { ?>
 										<option value="<?= $key ?>"><?= $val ?></option>
@@ -47,11 +47,13 @@ $bulan = [
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
-								<th>Tanggal Pesanan</th>
-								<th>Nama Pemesan</th>
+								<th style="width: 5%;">No</th>
+								<th>Tanggal</th>
+								<th>Invoice</th>
+								<th>Customer</th>
 								<th>Total Item</th>
 								<th>Jumlah Bayar</th>
+								<th>Pembayaran</th>
 								<th>Status</th>
 								<th>Aksi</th>
 							</tr>
@@ -151,7 +153,7 @@ $bulan = [
 							<h5><b>Detail Barang</b></h5>
 						</div>
 						<div class="col-lg-8" style="margin-top: 20px;">
-							<select class="form-control select2" style="width: 100%;" onChange="cari_material(this.value)">
+							<select class="form-control select2" style="width: 100%;" onChange="cari_material(this.value)" autofocus>
 								<option value="">Pilih Item</option>
 								<?php foreach ($material as $m) { ?>
 									<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>
@@ -247,7 +249,7 @@ $bulan = [
 
 <script>
 	function drawTable() {
-		var bulan = $('#bulan').val();
+		var bulan = $('#filter').val();
 		if (!bulan) bulan = null;
 		$('#tabel-data').DataTable({
 			"destroy": true,
@@ -337,7 +339,6 @@ $bulan = [
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					Swal.fire(
 						'Sukses',
@@ -345,7 +346,10 @@ $bulan = [
 						'success'
 					).then((result) => {
 						if (!result.isConfirmed) {
+							$("#modal_penjualan").modal("hide");
+							window.open("<?= base_url('Penjualan/cetak_resi/') ?>", "_blank");
 							drawTable();
+							reset_form();
 						} else {}
 					})
 				} else {
@@ -388,7 +392,7 @@ $bulan = [
 				<input type="hidden" id="pjd_mtl_id` + i + `" name="pjd_mtl_id[]" value="` + val.mtl_id + `" class="form-control form-control-sm" readonly>
 			</td>
 			<td width="30%">
-				<input type="number" min="0" id="pjd_qty` + i + `" name="pjd_qty[]" class="form-control form-control-sm">
+				<input type="number" min="0" id="pjd_qty` + i + `" name="pjd_qty[]" class="form-control form-control-sm" required>
 			</td>
 			<td width="20%">
 				` + val.smt_nama + `
@@ -414,6 +418,7 @@ $bulan = [
 
 	function reset_form() {
 		$("#frm_konfirm")[0].reset();
+		$("#frm_penjualan")[0].reset();
 	}
 
 	$(document).ready(function() {

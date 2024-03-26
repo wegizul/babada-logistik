@@ -52,62 +52,71 @@
  		<div class="col-lg-12">
  			<div class="card">
  				<div class="card-body table-responsive">
- 					<?php for ($i = 0; $i < $jumlah; $i++) { ?>
- 						<table class="table table-bordered" width="100%" style="font-size:120%;">
- 							<thead>
- 								<tr>
- 									<th>
- 										<h1><b><?= $data[$i]->sp_kode ?></b></h1>
- 									</th>
- 									<th>
- 										<img src="<?= base_url('assets/files/logo.png') ?>" width="50px" style="float: right;">
- 									</th>
- 								</tr>
- 							</thead>
- 							<tbody>
- 								<tr>
- 									<td colspan="2">
- 										<table>
+ 					<table class="table table-bordered" width="100%" style="font-size:120%;">
+ 						<thead>
+ 							<tr>
+ 								<th>
+ 									<h1><b><?= $penjualan->pjl_faktur ?></b></h1>
+ 								</th>
+ 								<th>
+ 									<img src="<?= base_url('assets/files/logo.png') ?>" width="50px" style="float: right;">
+ 								</th>
+ 							</tr>
+ 						</thead>
+ 						<tbody>
+ 							<tr>
+ 								<td colspan="2">
+ 									<table>
+ 										<tr>
+ 											<td>
+ 												SHIP FROM :<br><br>
+ 												<b>PT LOGISTIK OLAH GEMILANG</b><br>
+ 												082283922582<br>
+ 												Jl. Lintas Timur Km. 14, Kulim<br>
+ 												Pekanbaru<br>
+ 											</td>
+ 											<td>
+ 												SHIP TO :<br><br>
+ 												<b><?= $penjualan->pjl_customer ?></b><br>
+ 											</td>
+ 										</tr>
+ 										<tr>
+ 											<td>
+ 												<b>Tanggal : </b><?= $penjualan->pjl_tanggal ?><br><br>
+ 											</td>
+ 											<td>
+ 											</td>
+ 										</tr>
+ 									</table>
+ 									<hr>
+ 									<table>
+ 										<tr>
+ 											<th style="width: 60%;">Item</th>
+ 											<th>Qty</th>
+ 											<th>Satuan</th>
+ 											<th>Harga</th>
+ 										</tr>
+ 										<?php foreach ($data as $d) { ?>
  											<tr>
+ 												<td><?= $d->mtl_nama ?></td>
+ 												<td><?= $d->pjd_qty ?></td>
+ 												<td><?= $d->smt_nama ?></td>
  												<td>
- 													SHIP FROM :<br>
- 													<b><?= $data[$i]->bk_nama_pengirim ?></b><br>
- 													<?= $data[$i]->bk_notelp_pengirim ?><br>
- 													<?= $data[$i]->bk_alamat_pengirim ?><br>
- 													<?= $data[$i]->bk_kota_asal ?><br>
+ 													<div class="input-group input-group-sm col-lg-12">
+ 														<div class="input-group-prepend">
+ 															<span class="input-group-text">Rp </span>
+ 														</div>
+ 														<input type="text" name="pjd_harga" id="pjd_harga" class="form-control form-control-sm" required>
+ 													</div>
  												</td>
- 												<td>
- 													SHIP TO :<br>
- 													<b><?= $data[$i]->bk_nama_penerima ?></b><br>
- 													<?= $data[$i]->bk_notelp_penerima ?><br>
- 													<?= $data[$i]->bk_alamat_penerima ?><br>
- 													<?= $data[$i]->bk_kota_tujuan ?><br>
- 													<span class="badge badge-success"><?= $data[$i]->ta_nama ?></span>
- 												</td>
+ 												<!-- <td>Rp <?= number_format($d->pjd_harga, 0, ',', '.') ?></td> -->
  											</tr>
- 											<tr>
- 												<td>
- 													<b>Tanggal : </b><?= $data[$i]->bk_tanggal ?><br><br>
- 													<b>Jenis Produk Pengiriman : </b><?= $data[$i]->jp_nama ?><br><br>
- 													<b>Tipe Komoditas : </b><?= $data[$i]->tk_nama ?><br><br>
- 												</td>
- 												<td>
- 													<u><b>Detail Paket</b></u><br>
- 													<span>Berat : <?= $data[$i]->bd_berat_barang ?> Kg</span><br>
- 													<span>Dimensi : <?= $data[$i]->bd_panjang . ' x ' . $data[$i]->bd_lebar . ' x ' . $data[$i]->bd_tinggi ?> cm</span><br>
- 												</td>
- 											</tr>
- 											<tr>
- 												<td colspan="2">
- 													<img src="<?= base_url("assets/files/barcode/{$data[$i]->bd_kode}.png") ?>" width="100%">
- 												</td>
- 											</tr>
- 										</table>
- 									</td>
- 								</tr>
- 							</tbody>
- 						</table>
- 					<?php } ?>
+ 										<?php } ?>
+ 									</table>
+ 								</td>
+ 							</tr>
+ 						</tbody>
+ 					</table>
  					<br><br>
  				</div>
  			</div>
@@ -116,8 +125,8 @@
  </div>
 
  <script>
- 	window.print()
- 	setTimeout(function() {
- 		window.close();
- 	}, 100);
+ 	// window.print()
+ 	// setTimeout(function() {
+ 	// 	window.close();
+ 	// }, 100);
  </script>

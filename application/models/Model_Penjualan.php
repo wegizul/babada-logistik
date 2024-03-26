@@ -15,10 +15,13 @@ class Model_Penjualan extends CI_Model
 		$this->db_dreampos = $this->load->database('dreampos', TRUE);
 	}
 
-	private function _get_datatables_query()
+	private function _get_datatables_query($bln)
 	{
 		$this->db->from($this->table);
 		$this->db->join("sys_login", "log_id = pjl_user", "left");
+		if ($bln != 'null') {
+			$this->db->where('MONTH(pjl_tanggal)', $bln);
+		}
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 
@@ -49,18 +52,18 @@ class Model_Penjualan extends CI_Model
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($bln)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln);
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($bln)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -98,6 +101,18 @@ class Model_Penjualan extends CI_Model
 		$query = $this->db->get();
 
 		return $query->row();
+	}
+
+	public function ambil_penjualan($pjl_id)
+	{
+		$this->db->from('penjualan_detail');
+		$this->db->join('penjualan', 'pjl_id = pjd_pjl_id', 'left');
+		$this->db->join("material", "mtl_id = pjd_mtl_id", "left");
+		$this->db->join("satuan_material", "smt_id = pjd_smt_id", "left");
+		$this->db->where('pjl_id', $pjl_id);
+		$query = $this->db->get();
+
+		return $query->result();
 	}
 
 	public function notifikasi()

@@ -1,5 +1,5 @@
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">

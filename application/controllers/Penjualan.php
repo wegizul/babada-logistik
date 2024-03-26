@@ -48,28 +48,15 @@ class Penjualan extends CI_Controller
 		$this->load->view('background_bawah');
 	}
 
-	public function riwayat()
+	public function ajax_list_penjualan($bln)
 	{
-		$d = [
-			'page' => 'Riwayat Belanja',
-		];
-		$notif = [
-			'notifikasi' => $this->penjualan->notifikasi(),
-		];
-		$this->load->helper('url');
-		$this->load->view('background_atas', $notif);
-		$this->load->view('riwayat_pesanan', $d);
-		$this->load->view('background_bawah');
-	}
-
-	public function ajax_list_penjualan()
-	{
-		$list = $this->penjualan->get_datatables();
+		$list = $this->penjualan->get_datatables($bln);
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $penjualan) {
 			$no++;
 			$status = '';
+			$pembayaran = '';
 			switch ($penjualan->pjl_status) {
 				case 1:
 					$status = "<span class='badge badge-warning'>Menunggu Konfirmasi</span>";
@@ -81,37 +68,51 @@ class Penjualan extends CI_Controller
 					$status = "<span class='badge badge-danger'>Ditolak</span>";
 					break;
 			}
+			switch ($penjualan->pjl_status_bayar) {
+				case 0:
+					$pembayaran = "<span class='badge badge-warning'>Tertunda</span>";
+					break;
+				case 1:
+					$pembayaran = "<span class='badge badge-danger'>Jatuh Tempo</span>";
+					break;
+				case 2:
+					$pembayaran = "<span class='badge badge-success'>Lunas</span>";
+					break;
+			}
 			$total_item = $this->penjualan->total_item($penjualan->pjl_id);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_date_created;
-			$row[] = $penjualan->log_nama;
+			$row[] = $penjualan->pjl_faktur;
+			$row[] = $penjualan->pjl_customer;
 			$row[] = $total_item;
-			$row[] = "Rp. " . number_format($penjualan->pjl_jumlah_bayar, 0);
+			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
+			$row[] = $pembayaran;
 			$row[] = $status;
-			$row[] = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a>";
+			$row[] = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a> <a href='" . base_url('Penjualan/cetak_resi/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
 			$data[] = $row;
 		}
 
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->penjualan->count_all(),
-			"recordsFiltered" => $this->penjualan->count_filtered(),
+			"recordsFiltered" => $this->penjualan->count_filtered($bln),
 			"data" => $data,
 			"query" => $this->penjualan->getlastquery(),
 		);
 		echo json_encode($output);
 	}
 
-	public function ajax_list_laporan()
+	public function ajax_list_laporan($bln)
 	{
-		$list = $this->riwayat->get_datatables();
+		$list = $this->riwayat->get_datatables($bln);
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $riwayat) {
 			$no++;
 			$status = '';
+			$pembayaran = '';
 			switch ($riwayat->pjl_status) {
 				case 1:
 					$status = "<span class='badge badge-warning'>Menunggu Konfirmasi</span>";
@@ -123,55 +124,27 @@ class Penjualan extends CI_Controller
 					$status = "<span class='badge badge-danger'>Ditolak</span>";
 					break;
 			}
-			$total_item = $this->riwayat->total_item($riwayat->pjl_id);
-
-			$row = array();
-			$row[] = $no;
-			$row[] = $riwayat->pjl_date_created;
-			$row[] = $riwayat->log_nama;
-			$row[] = $total_item;
-			$row[] = "Rp. " . number_format($riwayat->pjl_jumlah_bayar, 0);
-			$row[] = $status;
-			$data[] = $row;
-		}
-
-		$output = array(
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->riwayat->count_all(),
-			"recordsFiltered" => $this->riwayat->count_filtered(),
-			"data" => $data,
-			"query" => $this->riwayat->getlastquery(),
-		);
-		echo json_encode($output);
-	}
-
-	public function ajax_list_riwayat()
-	{
-		$list = $this->riwayat->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $riwayat) {
-			$no++;
-			$status = '';
-			switch ($riwayat->pjl_status) {
+			switch ($riwayat->pjl_status_bayar) {
+				case 0:
+					$pembayaran = "<span class='badge badge-warning'>Tertunda</span>";
+					break;
 				case 1:
-					$status = "<span class='badge badge-warning'>Menunggu Konfirmasi</span>";
+					$pembayaran = "<span class='badge badge-danger'>Jatuh Tempo</span>";
 					break;
 				case 2:
-					$status = "<span class='badge badge-success'>Dikonfirmasi</span>";
-					break;
-				case 3:
-					$status = "<span class='badge badge-danger'>Ditolak</span>";
+					$pembayaran = "<span class='badge badge-success'>Lunas</span>";
 					break;
 			}
-			$total_item = $this->riwayat->total_item($riwayat->pjl_id);
+			$total_item = $this->penjualan->total_item($riwayat->pjl_id);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $riwayat->pjl_date_created;
-			$row[] = $riwayat->log_nama;
+			$row[] = $riwayat->pjl_faktur;
+			$row[] = $riwayat->pjl_customer;
 			$row[] = $total_item;
-			$row[] = "Rp. " . number_format($riwayat->pjl_jumlah_bayar, 0);
+			$row[] = "Rp " . number_format($riwayat->pjl_jumlah_bayar, 0, ",", ".");
+			$row[] = $pembayaran;
 			$row[] = $status;
 			$data[] = $row;
 		}
@@ -179,7 +152,7 @@ class Penjualan extends CI_Controller
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->riwayat->count_all(),
-			"recordsFiltered" => $this->riwayat->count_filtered(),
+			"recordsFiltered" => $this->riwayat->count_filtered($bln),
 			"data" => $data,
 			"query" => $this->riwayat->getlastquery(),
 		);
@@ -243,9 +216,9 @@ class Penjualan extends CI_Controller
 			$total_harga += ($harga * $data2['pjd_qty'][$idx]);
 		}
 
-		$update['pjl_faktur'] = "INV" . sprintf("%03s", $$getLastPenjualan->pjl_id);
+		$update['pjl_faktur'] = "INV" . sprintf("%04s", $getLastPenjualan->pjl_id);
 		$update['pjl_jumlah_bayar'] = $total_harga;
-		$this->penjualan->update("penjualan", array('pjl_id' => $data['pjl_id']), $update);
+		$this->penjualan->update("penjualan", array('pjl_id' => $getLastPenjualan->pjl_id), $update);
 
 		$error = $this->db->error();
 		if (!empty($error)) {
@@ -309,5 +282,15 @@ class Penjualan extends CI_Controller
 			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
+	}
+
+	public function cetak_resi()
+	{
+		$get_last = $this->penjualan->getLast($this->session->userdata('id_user'));
+		$data = [
+			'data' => $this->penjualan->ambil_penjualan($get_last->pjl_id),
+			'penjualan' => $this->penjualan->cari_penjualan($get_last->pjl_id),
+		];
+		$this->load->view('cetak_resi', $data);
 	}
 }

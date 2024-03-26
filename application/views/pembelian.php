@@ -47,7 +47,7 @@
 							<h5><b>Detail Barang</b></h5>
 						</div>
 						<div class="col-lg-8" style="margin-top: 20px;">
-							<select class="form-control select2" onChange="cari_material(this.value)">
+							<select class="form-control select2" onChange="cari_material(this.value)" autofocus>
 								<option value="">Pilih Item</option>
 								<?php foreach ($material as $m) { ?>
 									<option value="<?= $m->mtl_id ?>"><?= $m->mtl_nama ?></option>

@@ -48,13 +48,10 @@ class Pengguna extends CI_Controller
 					$level = "Admin";
 					break;
 				case 3:
-					$level = "POS";
+					$level = "Admin Gudang";
 					break;
 				case 4:
-					$level = "HUB";
-					break;
-				case 5:
-					$level = "SUBHUB";
+					$level = "Konsumen";
 					break;
 			}
 			$row = array();
@@ -62,7 +59,7 @@ class Pengguna extends CI_Controller
 			$row[] = $pengguna->log_nama;
 			$row[] = $pengguna->log_user;
 			$row[] = $level;
-			$row[] = $pengguna->log_agen;
+			$row[] = $pengguna->log_unit_kerja;
 			$row[] = "<a href='#' onClick='ubah_pengguna(" . $pengguna->log_id . ")' class='btn btn-dark btn-xs' title='Ubah data Pengguna'><i class='fa fa-edit'></i></a> {$hapus}";
 			$data[] = $row;
 		}
@@ -96,18 +93,20 @@ class Pengguna extends CI_Controller
 
 		if ($id == 0) {
 			if (empty($pass)) {
-				$data['log_pass'] = md5("user123");
+				$data['log_pass'] = md5("wdp-babada123");
 			}
 			$insert = $this->pengguna->simpan("sys_login", $data);
 		} else {
 			$insert = $this->pengguna->update("sys_login", array('log_id' => $id), $data);
 		}
+
 		$error = $this->db->error();
 		if (!empty($error)) {
 			$err = $error['message'];
 		} else {
 			$err = "";
 		}
+
 		if ($insert) {
 			$resp['status'] = 1;
 			$resp['desc'] = "Berhasil menyimpan data";
@@ -127,7 +126,7 @@ class Pengguna extends CI_Controller
 			$resp['desc'] = "<i class='fas fa-check-circle text-success'></i>&nbsp;&nbsp;&nbsp; Berhasil menghapus data";
 		} else {
 			$resp['status'] = 0;
-			$resp['desc'] = "<i class='fa fa-exclamation-triangle text-warning'></i>&nbsp;&nbsp;&nbsp; Administrator tidak dapat dihapus";
+			$resp['desc'] = "<i class='fa fa-exclamation-triangle text-warning'></i>&nbsp;&nbsp;&nbsp; Pengguna tidak dapat dihapus";
 		}
 		echo json_encode($resp);
 	}

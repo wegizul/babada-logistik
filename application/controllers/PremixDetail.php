@@ -47,8 +47,8 @@ class PremixDetail extends CI_Controller
 			$row[] = $no;
 			$row[] = $premix_detail->pxd_mtl_nama;
 			$row[] = $premix_detail->pxd_qty;
-			$row[] = "Rp. " . number_format($premix_detail->pxd_hpp, 0);
-			$row[] = "Rp. " . number_format($premix_detail->pxd_harga, 0);
+			$row[] = "Rp " . number_format($premix_detail->pxd_hpp, 2, ",", ".");
+			$row[] = "Rp " . number_format($premix_detail->pxd_harga, 2, ",", ".");
 			$row[] = "<a href='#' onClick='ubah_premix_detail(" . $premix_detail->pxd_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_premix_detail(" . $premix_detail->pxd_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
