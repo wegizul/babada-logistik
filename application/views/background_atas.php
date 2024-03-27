@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 
 <head>
@@ -199,12 +195,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Right navbar links -->
       <?php if ($this->session->userdata("id_user")) { ?>
         <ul class="navbar-nav ml-auto">
-          <?php if ($this->session->userdata("level") > 2) : ?>
-            <a class="nav-link" href="<?= base_url('Penjualan/cart') ?>" role="button">
-              <i class="fas fa-cart-plus"></i>
-              <span class="badge badge-warning navbar-badge"><?= $notifikasi ?></span>
-            </a>
-          <?php endif; ?>
           <!-- Messages Dropdown Menu -->
           <li class="nav-item" title="Logout">
             <a class="nav-link" href="#" role="button" onClick="logout(<?= $this->session->userdata("id_user") ?>)">
@@ -228,34 +218,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-navy elevation-4">
       <a href="<?= base_url() ?>" class="brand-link" style="background-color:#fff;">
-        <!-- <a href="<?= base_url() ?>" class="brand-link" style="background-color:#010536;"> -->
         <img src="<?= base_url("assets"); ?>/files/logo.png" alt="Logo" class="brand-image">
         <span class="brand-text font-weight-dark" style="color: #010536;"><b>System</b></span>
-        <!-- <span class="brand-text font-weight-dark" style="color: #e3e3e3;"><b>System</b></span> -->
       </a>
       <!-- Sidebar -->
 
       <div class="sidebar">
         <!-- Sidebar user (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel mt-1 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="<?= base_url('assets/dist/img/user-blank.png'); ?>" class="img-circle elevation-2" alt="User Image">
+            <img src="<?= base_url('assets/dist/img/user-blank.png'); ?>" class="img-circle elevation-2 mt-3" alt="User Image">
           </div>
           <div class="info">
             <a href="#" class="d-block"><?= $this->session->userdata("nama"); ?></a>
             <span class="badge badge-dark"><?php
                                             switch ($this->session->userdata("level")) {
+                                              case 1:
+                                                echo "Super Admin";
+                                                break;
                                               case 2:
                                                 echo "Admin";
                                                 break;
                                               case 3:
-                                                echo "POS";
+                                                echo "Admin Gudang";
                                                 break;
                                               case 4:
-                                                echo "HUB";
-                                                break;
-                                              case 5:
-                                                echo "SUBHUB";
+                                                echo "Customer";
                                                 break;
                                             }; ?></span>
           </div>
@@ -271,14 +259,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </p>
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a href="<?= base_url("LacakPaket/tampil") ?>" class="nav-link">
-                <i class="nav-icon fas fa-search"></i>
-                <p>
-                  Lacak Paket
-                </p>
-              </a>
-            </li> -->
             <?php if ($this->session->userdata("level") == 1) : ?>
               <li class="nav-item">
                 <a href="" class="nav-link">
@@ -287,6 +267,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     Data Master
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Supplier/tampil") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-building"></i>
+                      <p>
+                        Data Supplier
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Pengguna/tampil") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-user-cog"></i>
+                      <p>
+                        Data User
+                      </p>
+                    </a>
+                  </li>
+                </ul>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
                     <a href="<?= base_url("JenisProduk/tampil") ?>" class="nav-link">
@@ -328,34 +328,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                 </ul>
               </li>
-              <!-- <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="nav-icon fas fa-globe-asia"></i>
-                  <p>
-                    Master Wilayah
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("DataKota/tampil") ?>" class="nav-link">
-                      <i class="nav-icon fas fa-circle"></i>
-                      <p>
-                        Data Kota
-                      </p>
-                    </a>
-                  </li>
-                </ul>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("DataKecamatan/tampil") ?>" class="nav-link">
-                      <i class="nav-icon fas fa-circle"></i>
-                      <p>
-                        Data Kecamatan
-                      </p>
-                    </a>
-                  </li>
-                </ul>
-              </li> -->
               <li class="nav-item">
                 <a href="<?= base_url("Material/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-database"></i>
@@ -373,10 +345,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url("Supplier/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-building"></i>
+                <a href="<?= base_url("Pengeluaran/tampil") ?>" class="nav-link">
+                  <i class="nav-icon fas fa-chart-pie"></i>
                   <p>
-                    Data Supplier
+                    Pengeluaran
                   </p>
                 </a>
               </li>
@@ -390,9 +362,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
               <li class="nav-item">
                 <a href="<?= base_url("Penjualan/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-truck-fast"></i>
+                  <i class="nav-icon fas fa-cart-flatbed"></i>
                   <p>
                     Penjualan
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url("Manifest/tampil") ?>" class="nav-link">
+                  <i class="nav-icon fas fa-truck-fast"></i>
+                  <p>
+                    Pengiriman
                   </p>
                 </a>
               </li>
@@ -447,40 +427,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <?php endif;
             if ($this->session->userdata('level') == 3) : ?>
               <li class="nav-item">
-                <a href="<?= base_url("Booking/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-cart-plus"></i>
-                  <p>
-                    Buat Booking
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url("Booking/riwayat") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-history"></i>
-                  <p>
-                    Riwayat Booking
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url("Manifest/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-th-list"></i>
-                  <p>
-                    Manifest
-                  </p>
-                </a>
-              </li>
-            <?php endif;
-            if ($this->session->userdata('level') > 2) : ?>
-              <li class="nav-item">
-                <a href="<?= base_url("ScanMasuk/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-download"></i>
-                  <p>
-                    Scan Masuk
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="<?= base_url("ScanKirim/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-upload"></i>
                   <p>
@@ -489,15 +435,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
               </li>
             <?php endif;
-            if ($this->session->userdata("level") > 3) : ?>
-              <li class="nav-item">
-                <a href="<?= base_url("ScanDelivery/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-truck-fast"></i>
-                  <p>
-                    Scan Delivery
-                  </p>
-                </a>
-              </li>
+            if ($this->session->userdata("level") == 4) : ?>
               <li class="nav-item">
                 <a href="<?= base_url("ScanDelivered/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-box-open"></i>
@@ -506,31 +444,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </p>
                 </a>
               </li>
-            <?php endif;
-            if ($this->session->userdata("level") == 1) : ?>
               <li class="nav-item">
-                <a href="<?= base_url("Pengguna/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-user-cog"></i>
-                  <p>
-                    Data Pengguna
-                  </p>
-                </a>
-              </li>
-            <?php endif;
-            if ($this->session->userdata("level") > 2) : ?>
-              <li class="nav-item">
-                <a href="<?= base_url("Material/ecommerce") ?>" class="nav-link">
+                <a href="<?= base_url("Penjualan/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-cart-plus"></i>
                   <p>
-                    E Commerce
+                    Order
                   </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url("Penjualan/riwayat") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-copy"></i>
+                  <i class="nav-icon fas fa-history"></i>
                   <p>
-                    Riwayat Belanja
+                    Riwayat Order
                   </p>
                 </a>
               </li>

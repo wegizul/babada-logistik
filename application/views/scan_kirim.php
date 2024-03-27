@@ -23,21 +23,8 @@
 						<div class="col-lg-5">
 							<select name="tr_tujuan" id="tujuan" class="form-control select2" onchange="get_resi()" required>
 								<option value="">Pilih</option>
-								<?php $ket = "";
-								foreach ($tujuan as $t) {
-									switch ($t->log_level) {
-										case 3:
-											$ket = "POS";
-											break;
-										case 4:
-											$ket = "HUB";
-											break;
-										case 5:
-											$ket = "SUBHUB";
-											break;
-									};
-								?>
-									<option value=<?= $t->log_id ?>><?= $ket . ' ' . $t->log_agen ?></option>
+								<?php foreach ($tujuan as $t) { ?>
+									<option value=<?= $t->log_id ?>><?= $t->log_unit_kerja ?></option>
 								<?php } ?>
 							</select>
 						</div>
@@ -66,7 +53,7 @@
 								<thead>
 									<tr>
 										<th>Kode Manifest</th>
-										<th>Nama Kurir</th>
+										<th>Nama Supir</th>
 										<th>Cetak</th>
 									</tr>
 								</thead>
@@ -109,13 +96,13 @@
 						<input type="hidden" id="mf_id" name="mf_id" value="">
 						<div class="col-lg-12">
 							<div class="form-group">
-								<label>Nama Kurir</label>
+								<label>Nama Supir</label>
 								<input type="text" class="form-control" name="mf_kurir" id="mf_kurir" required>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
-								<label>Notelp Kurir</label>
+								<label>No Handphone Supir</label>
 								<input type="number" min="0" class="form-control" name="mf_telp_kurir" id="mf_telp_kurir">
 							</div>
 						</div>
@@ -128,7 +115,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" id="simpan" class="btn btn-dark"><i class="fas fa-check-circle"></i> Simpan</button>
+					<button type="submit" id="simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Buat Manifest</button>
 				</div>
 			</form>
 		</div>

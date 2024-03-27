@@ -1,41 +1,18 @@
-<?php
-$bulan = [
-	'1' => 'Januari',
-	'2' => 'Februari',
-	'3' => 'Maret',
-	'4' => 'April',
-	'5' => 'Mei',
-	'6' => 'Juni',
-	'7' => 'Juli',
-	'8' => 'Agustus',
-	'9' => 'September',
-	'10' => 'Oktober',
-	'11' => 'November',
-	'12' => 'Desember',
-]
-?>
 <div class="inner">
-	<div class="row">
-		<input type="hidden" name="pbl_id" id="pbl_id">
+	<div class="row" id="isidata">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-2 pl-0">
+						<div class="col-md-9 pl-0">
 							<div class="form-group">
-								<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
-									<option value="">Pilih Bulan</option>
-									<?php foreach ($bulan as $key => $val) { ?>
-										<option value="<?= $key ?>"><?= $val ?></option>
-									<?php } ?>
-								</select>
+								<a href="javascript:tambah()" class="btn btn-dark btn-sm"><i class="fa fa-plus-circle"></i> &nbsp; Tambah Pengeluaran</a>
 							</div>
 						</div>
-						<div class="col-md-2 col-xs-12">
-							<div class="form-group">
-								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
-							</div>
+						<div class="col-md-3 pl-0">
+							<h6 style="margin-bottom: 0px;"><b>Total Pengeluaran</b></h6>
+							<h1 style="font-weight: bolder;">Rp <?= number_format($total_pengeluaran, 0, ',', '.') ?></h1>
 						</div>
 					</div>
 				</div>
@@ -43,13 +20,10 @@ $bulan = [
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th width="5%">No</th>
+								<th style="width:5%;">No</th>
 								<th>Tanggal</th>
-								<th>Nomor Faktur</th>
-								<th>Supplier</th>
-								<th>Total Item</th>
-								<th>Total Harga</th>
-								<th>User Input</th>
+								<th>Pengeluaran</th>
+								<th>Jumlah</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -65,23 +39,53 @@ $bulan = [
 	</div>
 </div>
 
-<div class="modal fade" id="modal_rincian" role="dialog">
+<div class="modal fade" id="modal_pengeluaran" role="dialog">
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-clipboard-list"></i> Rincian Pembelian</h6>
+				<h6 class="modal-title"><i class="fas fa-cube"></i> Form Pengeluaran</h6>
 				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
 			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-lg-8">
-						<h1 id="pbd_id"></h1>
-					</div>
-					<div class="col-lg-4">
-						<img src="<?= base_url('assets/files/logo.png') ?>" width="50px" style="float: right;">
+			<form role="form col-lg" name="TambahEdit" id="frm_pengeluaran">
+				<div class="modal-body form">
+					<div class="row">
+						<input type="hidden" id="kel_id" name="kel_id" value="">
+						<div class="col-lg-12 mb-3">
+							<label>Tanggal</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
+								</div>
+								<input type="date" class="form-control" name="kel_tanggal" id="kel_tanggal" autocomplete="off" required>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<label>Pengeluaran</label>
+							<div class="form-group">
+								<input type="text" class="form-control" name="kel_nama" id="kel_nama" autocomplete="off" required>
+							</div>
+						</div>
+						<div class="col-lg-12 mb-3">
+							<label>Jumlah</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Rp </span>
+								</div>
+								<input type="number" min="0" class="form-control" name="kel_jml" id="kel_jml" required>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label>Keterangan</label>
+								<textarea rows="3" class="form-control" name="kel_ket" id="kel_ket"></textarea>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+				<div class="modal-footer">
+					<button type="submit" id="kel_simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -106,6 +110,8 @@ $bulan = [
 <script src="<?= base_url("assets"); ?>/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url("assets"); ?>/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Select 2 -->
+<script src="<?= base_url("assets"); ?>/plugins/select2/select2.js"></script>
 
 <!-- Toastr -->
 <script src="<?= base_url("assets"); ?>/plugins/toastr/toastr.min.js"></script>
@@ -115,8 +121,6 @@ $bulan = [
 	var table;
 
 	function drawTable() {
-		var bulan = $('#filter').val();
-		if (!bulan) bulan = null;
 		$('#tabel-data').DataTable({
 			"destroy": true,
 			lengthMenu: [
@@ -128,9 +132,10 @@ $bulan = [
 			"sort": true,
 			"processing": true,
 			"serverSide": true,
+			"searching": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_pembelian/" + bulan,
+				"url": "ajax_list_pengeluaran/",
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -145,9 +150,50 @@ $bulan = [
 		});
 	}
 
-	function hapus_pembelian(id) {
+	function tambah() {
+		$("#kel_id").val(0);
+		$("frm_pengeluaran").trigger("reset");
+		$('#modal_pengeluaran').modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+	}
+
+	$("#frm_pengeluaran").submit(function(e) {
+		e.preventDefault();
+		$("#kel_simpan").html("Menyimpan...");
+		$(".btn").attr("disabled", true);
+		$.ajax({
+			type: "POST",
+			url: "simpan",
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(d) {
+				var res = JSON.parse(d);
+				var msg = "";
+				if (res.status == 1) {
+					toastr.success(res.desc);
+					drawTable();
+					reset_form();
+					$("#modal_pengeluaran").modal("hide");
+				} else {
+					toastr.error(res.desc);
+				}
+				$("#kel_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
+				$(".btn").attr("disabled", false);
+			},
+			error: function(jqXHR, namaStatus, errorThrown) {
+				$(".btn").attr("disabled", false);
+				alert('Error get data from ajax');
+			}
+		});
+	});
+
+	function hapus_pengeluaran(id) {
 		event.preventDefault();
-		$("#pbl_id").val(id);
+		$("#kel_id").val(id);
 		$("#jdlKonfirm").html("Konfirmasi hapus data");
 		$("#isiKonfirm").html("Yakin ingin menghapus data ini ?");
 		$("#frmKonfirm").modal({
@@ -157,21 +203,20 @@ $bulan = [
 		});
 	}
 
-	function rincian(id) {
+	function ubah_pengeluaran(id) {
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
 			url: "cari",
-			data: "pbl_id=" + id,
+			data: "kel_id=" + id,
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
 				obj.map((dt) => {
-					console.log(dt[1]);
-					$("#" + dt[0]).html(dt[1]);
+					$("#" + dt[0]).val(dt[1]);
 				});
 				$(".inputan").attr("disabled", false);
-				$("#modal_rincian").modal({
+				$("#modal_pengeluaran").modal({
 					show: true,
 					keyboard: false,
 					backdrop: 'static'
@@ -182,12 +227,12 @@ $bulan = [
 	}
 
 	function reset_form() {
-		$("#pbl_id").val(0);
-		$("#frm_pembelian")[0].reset();
+		$("#kel_id").val(0);
+		$("#frm_pengeluaran")[0].reset();
 	}
 
 	$("#yaKonfirm").click(function() {
-		var id = $("#pbl_id").val();
+		var id = $("#kel_id").val();
 		$("#isiKonfirm").html("Sedang menghapus data...");
 		$(".btn").attr("disabled", true);
 		$.ajax({
@@ -213,19 +258,13 @@ $bulan = [
 
 	$('.tgl').daterangepicker({
 		locale: {
-			format: 'YYYY-MM-DD'
+			format: 'DD/MM/YYYY'
 		},
 		showDropdowns: true,
 		singleDatePicker: true,
 		"autoApply": true,
 		opens: 'left'
 	});
-
-	function ekspor() {
-		var bln = $('#filter').val();
-		if (!bln) bln = null;
-		window.open("<?= base_url('Pembelian/export/') ?>" + bln);
-	}
 
 	$(document).ready(function() {
 		drawTable();

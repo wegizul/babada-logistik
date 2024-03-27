@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2024 at 10:21 AM
+-- Generation Time: Mar 27, 2024 at 10:30 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -379,6 +379,30 @@ INSERT INTO `pembelian_detail` (`pbd_id`, `pbd_pbl_id`, `pbd_mtl_id`, `pbd_qty`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pengeluaran`
+--
+
+CREATE TABLE `pengeluaran` (
+  `kel_id` bigint(20) NOT NULL,
+  `kel_tanggal` date DEFAULT NULL,
+  `kel_nama` varchar(255) DEFAULT NULL,
+  `kel_jml` double DEFAULT NULL,
+  `kel_ket` text DEFAULT NULL,
+  `kel_user` bigint(20) DEFAULT NULL,
+  `kel_date_created` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pengeluaran`
+--
+
+INSERT INTO `pengeluaran` (`kel_id`, `kel_tanggal`, `kel_nama`, `kel_jml`, `kel_ket`, `kel_user`, `kel_date_created`) VALUES
+(1, '2024-03-19', 'Gas 2kg', 250000, 'beli gas di warung', 1, '2024-03-27 00:00:00'),
+(2, '2024-03-26', 'Air Galon', 30000, '3 galon', 1, '2024-03-27 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `penjualan`
 --
 
@@ -681,6 +705,12 @@ ALTER TABLE `pembelian_detail`
   ADD PRIMARY KEY (`pbd_id`);
 
 --
+-- Indexes for table `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
+  ADD PRIMARY KEY (`kel_id`);
+
+--
 -- Indexes for table `penjualan`
 --
 ALTER TABLE `penjualan`
@@ -779,6 +809,12 @@ ALTER TABLE `pembelian`
 --
 ALTER TABLE `pembelian_detail`
   MODIFY `pbd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
+  MODIFY `kel_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `penjualan`

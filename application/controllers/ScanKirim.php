@@ -10,11 +10,9 @@ class ScanKirim extends CI_Controller
 			redirect(base_url("login"));
 		}
 		$this->load->model('Model_Booking', 'booking');
-		$this->load->model('Model_Kecamatan', 'kecamatan');
 		$this->load->model('Model_JenisProduk', 'jenis_produk');
 		$this->load->model('Model_StatusPengiriman', 'status_pengiriman');
 		$this->load->model('Model_TipeAlamat', 'tipe_alamat');
-		$this->load->model('Model_TipeKomoditas', 'tipe_komoditas');
 		$this->load->model('Model_Tracking', 'tracking');
 		$this->load->model('Model_Login', 'pengguna');
 		$this->load->model('Model_Penjualan', 'penjualan');
@@ -25,7 +23,7 @@ class ScanKirim extends CI_Controller
 	{
 		$data = [
 			'bd_kode' => '',
-			'tujuan' => $this->pengguna->get_agen(),
+			'tujuan' => $this->pengguna->get_unit_kerja(),
 			'manifest' => $this->tracking->get_manifest(),
 		];
 		$notif = [
