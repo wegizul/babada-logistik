@@ -197,9 +197,11 @@
 				} else {
 					toastr.error(res.desc);
 				}
+				$("#log_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#log_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}

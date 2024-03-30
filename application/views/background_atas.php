@@ -188,7 +188,7 @@
     <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-angles-right"></i></i></a>
         </li>
       </ul>
 
@@ -491,8 +491,8 @@
         <script>
           function logout(id) {
             event.preventDefault();
-            $("#peg_id").val(id);
-            $("#jdlKonfirm3").html("Konfirmasi Logout");
+            $("#log_id").val(id);
+            $("#jdlKonfirm3").html("<i class='fas fa-sign-out-alt fa-xs'></i> Logout");
             $("#isiKonfirm3").html("Apakah anda ingin Keluar Aplikasi ?");
             $("#frmKonfirm3").modal({
               show: true,

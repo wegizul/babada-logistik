@@ -20,7 +20,7 @@
     <i>Versi 1.0.0</i>
   </div>
   <!-- Default to the left -->
-  <span style="font-size: smaller;"><strong>Copyright &copy; <?= date('Y') ?>.</strong> WDP Technology - All rights reserved</span>
+  <span style="font-size: smaller;"><strong>Copyright &copy; <?= date('Y') ?>.</strong> Digisift - All rights reserved</span>
 </footer>
 </div>
 <!-- ./wrapper -->
