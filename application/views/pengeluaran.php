@@ -1,5 +1,5 @@
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
@@ -11,8 +11,12 @@
 							</div>
 						</div>
 						<div class="col-md-3 pl-0">
-							<h6 style="margin-bottom: 0px;"><b>Total Pengeluaran</b></h6>
-							<h1 style="font-weight: bolder;">Rp <?= number_format($total_pengeluaran, 0, ',', '.') ?></h1>
+							<h6 style="margin-bottom: 0px;"><b>Total Pengeluaran <?= date('F') ?></b></h6>
+							<h1 style="font-weight: bolder;">Rp <?php if ($total_pengeluaran) {
+																	echo number_format($total_pengeluaran, 0, ',', '.');
+																} else {
+																	echo 0;
+																} ?></h1>
 						</div>
 					</div>
 				</div>
@@ -60,7 +64,7 @@
 							</div>
 						</div>
 						<div class="col-lg-12">
-							<label>Pengeluaran</label>
+							<label>Nama Pengeluaran</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="kel_nama" id="kel_nama" autocomplete="off" required>
 							</div>
@@ -172,7 +176,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
@@ -185,6 +188,7 @@
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#kel_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -240,13 +244,12 @@
 			url: "hapus/" + id,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					$("#frmKonfirm").modal("hide");
 					drawTable();
 				} else {
-					toastr.error(res.desc + "[" + res.err + "]");
+					toastr.error(res.desc);
 				}
 				$(".btn").attr("disabled", false);
 			},

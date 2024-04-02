@@ -1,13 +1,13 @@
 <input type="hidden" name="pmx_id" id="pmx_id" value="<?= $pmx_id ?>">
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<div class="col-lg-12">
 			<div class="card">
 				<div class="card-header">
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm" style="width: 100%"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
+								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
 							</div>
 						</div>
 						<div class="col-md-8">
@@ -189,7 +189,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
@@ -202,7 +201,7 @@
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#pxd_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
+				$("#pxd_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -264,7 +263,7 @@
 					$("#frmKonfirm").modal("hide");
 					drawTable();
 				} else {
-					toastr.error(res.desc + "[" + res.err + "]");
+					toastr.error(res.desc);
 				}
 				$(".btn").attr("disabled", false);
 			},

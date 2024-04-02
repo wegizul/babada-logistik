@@ -1,6 +1,5 @@
 <div class="container">
 	<div class="row">
-		<?= $this->session->flashdata('error'); ?>
 		<div class="card card-dark">
 			<div class="card-header">
 				<h3 class="card-title"><i class="fas fa-cart-plus fa-sm"></i> Pembelian / Barang Masuk</h3>
@@ -119,7 +118,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					Swal.fire(
 						'Sukses',
@@ -133,11 +131,11 @@
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#pbl_simpan").html("Simpan");
+				$("#pbl_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#pbl_simpan").html("Simpan");
+				$("#pbl_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}

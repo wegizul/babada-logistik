@@ -22,7 +22,7 @@
  	table th {
  		font-weight: bold;
  		padding: 10px;
- 		color: #fff;
+ 		color: #444;
  		background-color: #dddddd;
  		border-top: 1px black solid;
  		border-bottom: 1px black solid;
@@ -47,8 +47,7 @@
  	}
  </style>
  <div class="inner">
-
- 	<div class="row" id="isidata">
+ 	<div class="row">
  		<div class="col-lg-12">
  			<div class="card">
  				<div class="card-body table-responsive">

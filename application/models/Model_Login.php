@@ -15,7 +15,7 @@ class Model_Login extends CI_Model
 	private function _get_datatables_query()
 	{
 		$this->db->from($this->table);
-		$this->db->where('log_level > 2');
+		$this->db->where('log_level > 1');
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 

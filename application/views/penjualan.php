@@ -24,7 +24,7 @@ $bulan = [
 						<div class="col-md-2">
 							<div class="form-group">
 								<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
-									<option value="">Pilih Bulan</option>
+									<option value="">Filter Bulan</option>
 									<?php foreach ($bulan as $key => $val) { ?>
 										<option value="<?= $key ?>"><?= $val ?></option>
 									<?php } ?>
@@ -32,9 +32,6 @@ $bulan = [
 							</div>
 						</div>
 						<div class="col-md-8 col-xs-12">
-							<div class="form-group">
-								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> &nbsp; Export to Excel</button>
-							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
@@ -101,15 +98,6 @@ $bulan = [
 								<input type="date" class="form-control form-control-sm" name="pjl_tanggal" id="pjl_tanggal" autocomplete="off" required>
 							</div>
 						</div>
-						<!-- <div class="col-lg-4">
-							<label>Total Harga</label> <span class="text-danger">*</span>
-							<div class="input-group input-group-sm mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Rp</span>
-								</div>
-								<input type="number" min="0" class="form-control form-control-sm" name="pbl_total_harga" id="pbl_total_harga" autocomplete="off" required>
-							</div>
-						</div> -->
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Jenis Harga</label>
@@ -303,14 +291,16 @@ $bulan = [
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
-					reset_form();
 					$("#modal_konfirm").modal("hide");
+					reset_form();
 				} else {
 					toastr.error(res.desc);
 				}
+				$("#simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -355,9 +345,11 @@ $bulan = [
 				} else {
 					toastr.error(res.desc);
 				}
+				$("#pjl_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#pjl_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -425,10 +417,3 @@ $bulan = [
 		drawTable();
 	});
 </script>
-
-<!-- <td width="20%" class="input-group input-group input-group-sm">
-				<div class="input-group-prepend">
-					<span class="input-group-text input-group-sm">Rp</span>
-				</div>
-				<input type="number" min="0" id="pjd_harga` + i + `" name="pjd_harga[]" value="` + val.mtl_harga_jual + `" class="form-control form-control-sm" onchange="total(this.value)">
-			</td> -->

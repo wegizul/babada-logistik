@@ -159,7 +159,7 @@ class Pembelian extends CI_Controller
 		}
 		if ($insert) {
 			$resp['status'] = 1;
-			$resp['desc'] = "pembelian berhasil dibuat";
+			$resp['desc'] = "pembelian berhasil diinputkan";
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Ada kesalahan dalam penyimpanan!";

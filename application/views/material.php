@@ -51,7 +51,7 @@
 				<div class="modal-body form">
 					<div class="row">
 						<input type="hidden" id="mtl_id" name="mtl_id" value="">
-						<div class="col-lg-6">
+						<div class="col-lg-5">
 							<div class="form-group">
 								<label>Nama Material</label>
 								<input type="text" class="form-control" name="mtl_nama" id="mtl_nama" autocomplete="off" required>
@@ -59,11 +59,17 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
+								<label>Kode Produk</label>
+								<input type="number" min="0" class="form-control" name="mtl_kode" id="mtl_kode" required>
+							</div>
+						</div>
+						<div class="col-lg-2">
+							<div class="form-group">
 								<label>Jumlah Stok</label>
 								<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok">
 							</div>
 						</div>
-						<div class="col-lg-3">
+						<div class="col-lg-2">
 							<div class="form-group">
 								<label>Satuan</label>
 								<select class="form-control" name="mtl_satuan" id="mtl_satuan" required>
@@ -201,11 +207,11 @@
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#mtl_simpan").html("Simpan");
+				$("#mtl_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#mtl_simpan").html("Simpan");
+				$("#mtl_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}

@@ -1,5 +1,5 @@
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
@@ -80,7 +80,7 @@
 								<input type="number" min="0" class="form-control" name="pmx_harga_jual" id="pmx_harga_jual" required>
 							</div>
 						</div>
-						<div class="col-lg-4">
+						<!-- <div class="col-lg-4">
 							<label>Stok</label>
 							<div class="input-group">
 								<input type="number" min="0" class="form-control" name="pmx_stok" id="pmx_stok">
@@ -88,7 +88,7 @@
 									<span class="input-group-text"><small>Karung</small></span>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -202,7 +202,7 @@
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
@@ -231,7 +231,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
@@ -240,11 +239,11 @@
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#pmx_simpan").html("Simpan");
+				$("#pmx_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#pmx_simpan").html("Simpan");
+				$("#pmx_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -313,7 +312,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					drawTable();
@@ -322,11 +320,11 @@
 				} else {
 					toastr.error(res.desc);
 				}
-				$("#stok_simpan").html("Simpan");
+				$("#stok_simpan").html("<i class='fas fa-check-circle'></i> Simpan");
 				$(".btn").attr("disabled", false);
 			},
 			error: function(jqXHR, namaStatus, errorThrown) {
-				$("#stok_simpan").html("Simpan");
+				$("#stok_simpan").html("Error");
 				$(".btn").attr("disabled", false);
 				alert('Error get data from ajax');
 			}
@@ -349,7 +347,6 @@
 			url: "hapus/" + id,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					toastr.success(res.desc);
 					$("#frmKonfirm").modal("hide");
