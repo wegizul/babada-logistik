@@ -34,29 +34,29 @@
 
     <?php
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=Laporan Pembelian bulan " . $bulan . ".xls");
+    header("Content-Disposition: attachment; filename=Laporan Manifest bulan " . $bulan . ".xls");
     ?>
 
     <center>
-        <h1>Laporan Pembelian Bulan <?= $bulan ?></h1>
+        <h1>Laporan Manifest Bulan <?= $bulan ?></h1>
     </center>
 
     <table border="1">
         <tr>
-            <th>Tanggal</th>
-            <th>No Faktur</th>
-            <th>Supplier</th>
-            <th>Total Item</th>
-            <th>Total Harga</th>
-            <th>user Input</th>
+            <th>Kode Manifest</th>
+            <th>Tgl Pickup</th>
+            <th>Tujuan</th>
+            <th>Nama Supir</th>
+            <th>Total Paket</th>
+            <th>User Input</th>
         </tr>
         <?php foreach ($data as $dt) { ?>
             <tr>
-                <td><?= $dt->pbl_tanggal ?></td>
-                <td><?= $dt->pbl_no_faktur ?></td>
-                <td><?= $dt->pbl_supplier ?></td>
-                <td><?= $dt->pbl_total_item . " Item" ?></td>
-                <td>Rp. <?= number_format($dt->pbl_total_harga, 0) ?></td>
+                <td><?= $dt->mf_kode ?></td>
+                <td><?= $dt->mf_tgl_pickup ?></td>
+                <td><?= $dt->mf_tujuan ?></td>
+                <td><?= $dt->mf_supir ?></td>
+                <td><?= $dt->mf_total_paket . " Item" ?></td>
                 <td><?= $dt->log_nama ?></td>
             </tr>
         <?php } ?>

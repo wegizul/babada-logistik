@@ -85,6 +85,18 @@ class Model_Manifest extends CI_Model
 		return $query->row();
 	}
 
+	public function export_excel($bln)
+	{
+		$this->db->from($this->table);
+		$this->db->join('sys_login', 'log_id = mf_user', 'left');
+		if ($bln != 'null') {
+			$this->db->where('MONTH(mf_tanggal_pickup)', $bln);
+		}
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
 	public function getlastquery()
 	{
 		$query = str_replace(array("\r", "\n", "\t"), '', trim($this->db->last_query()));

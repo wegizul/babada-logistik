@@ -9,10 +9,6 @@ class ScanKirim extends CI_Controller
 		if (!isset($this->session->userdata['id_user'])) {
 			redirect(base_url("login"));
 		}
-		$this->load->model('Model_Booking', 'booking');
-		$this->load->model('Model_JenisProduk', 'jenis_produk');
-		$this->load->model('Model_StatusPengiriman', 'status_pengiriman');
-		$this->load->model('Model_TipeAlamat', 'tipe_alamat');
 		$this->load->model('Model_Tracking', 'tracking');
 		$this->load->model('Model_Login', 'pengguna');
 		$this->load->model('Model_Penjualan', 'penjualan');

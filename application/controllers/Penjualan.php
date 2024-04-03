@@ -48,6 +48,22 @@ class Penjualan extends CI_Controller
 		$this->load->view('background_bawah');
 	}
 
+	public function export($bln)
+	{
+		if ($bln == 'null') {
+			$nama_bulan = 'All Data';
+		} else {
+			$nama_bulan = $bln;
+		}
+		$d = [
+			'page' => 'Laporan Penjualan',
+			'bulan' => $nama_bulan,
+			'data' => $this->penjualan->export_excel($bln),
+		];
+		$this->load->helper('url');
+		$this->load->view('export_penjualan', $d);
+	}
+
 	public function ajax_list_penjualan($bln)
 	{
 		$list = $this->penjualan->get_datatables($bln);
@@ -86,7 +102,7 @@ class Penjualan extends CI_Controller
 			$row[] = $penjualan->pjl_date_created;
 			$row[] = $penjualan->pjl_faktur;
 			$row[] = $penjualan->pjl_customer;
-			$row[] = $total_item;
+			$row[] = $total_item . " Item";
 			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;
@@ -142,7 +158,7 @@ class Penjualan extends CI_Controller
 			$row[] = $riwayat->pjl_date_created;
 			$row[] = $riwayat->pjl_faktur;
 			$row[] = $riwayat->pjl_customer;
-			$row[] = $total_item;
+			$row[] = $total_item . " Item";
 			$row[] = "Rp " . number_format($riwayat->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;

@@ -1,6 +1,6 @@
 <input type="hidden" name="pbl_id" id="pbl_id" value="<?= $pbl_id ?>">
 <div class="inner">
-	<div class="row" id="isidata">
+	<div class="row">
 		<input type="hidden" name="pbd_pbl_id" id="pbd_pbl_id">
 		<div class="col-lg-12">
 			<div class="card">
@@ -8,7 +8,7 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm" style="width: 100%"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
+								<a href="javascript:window.history.back()" class="btn btn-dark btn-sm"><i class="fa fa-reply"></i> &nbsp;Kembali</a>
 							</div>
 						</div>
 						<div class="col-md-2">
@@ -154,7 +154,7 @@
 					$("#frmKonfirm").modal("hide");
 					drawTable();
 				} else {
-					toastr.error(res.desc + "[" + res.err + "]");
+					toastr.error(res.desc);
 				}
 				$(".btn").attr("disabled", false);
 			},

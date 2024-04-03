@@ -156,6 +156,18 @@ class Model_Penjualan extends CI_Model
 		return $query->result();
 	}
 
+	public function export_excel($bln)
+	{
+		$this->db->from($this->table);
+		$this->db->join('sys_login', 'log_id = pjl_user', 'left');
+		if ($bln != 'null') {
+			$this->db->where('MONTH(pjl_tanggal)', $bln);
+		}
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
 	public function getlastquery()
 	{
 		$query = str_replace(array("\r", "\n", "\t"), '', trim($this->db->last_query()));

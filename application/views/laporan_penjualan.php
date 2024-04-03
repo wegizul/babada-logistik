@@ -168,7 +168,7 @@ $bulan = [
 	function ekspor() {
 		var bln = $('#filter').val();
 		if (!bln) bln = null;
-		window.open("<?= base_url('Penjualan/laporan/') ?>" + bln);
+		window.open("<?= base_url('Penjualan/export/') ?>" + bln);
 	}
 
 	$(document).ready(function() {

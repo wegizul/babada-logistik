@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2024 at 10:30 AM
+-- Generation Time: Apr 03, 2024 at 11:58 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -51,15 +51,13 @@ INSERT INTO `jenis_produk` (`jp_id`, `jp_nama`, `jp_ket`) VALUES
 CREATE TABLE `manifest` (
   `mf_id` bigint(20) NOT NULL,
   `mf_kode` varchar(50) DEFAULT NULL,
-  `mf_kurir` varchar(50) DEFAULT NULL,
-  `mf_telp_kurir` varchar(20) DEFAULT NULL,
+  `mf_supir` varchar(50) DEFAULT NULL,
+  `mf_telp_supir` varchar(20) DEFAULT NULL,
   `mf_nopol` varchar(10) DEFAULT NULL,
   `mf_tgl_pickup` date DEFAULT NULL,
-  `mf_pos` varchar(100) DEFAULT NULL,
-  `mf_kota_asal` varchar(100) DEFAULT NULL,
+  `mf_tujuan` varchar(100) DEFAULT NULL,
   `mf_total_paket` int(11) DEFAULT NULL,
-  `mf_total_berat` double DEFAULT NULL,
-  `mf_user` int(11) DEFAULT NULL
+  `mf_user` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -336,7 +334,7 @@ CREATE TABLE `pembelian` (
   `pbl_supplier` varchar(255) DEFAULT NULL,
   `pbl_tanggal` date DEFAULT NULL,
   `pbl_no_faktur` varchar(100) DEFAULT NULL,
-  `pbl_total_item` int(11) DEFAULT NULL,
+  `pbl_total_item` bigint(20) DEFAULT NULL,
   `pbl_total_harga` bigint(20) DEFAULT NULL,
   `pbl_user` bigint(20) DEFAULT NULL,
   `pbl_date_created` datetime NOT NULL DEFAULT current_timestamp()
@@ -411,6 +409,7 @@ CREATE TABLE `penjualan` (
   `pjl_faktur` varchar(50) DEFAULT NULL,
   `pjl_tanggal` date DEFAULT NULL,
   `pjl_customer` varchar(150) DEFAULT NULL,
+  `pjl_total_item` bigint(20) DEFAULT NULL,
   `pjl_jenis_harga` smallint(1) DEFAULT NULL COMMENT '1=4%, 2=hpp',
   `pjl_jumlah_bayar` bigint(20) DEFAULT NULL,
   `pjl_jenis_bayar` smallint(1) DEFAULT NULL COMMENT '1=tf, 2=cash',
@@ -424,8 +423,8 @@ CREATE TABLE `penjualan` (
 -- Dumping data for table `penjualan`
 --
 
-INSERT INTO `penjualan` (`pjl_id`, `pjl_faktur`, `pjl_tanggal`, `pjl_customer`, `pjl_jenis_harga`, `pjl_jumlah_bayar`, `pjl_jenis_bayar`, `pjl_status_bayar`, `pjl_status`, `pjl_user`, `pjl_date_created`) VALUES
-(18, 'INV0018', '2024-03-25', 'Wegi Zulianda', 1, 2205, 1, 2, 1, 1, '2024-03-26 10:22:26');
+INSERT INTO `penjualan` (`pjl_id`, `pjl_faktur`, `pjl_tanggal`, `pjl_customer`, `pjl_total_item`, `pjl_jenis_harga`, `pjl_jumlah_bayar`, `pjl_jenis_bayar`, `pjl_status_bayar`, `pjl_status`, `pjl_user`, `pjl_date_created`) VALUES
+(18, 'INV0018', '2024-03-25', 'Wegi Zulianda', 2, 1, 2205, 1, 2, 2, 1, '2024-03-26 10:22:26');
 
 -- --------------------------------------------------------
 
@@ -631,7 +630,8 @@ CREATE TABLE `sys_login` (
 
 INSERT INTO `sys_login` (`log_id`, `log_nama`, `log_user`, `log_pass`, `log_level`, `log_unit_kerja`, `log_aktif`) VALUES
 (1, 'Administrator', 'administrator', 'ea60fc010787079d8aa3163ad9ef55e8', 1, NULL, 1),
-(5, 'Bobby', 'bobby', '72b4aef5d1778c6d8151a4589ba57b68', 3, 'PT Logistik Olah Gemilang', 1);
+(5, 'Bobby Saputra', 'bobby', '72b4aef5d1778c6d8151a4589ba57b68', 3, 'PT Logistik Olah Gemilang', 1),
+(6, 'Ulani Handa', 'ulani', '82745d38846a29b727e410a3b6a0e821', 2, 'PT Logistik Olah Gemilang', 1);
 
 -- --------------------------------------------------------
 
@@ -868,7 +868,7 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `sys_login`
 --
 ALTER TABLE `sys_login`
-  MODIFY `log_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `log_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tipe_alamat`

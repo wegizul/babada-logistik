@@ -20,7 +20,7 @@ class Manifest extends CI_Controller
 	public function tampil()
 	{
 		$d = [
-			'page' => 'Data Manifest',
+			'page' => 'Laporan Manifest',
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),
@@ -79,4 +79,21 @@ class Manifest extends CI_Controller
 		}
 		echo json_encode($resp);
 	}
+
+	public function export($bln)
+	{
+		if ($bln == 'null') {
+			$nama_bulan = 'All Data';
+		} else {
+			$nama_bulan = $bln;
+		}
+		$d = [
+			'page' => 'Laporan Manifest',
+			'bulan' => $nama_bulan,
+			'data' => $this->manifest->export_excel($bln),
+		];
+		$this->load->helper('url');
+		$this->load->view('export_manifest', $d);
+	}
+
 }

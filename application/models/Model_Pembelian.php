@@ -125,6 +125,7 @@ class Model_Pembelian extends CI_Model
 		$this->db->join('material', 'mtl_id = pbd_mtl_id', 'left');
 		$this->db->join('satuan_material', 'smt_id = pbd_satuan', 'left');
 		$this->db->join('sys_login', 'log_id = pbl_user', 'left');
+		$this->db->group_by("pbl_id");
 		if ($bln != 'null') {
 			$this->db->where('MONTH(pbl_tanggal)', $bln);
 		}

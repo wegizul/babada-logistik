@@ -31,11 +31,9 @@ $bulan = [
 								</select>
 							</div>
 						</div>
-						<div class="col-md-8 col-xs-12">
-						</div>
-						<div class="col-md-2 pl-0">
+						<div class="col-md-2 col-xs-12">
 							<div class="form-group">
-								<a href="<?= base_url('ScanKirim/tampil') ?>" class="btn btn-dark btn-block btn-sm"><i class="fa fa-barcode"></i> &nbsp;&nbsp; Scan Kirim</a>
+								<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
 							</div>
 						</div>
 					</div>
@@ -119,11 +117,17 @@ $bulan = [
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
 			}
 		});
+	}
+
+	function ekspor() {
+		var bln = $('#filter').val();
+		if (!bln) bln = null;
+		window.open("<?= base_url('Manifest/export/') ?>" + bln);
 	}
 
 	$(document).ready(function() {

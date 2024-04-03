@@ -369,7 +369,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url("Manifest/tampil") ?>" class="nav-link">
+                <a href="<?= base_url("ScanKirim/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-truck-fast"></i>
                   <p>
                     Pengiriman
@@ -415,7 +415,7 @@
                 </ul>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("Manifest/laporan") ?>" class="nav-link">
+                    <a href="<?= base_url("Manifest/tampil") ?>" class="nav-link">
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
                         Laporan Pengiriman
