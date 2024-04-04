@@ -95,14 +95,13 @@ class Penjualan extends CI_Controller
 					$pembayaran = "<span class='badge badge-success'>Lunas</span>";
 					break;
 			}
-			$total_item = $this->penjualan->total_item($penjualan->pjl_id);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_date_created;
 			$row[] = $penjualan->pjl_faktur;
 			$row[] = $penjualan->pjl_customer;
-			$row[] = $total_item . " Item";
+			$row[] = $penjualan->pjl_total_item . " Item";
 			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;
@@ -151,14 +150,13 @@ class Penjualan extends CI_Controller
 					$pembayaran = "<span class='badge badge-success'>Lunas</span>";
 					break;
 			}
-			$total_item = $this->penjualan->total_item($riwayat->pjl_id);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $riwayat->pjl_date_created;
 			$row[] = $riwayat->pjl_faktur;
 			$row[] = $riwayat->pjl_customer;
-			$row[] = $total_item . " Item";
+			$row[] = $riwayat->pjl_total_item . " Item";
 			$row[] = "Rp " . number_format($riwayat->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;
@@ -205,8 +203,10 @@ class Penjualan extends CI_Controller
 		$data2 = $this->input->post();
 		$getLastPenjualan = $this->penjualan->getLast($user);
 		$total_harga = 0;
-
+		$total_item = 0;
+			
 		foreach ($data2['pjd_qty'] as $idx => $kd) {
+			$parameter_item = 1;
 			$getMaterial = $this->material->cari_material($data2['pjd_mtl_id'][$idx]);
 
 			if ($data['pjl_jenis_harga'] == 1) {
@@ -223,17 +223,37 @@ class Penjualan extends CI_Controller
 				'pjd_harga' => $harga * $data2['pjd_qty'][$idx],
 				'pjd_status' => $data['pjl_status']
 			];
-
+			
 			$data3['mtl_stok'] = $getMaterial->mtl_stok - $data2['pjd_qty'][$idx];
-
+			
 			if ($insert) $insert_detail = $this->penjualan->simpan("penjualan_detail", $detail);
 			if ($insert_detail) $this->material->update("material", array('mtl_id' => $data2['pjd_mtl_id'][$idx]), $data3);
-
+			
 			$total_harga += ($harga * $data2['pjd_qty'][$idx]);
+			$total_item += $parameter_item;
 		}
 
-		$update['pjl_faktur'] = "INV" . sprintf("%04s", $getLastPenjualan->pjl_id);
-		$update['pjl_jumlah_bayar'] = $total_harga;
+		$tempdir = "assets/files/barcode/";
+		$invoice = "INV" . sprintf("%04s", $getLastPenjualan->pjl_id);
+
+		if (!file_exists($tempdir)) mkdir($tempdir, 0755);
+		$target_path = $tempdir . $invoice . '-' . date('YmdHis') . ".png";
+		/*using server online */
+		$protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === 0 ? 'https://' : 'http://';
+		$fileImage = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/php-barcode/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55";
+		/*using server localhost*/
+		// $fileImage = base_url("assets/php-barcode-master/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55");
+		/*get content from url*/
+		$content = file_get_contents($fileImage);
+		/*save file */
+		file_put_contents($target_path, $content);
+
+		$update = [
+			'pjl_faktur' => $invoice,
+			'pjl_jumlah_bayar' => $total_harga,
+			'pjl_total_item' => $total_item,
+			'pjl_barcode' => $content
+		];
 		$this->penjualan->update("penjualan", array('pjl_id' => $getLastPenjualan->pjl_id), $update);
 
 		$error = $this->db->error();
@@ -248,7 +268,7 @@ class Penjualan extends CI_Controller
 			$resp['desc'] = "Transaksi penjualan berhasil";
 		} else {
 			$resp['status'] = 0;
-			$resp['desc'] = "Ada kesalahan dalam penyimpanan!";
+			$resp['desc'] = "Ada kesalahan dalam transaksi!";
 			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
@@ -266,7 +286,7 @@ class Penjualan extends CI_Controller
 			// $this->penjualan->update("material", array('mtl_id' => $mtl_id), $stok);
 
 			$resp['status'] = 1;
-			$resp['desc'] = "<i class='fa fa-exclamation-circle text-success'></i>&nbsp;&nbsp;&nbsp; Berhasil menghapus item";
+			$resp['desc'] = "<i class='fa fa-exclamation-circle text-success'></i>&nbsp;&nbsp; Berhasil menghapus item";
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Gagal menghapus item !";

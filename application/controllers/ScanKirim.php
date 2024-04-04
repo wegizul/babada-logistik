@@ -37,16 +37,15 @@ class ScanKirim extends CI_Controller
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $tracking) {
-			$status = "<span class='badge badge-success'><i class='fas fa-check-circle'></i> Berhasil update pengiriman</span>";
+			$status = "<span class='badge badge-success'><i class='fas fa-check-circle'></i> Success</span>";
 			$ket = "";
-			if ($this->session->userdata('level') == 3) {
-				$ket = "Paket akan dikirimkan ke " . $tracking->tr_tujuan;
-			} elseif ($this->session->userdata('level') == 4) {
+			if ($this->session->userdata('level') < 4) {
 				$ket = "Paket akan dikirimkan ke " . $tracking->tr_tujuan;
 			}
+
 			$row = array();
 			$row[] = $tracking->tr_waktu_scan;
-			$row[] = $tracking->tr_bd_kode;
+			$row[] = $tracking->tr_pjl_faktur;
 			$row[] = $status;
 			$row[] = $ket;
 			$data[] = $row;
@@ -64,9 +63,9 @@ class ScanKirim extends CI_Controller
 
 	public function get_resi($kode)
 	{
-		$data = $this->booking->lacak_paket($kode);
+		$data = $this->penjualan->lacak_paket($kode);
 		if ($data) {
-			$result = $data->bd_kode;
+			$result = $data->pjl_faktur;
 		} else {
 			$result = '';
 		}
@@ -76,26 +75,16 @@ class ScanKirim extends CI_Controller
 	public function simpan()
 	{
 		$log_id = $this->input->post('tr_tujuan');
-		$data['tr_bd_kode'] = $this->input->post('bd_kode');
+
+		$data['tr_pjl_faktur'] = $this->input->post('tr_pjl_faktur');
 		$data['tr_waktu_scan'] = date('Y-m-d H:i:s');
 		$data['tr_jenis'] = 2;
 		$data['tr_sp_kode'] = "TR";
 		$data['tr_user'] = $this->session->userdata('id_user');
 
 		$ambil = $this->pengguna->cari_pengguna($log_id);
-		switch ($ambil->log_level) {
-			case 3:
-				$ket = "POS";
-				break;
-			case 4:
-				$ket = "HUB";
-				break;
-			case 5:
-				$ket = "SUBHUB";
-				break;
-		};
 
-		$data['tr_tujuan'] = $ket . ' ' . $ambil->log_agen;
+		$data['tr_tujuan'] = $ambil->log_unit_kerja;
 
 		$insert = $this->tracking->simpan("tracking", $data);
 
@@ -105,9 +94,10 @@ class ScanKirim extends CI_Controller
 		} else {
 			$err = "";
 		}
+
 		if ($insert) {
 			$resp['status'] = 1;
-			$resp['desc'] = "Berhasil menyimpan data";
+			$resp['desc'] = "Berhasil menambahkan invoice";
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Ada kesalahan dalam penyimpanan!";
@@ -120,14 +110,9 @@ class ScanKirim extends CI_Controller
 	{
 		$log_id = $this->session->userdata('id_user');
 		$data = $this->input->post();
-		$data['mf_kode'] = "PUM" . date('yymdHis');
+		$data['mf_kode'] = "PUM" . date('ymdHis');
 		$data['mf_tgl_pickup'] = date('Y-m-d');
 		$data['mf_user'] = $log_id;
-
-		$ambil = $this->pengguna->cari_pengguna($log_id);
-
-		$data['mf_pos'] = $ambil->log_nama;
-		$data['mf_kota_asal'] = $ambil->log_agen;
 
 		$update = [
 			'tr_kode_manifest' => $data['mf_kode'],
@@ -144,8 +129,7 @@ class ScanKirim extends CI_Controller
 		$ambil_paket = $this->tracking->ambil_paket($data['mf_kode']);
 
 		foreach ($ambil_paket as $ap) {
-			$data['mf_total_paket'] = $ap->total_paket;
-			$data['mf_total_berat'] = $ap->total_berat;
+			$data['mf_total_paket'] = $ap->pjl_total_item;
 		}
 
 		$insert = '';
@@ -157,6 +141,7 @@ class ScanKirim extends CI_Controller
 		} else {
 			$err = "";
 		}
+
 		if ($insert) {
 			$resp['status'] = 1;
 			$resp['desc'] = "Berhasil membuat manifest";

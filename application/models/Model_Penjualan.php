@@ -139,13 +139,14 @@ class Model_Penjualan extends CI_Model
 		return $query->result();
 	}
 
-	public function total_item($id)
+	public function lacak_paket($kode)
 	{
-		$this->db->from("penjualan_detail");
-		$this->db->where('pjd_pjl_id', $id);
+		$this->db->from($this->table);
+		$this->db->join('penjualan_detail', 'pjd_pjl_id = pjl_id', 'left');
+		$this->db->where('pjl_faktur', $kode);
 		$query = $this->db->get();
 
-		return $query->num_rows();
+		return $query->row();
 	}
 
 	public function get_biller_dreampos()

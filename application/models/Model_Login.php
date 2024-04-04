@@ -107,6 +107,7 @@ class Model_Login extends CI_Model
 	{
 		$this->db->from("sys_login");
 		$this->db->where("log_level >", 1);
+		$this->db->group_by("log_unit_kerja");
 		$query = $this->db->get();
 
 		return $query->result();

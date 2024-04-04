@@ -92,9 +92,8 @@ class Model_Tracking extends CI_Model
 
 	public function ambil_paket($kode)
 	{
-		$this->db->select("SUM(bd_berat_barang) as total_berat, COUNT(bd_kode) as total_paket");
-		$this->db->from('booking_detail');
-		$this->db->join('tracking', 'tr_bd_kode = bd_kode', 'left');
+		$this->db->from('penjualan');
+		$this->db->join('tracking', 'tr_pjl_faktur = pjl_faktur', 'left');
 		$this->db->where('tr_kode_manifest', $kode);
 		$query = $this->db->get();
 

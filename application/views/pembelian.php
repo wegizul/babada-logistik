@@ -125,7 +125,7 @@
 						'success'
 					).then((result) => {
 						if (!result.isConfirmed) {
-							window.location.href = "<?= base_url('Pembelian/riwayat') ?>";
+							window.location.href = "<?= base_url('Pembelian/laporan') ?>";
 						} else {}
 					})
 				} else {

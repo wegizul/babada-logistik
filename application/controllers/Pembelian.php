@@ -73,14 +73,13 @@ class Pembelian extends CI_Controller
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $pembelian) {
-			$total_item = $this->pembelian->get_jumlah_pbd($pembelian->pbl_id);
 			$no++;
 			$row = array();
 			$row[] = $no;
 			$row[] = $pembelian->pbl_tanggal;
 			$row[] = $pembelian->pbl_no_faktur;
 			$row[] = $pembelian->pbl_supplier;
-			$row[] = $total_item . " Item";
+			$row[] = $pembelian->pbl_total_item . " Item";
 			$row[] = "Rp " . number_format($pembelian->pbl_total_harga, 0, ",", ".");
 			$row[] = $pembelian->log_nama;
 			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "' class='btn btn-default btn-sm mb-1' title='Detail'><i class='fa fa-boxes'></i></a> <a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-sm mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
@@ -128,8 +127,10 @@ class Pembelian extends CI_Controller
 
 			$get_id_pembelian = $this->pembelian->get_last_pembelian();
 			$data2 = $this->input->post();
-
+			$total_item = 0;
+			
 			foreach ($data2['pbd_qty'] as $idx => $kd) {
+				$parameter_item = 1;
 				$detail = [
 					"pbd_pbl_id" => $get_id_pembelian->pbl_id,
 					"pbd_mtl_id" => $data2['pbd_mtl_id'][$idx],
@@ -145,7 +146,12 @@ class Pembelian extends CI_Controller
 				$data3['mtl_date_updated'] = date('Y-m-d H:i:s');
 
 				if ($insert) $this->material->update("material", array('mtl_id' => $data2['pbd_mtl_id'][$idx]), $data3);
+
+				$total_item += $parameter_item;
 			}
+
+			$update['pbl_total_item'] = $total_item;
+			$this->pembelian->update("pembelian", array('pbl_id' => $get_id_pembelian->pbl_id), $update);
 
 		} else {
 			$insert = $this->pembelian->update("pembelian", array('pbl_id' => $id), $data);

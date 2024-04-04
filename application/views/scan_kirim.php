@@ -8,7 +8,7 @@
 				<div class="card-body form">
 					<div class="row">
 						<div class="col-lg-5">
-							<label>Masukan Nomor Resi</label><br>
+							<label>Masukan Nomor Invoice</label><br>
 							<span id="error"></span>
 						</div>
 						<div class="col-lg-3">
@@ -18,7 +18,7 @@
 					</div>
 					<div class="row">
 						<div class="col-lg-5">
-							<input type="text" name="kode" id="kode" class="form-control" oninput="get_resi()" autofocus required>
+							<input type="text" name="tr_pjl_faktur" id="tr_pjl_faktur" class="form-control" oninput="get_resi()" autofocus required>
 						</div>
 						<div class="col-lg-5">
 							<select name="tr_tujuan" id="tujuan" class="form-control select2" onchange="get_resi()" required>
@@ -35,7 +35,7 @@
 								<thead>
 									<tr>
 										<th>Waktu Scan</th>
-										<th>Nomor Resi</th>
+										<th>Nomor Invoice</th>
 										<th>Status</th>
 										<th>Keterangan</th>
 									</tr>
@@ -62,7 +62,7 @@
 										foreach ($manifest as $m) { ?>
 											<tr>
 												<td><?= $m->mf_kode ?></td>
-												<td><?= $m->mf_kurir ?></td>
+												<td><?= $m->mf_supir ?></td>
 												<td><a href="<?= base_url('ScanKirim/cetak_manifest/' . $m->mf_kode) ?>" class="btn btn-warning btn-sm" target="_blank"><i class="fas fa-print"></i> </a> </td>
 											</tr>
 										<?php }
@@ -97,13 +97,13 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<label>Nama Supir</label>
-								<input type="text" class="form-control" name="mf_kurir" id="mf_kurir" required>
+								<input type="text" class="form-control" name="mf_supir" id="mf_supir" required>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
 								<label>No Handphone Supir</label>
-								<input type="number" min="0" class="form-control" name="mf_telp_kurir" id="mf_telp_kurir">
+								<input type="number" min="0" class="form-control" name="mf_telp_supir" id="mf_telp_supir">
 							</div>
 						</div>
 						<div class="col-lg-12">
@@ -186,7 +186,7 @@
 				"orderable": false,
 			}, ],
 			"initComplete": function(settings, json) {
-				$("#process").html("<i class='glyphicon glyphicon-search'></i> Process")
+				$("#process").html("Proces...")
 				$("#isidata").fadeIn();
 			}
 		});
@@ -215,7 +215,6 @@
 			contentType: false,
 			success: function(d) {
 				var res = JSON.parse(d);
-				var msg = "";
 				if (res.status == 1) {
 					Swal.fire(
 						'Sukses',
@@ -224,8 +223,8 @@
 					).then((result) => {
 						if (!result.isConfirmed) {
 							drawTable();
-							reset_form();
 							$("#modal_manifest").modal("hide");
+							reset_form();
 							window.location.reload();
 						} else {}
 					})
@@ -237,8 +236,8 @@
 					).then((result) => {
 						if (!result.isConfirmed) {
 							drawTable();
-							reset_form();
 							$("#modal_manifest").modal("hide");
+							reset_form();
 						} else {}
 					})
 				}
@@ -258,7 +257,7 @@
 			type: "POST",
 			url: "simpan",
 			data: {
-				bd_kode: data,
+				tr_pjl_faktur: data,
 				tr_tujuan: tujuan
 			},
 			dataType: "json",
@@ -276,14 +275,14 @@
 			}
 		});
 
-		$('#kode').attr('autofocus');
+		$('#tr_pjl_faktur').attr('autofocus');
 	}
 
 	function get_resi() {
-		var kode = $('#kode').val();
-		var bd_kode = decodeURIComponent(kode);
+		var kode = $('#tr_pjl_faktur').val();
+		var resi = decodeURIComponent(kode);
 		var tujuan = $('#tujuan').val();
-		$.get("get_resi/" + bd_kode, {}, function(data) {
+		$.get("get_resi/" + resi, {}, function(data) {
 			if (data) {
 				$('#error').html('');
 				if (tujuan == "") {
@@ -293,13 +292,13 @@
 					simpan(data, tujuan);
 				}
 			} else {
-				$('#error').html('<small style="color: red;"><i>Nomor Resi Tidak Ditemukan</i></small>');
+				$('#error').html('<small style="color: red;"><i>Nomor Invoice Tidak Ditemukan</i></small>');
 			}
 		});
 	}
 
 	function reset_form() {
-		$("#kode").val('');
+		$("#tr_pjl_faktur").val('');
 	}
 
 	$('.select2').select2({

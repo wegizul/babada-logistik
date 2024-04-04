@@ -109,15 +109,6 @@ class Model_Pembelian extends CI_Model
 		return $query->result();
 	}
 
-	public function get_jumlah_pbd($id)
-	{
-		$this->db->from('pembelian_detail');
-		$this->db->where('pbd_pbl_id', $id);
-		$query = $this->db->get();
-
-		return $query->num_rows();
-	}
-
 	public function export_excel($bln)
 	{
 		$this->db->from($this->table);
