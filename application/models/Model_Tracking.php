@@ -123,9 +123,7 @@ class Model_Tracking extends CI_Model
 	{
 		$this->db->from("tracking");
 		$this->db->join("manifest", "mf_kode = tr_kode_manifest", "left");
-		$this->db->join("booking_detail", "bd_kode = tr_bd_kode", "left");
-		$this->db->join("booking", "bk_id = bd_bk_id", "left");
-		$this->db->join("jenis_produk", "jp_id = bk_jenis_produk", "left");
+		$this->db->join("penjualan", "pjl_faktur = tr_pjl_faktur", "left");
 		$this->db->where('tr_kode_manifest', $kode);
 		$query = $this->db->get();
 

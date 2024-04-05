@@ -239,20 +239,21 @@ class Penjualan extends CI_Controller
 		if (!file_exists($tempdir)) mkdir($tempdir, 0755);
 		$target_path = $tempdir . $invoice . '-' . date('YmdHis') . ".png";
 		/*using server online */
-		$protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === 0 ? 'https://' : 'http://';
-		$fileImage = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/php-barcode/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55";
+		// $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === 0 ? 'https://' : 'http://';
+		// $fileImage = $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/php-barcode/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55";
 		/*using server localhost*/
-		// $fileImage = base_url("assets/php-barcode-master/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55");
+		$fileImage = base_url("assets/php-barcode-master/barcode.php?text=" . $invoice . "-" . date('YmdHis') . "&codetype=code128&print=true&size=55");
 		/*get content from url*/
 		$content = file_get_contents($fileImage);
 		/*save file */
 		file_put_contents($target_path, $content);
+		$data4['pjl_barcode'] = $content;
 
 		$update = [
 			'pjl_faktur' => $invoice,
 			'pjl_jumlah_bayar' => $total_harga,
 			'pjl_total_item' => $total_item,
-			'pjl_barcode' => $content
+			'pjl_barcode' => $data4['pjl_barcode']
 		];
 		$this->penjualan->update("penjualan", array('pjl_id' => $getLastPenjualan->pjl_id), $update);
 
@@ -272,6 +273,38 @@ class Penjualan extends CI_Controller
 			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
+	}
+
+	public function edit_harga_resi($id)
+	{
+		$data = $this->input->post();
+
+		if (!isset($data['pjd_harga'])) {
+			$total_harga = 0;
+			foreach ($data['pjd_harga'] as $idx => $kd) {
+				$update = [
+					'pjd_harga' => $data['pjd_harga'][$idx],
+				];
+				$where = [
+					'pjd_id' => $data['pjd_id'][$idx],
+				];
+				$this->penjualan->update("penjualan_detail", $where, $update);
+
+				$total_harga += $data['pjd_harga'][$idx];
+			}
+
+			$edit = [
+				'pjl_jumlah_bayar' => $total_harga,
+			];
+			$this->penjualan->update("penjualan", array('pjl_id' => $id), $edit);
+		}
+
+		$get_last = $this->penjualan->getLast($this->session->userdata('id_user'));
+		$cetak = [
+			'data' => $this->penjualan->ambil_penjualan($get_last->pjl_id),
+			'penjualan' => $this->penjualan->cari_penjualan($get_last->pjl_id),
+		];
+		$this->load->view('cetak_resi_pdf', $cetak);
 	}
 
 	public function hapus($id)

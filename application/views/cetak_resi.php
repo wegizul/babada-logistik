@@ -8,6 +8,10 @@
  <link rel="stylesheet" href="<?= base_url("assets"); ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
  <link rel="stylesheet" href="<?= base_url("assets"); ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
+ <link rel="icon" href="<?= base_url("assets/"); ?>files/logo.png" type="image/jpg">
+ <!-- Font Awesome Icons -->
+ <script src="https://kit.fontawesome.com/c1fd40eeb3.js" crossorigin="anonymous"></script>
+
  <style>
  	table {
  		border-collapse: collapse;
@@ -21,7 +25,7 @@
  	caption,
  	table th {
  		font-weight: bold;
- 		padding: 10px;
+ 		padding: 30px;
  		color: #444;
  		background-color: #dddddd;
  		border-top: 1px black solid;
@@ -74,44 +78,47 @@
  												Jl. Lintas Timur Km. 14, Kulim<br>
  												Pekanbaru<br>
  											</td>
+ 											<td style="width: 40%;">
+ 												<?php echo '<img src="data:image/jpeg;base64,' . base64_encode($penjualan->pjl_barcode) . '" width="500px"/>'; ?>
+ 											</td>
  											<td>
  												SHIP TO :<br><br>
  												<b><?= $penjualan->pjl_customer ?></b><br>
  											</td>
  										</tr>
  										<tr>
- 											<td>
+ 											<td colspan="3">
  												<b>Tanggal : </b><?= $penjualan->pjl_tanggal ?><br><br>
  											</td>
- 											<td>
- 											</td>
  										</tr>
  									</table>
- 									<hr>
- 									<table>
- 										<tr>
- 											<th style="width: 60%;">Item</th>
- 											<th>Qty</th>
- 											<th>Satuan</th>
- 											<th>Harga</th>
- 										</tr>
- 										<?php foreach ($data as $d) { ?>
+ 									<form method="POST" action="<?= base_url('Penjualan/edit_harga_resi/' . $penjualan->pjl_id) ?>">
+ 										<table>
  											<tr>
- 												<td><?= $d->mtl_nama ?></td>
- 												<td><?= $d->pjd_qty ?></td>
- 												<td><?= $d->smt_nama ?></td>
- 												<td>
- 													<div class="input-group input-group-sm col-lg-12">
- 														<div class="input-group-prepend">
- 															<span class="input-group-text">Rp </span>
- 														</div>
- 														<input type="text" name="pjd_harga" id="pjd_harga" class="form-control form-control-sm" required>
- 													</div>
- 												</td>
- 												<!-- <td>Rp <?= number_format($d->pjd_harga, 0, ',', '.') ?></td> -->
+ 												<th style="width: 60%;">Item</th>
+ 												<th>Qty</th>
+ 												<th>Satuan</th>
+ 												<th>Harga</th>
  											</tr>
- 										<?php } ?>
- 									</table>
+ 											<?php foreach ($data as $d) { ?>
+ 												<tr>
+ 													<td><?= $d->mtl_nama ?></td>
+ 													<td><?= $d->pjd_qty ?></td>
+ 													<td><?= $d->smt_nama ?></td>
+ 													<td>
+ 														<div class="input-group input-group-sm col-lg-12">
+ 															<div class="input-group-prepend">
+ 																<span class="input-group-text">Rp </span>
+ 															</div>
+ 															<input type="text" name="pjd_harga[]" id="pjd_harga" class="form-control form-control-sm" placeholder="<?= $d->pjd_harga ?>">
+ 															<input type="hidden" name="pjd_id[]" id="pjd_id" value="<?= $d->pjd_id ?>">
+ 														</div>
+ 													</td>
+ 												</tr>
+ 											<?php } ?>
+ 										</table>
+ 										<button type="submit" class="btn btn-dark mt-3" style="float: right;"><i class="fas fa-print"></i> Cetak</button>
+ 									</form>
  								</td>
  							</tr>
  						</tbody>
@@ -122,10 +129,3 @@
  		</div>
  	</div>
  </div>
-
- <script>
- 	// window.print()
- 	// setTimeout(function() {
- 	// 	window.close();
- 	// }, 100);
- </script>

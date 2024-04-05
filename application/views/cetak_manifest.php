@@ -50,8 +50,7 @@
  	}
  </style>
  <div class="inner">
-
- 	<div class="row" id="isidata">
+ 	<div class="row">
  		<div class="col-lg-12">
  			<div class="card">
  				<div class="card-body table-responsive">
@@ -71,32 +70,26 @@
  								<td colspan="2" style="padding-top: 50px;">
  									<table>
  										<tr>
- 											<td style="width: 20%;">Nama POS</td>
- 											<td>: <?= $manifest->mf_pos ?></td>
- 											<td style="width: 20%;">No. Seri Kendaraan</td>
- 											<td>: <?= $manifest->mf_nopol ?></td>
+ 											<td style="width: 20%;">Pengirim</td>
+ 											<td>: PT LOGISTIK OLAH GEMILANG</td>
+ 											<td style="width: 20%;">Nama Supir</td>
+ 											<td>: <?= $manifest->mf_supir ?></td>
  										</tr>
  										<tr>
  											<td style="width: 20%;">Kota Asal</td>
- 											<td>: <?= $manifest->mf_kota_asal ?></td>
- 											<td style="width: 20%;">Total Paket</td>
- 											<td>: <?= $manifest->mf_total_paket ?></td>
+ 											<td>: Kota Pekanbaru</td>
+ 											<td style="width: 20%;">No. Telp Supir</td>
+ 											<td>: <?= $manifest->mf_telp_supir ?></td>
  										</tr>
  										<tr>
  											<td style="width: 20%;">Tanggal Pickup</td>
  											<td>: <?= $manifest->mf_tgl_pickup ?></td>
- 											<td style="width: 20%;">Total Berat</td>
- 											<td>: <?= $manifest->mf_total_berat ?> Kg</td>
+ 											<td style="width: 20%;">No. Seri Kendaraan</td>
+ 											<td>: <?= $manifest->mf_nopol ?></td>
  										</tr>
  										<tr>
- 											<td style="width: 20%;">Nama Kurir</td>
- 											<td>: <?= $manifest->mf_kurir ?></td>
- 											<td style="width: 20%;"></td>
- 											<td></td>
- 										</tr>
- 										<tr>
- 											<td style="width: 20%;">No. Telp Kurir</td>
- 											<td>: <?= $manifest->mf_telp_kurir ?></td>
+ 											<td style="width: 20%;">Total Paket</td>
+ 											<td>: <?= $manifest->mf_total_paket ?></td>
  											<td style="width: 20%;"></td>
  											<td></td>
  										</tr>
@@ -108,20 +101,16 @@
  									<table id="paket">
  										<tr>
  											<th>No.</th>
- 											<th>Nomor Resi</th>
+ 											<th>Nomor Invoice</th>
  											<th>Tanggal</th>
- 											<th>Produk</th>
- 											<th>Berat</th>
  											<th>Destination</th>
  										</tr>
  										<?php $i = 1;
 											foreach ($tracking as $tr) { ?>
  											<tr>
  												<td><?= $i++ ?></td>
- 												<td><?= $tr->tr_bd_kode ?></td>
+ 												<td><?= $tr->tr_pjl_faktur ?></td>
  												<td><?= $tr->tr_waktu_scan ?></td>
- 												<td><?= $tr->jp_nama ?></td>
- 												<td><?= $tr->bd_berat_barang ?> Kg</td>
  												<td><?= $tr->tr_tujuan ?></td>
  											</tr>
  										<?php } ?>
@@ -133,9 +122,9 @@
  					<br><br>
  					<table>
  						<tr>
- 							<td style="text-align: center;">Pos/Pengirim</td>
- 							<td style="text-align: center;">Kurir</td>
- 							<td style="text-align: center;">Operation Supervisor</td>
+ 							<td style="text-align: center;">Pengirim</td>
+ 							<td style="text-align: center;">Supir</td>
+ 							<td style="text-align: center;">Penerima</td>
  						</tr>
  						<tr>
  							<td style="padding:40px"></td>
