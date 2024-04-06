@@ -77,12 +77,12 @@ class Pembelian extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = $pembelian->pbl_tanggal;
-			$row[] = $pembelian->pbl_no_faktur;
+			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "'>" . $pembelian->pbl_no_faktur . "</a>";
 			$row[] = $pembelian->pbl_supplier;
 			$row[] = $pembelian->pbl_total_item . " Item";
 			$row[] = "Rp " . number_format($pembelian->pbl_total_harga, 0, ",", ".");
 			$row[] = $pembelian->log_nama;
-			$row[] = "<a href='" . base_url('PembelianDetail/tampil/') . $pembelian->pbl_id . "' class='btn btn-default btn-sm mb-1' title='Detail'><i class='fa fa-boxes'></i></a> <a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-sm mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
+			$row[] = "<a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-xs mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
 

@@ -99,7 +99,7 @@ class Penjualan extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_date_created;
-			$row[] = $penjualan->pjl_faktur;
+			$row[] = "<a href='" . base_url('PenjualanDetail/tampil/') . $penjualan->pjl_id . "'>" . $penjualan->pjl_faktur . "</a>";
 			$row[] = $penjualan->pjl_customer;
 			$row[] = $penjualan->pjl_total_item . " Item";
 			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
@@ -154,7 +154,7 @@ class Penjualan extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = $riwayat->pjl_date_created;
-			$row[] = $riwayat->pjl_faktur;
+			$row[] = "<a href='" . base_url('PenjualanDetail/tampil/') . $riwayat->pjl_id . "'>" . $riwayat->pjl_faktur . "</a>";
 			$row[] = $riwayat->pjl_customer;
 			$row[] = $riwayat->pjl_total_item . " Item";
 			$row[] = "Rp " . number_format($riwayat->pjl_jumlah_bayar, 0, ",", ".");

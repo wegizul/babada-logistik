@@ -40,7 +40,7 @@ class Manifest extends CI_Controller
 			$no++;
 			$row = array();
 			$row[] = $no;
-			$row[] = $manifest->mf_kode;
+			$row[] = "<a href='" . base_url('ManifestDetail/tampil/') . $manifest->mf_kode . "'>" . $manifest->mf_kode . "</a>";
 			$row[] = $manifest->mf_tujuan;
 			$row[] = $manifest->mf_tgl_pickup;
 			$row[] = $manifest->mf_supir;
