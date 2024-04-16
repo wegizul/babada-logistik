@@ -19,7 +19,6 @@ class Penjualan extends CI_Controller
 	public function tampil()
 	{
 		$d = [
-			'customer' => $this->penjualan->get_biller_dreampos(),
 			'material' => $this->material->get_material(),
 			'satuan_material' => $this->satuan_material->get_satuan_material(),
 			'page' => 'Data Penjualan',
@@ -105,7 +104,7 @@ class Penjualan extends CI_Controller
 			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;
-			$row[] = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a> <a href='" . base_url('Penjualan/cetak_resi/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
+			$row[] = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a> <a href='" . base_url('Penjualan/cetak_resi_cust/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
 			$data[] = $row;
 		}
 
@@ -359,6 +358,15 @@ class Penjualan extends CI_Controller
 		$data = [
 			'data' => $this->penjualan->ambil_penjualan($get_last->pjl_id),
 			'penjualan' => $this->penjualan->cari_penjualan($get_last->pjl_id),
+		];
+		$this->load->view('cetak_resi', $data);
+	}
+
+	public function cetak_resi_cust($id)
+	{
+		$data = [
+			'data' => $this->penjualan->ambil_penjualan($id),
+			'penjualan' => $this->penjualan->cari_penjualan($id),
 		];
 		$this->load->view('cetak_resi', $data);
 	}

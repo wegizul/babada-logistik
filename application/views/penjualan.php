@@ -83,9 +83,6 @@ $bulan = [
 								<label>Customer</label> <span class="text-danger">*</span>
 								<select class="form-control form-control-sm select2" name="pjl_customer" id="pjl_customer" style="width:100%;line-height:100px;" required>
 									<option value="">Pilih Customer</option>
-									<?php foreach ($customer as $s) { ?>
-										<option value="<?= $s->name ?>"><?= strtoupper($s->name) ?></option>
-									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -307,6 +304,25 @@ $bulan = [
 		});
 	});
 
+	document.addEventListener('DOMContentLoaded', function() {
+		// Mengambil data dari API menggunakan fetch
+		fetch('http://localhost/posbabada/Api/getWarehouses')
+			.then(response => response.json())
+			.then(data => {
+				// Memproses data yang diterima
+				var select = document.getElementById('pjl_customer');
+				data.forEach(product => {
+					var opt = document.createElement('option');
+					opt.value = product.name;
+					opt.innerHTML = product.name;
+					select.appendChild(opt);
+				});
+			})
+			.catch(error => {
+				console.error('Error fetching data:', error);
+			});
+	});
+
 	function add_penjualan() {
 		$("#pjl_id").val(0);
 		$("frm_penjualan").trigger("reset");
@@ -401,12 +417,6 @@ $bulan = [
 		var btn_hapus = $(this).attr("id");
 		$('#row' + btn_hapus + '').remove();
 	});
-
-	function total(harga) {
-		var totall = $('#pbl_total_harga').val();
-		var total_harga = Number(totall) + Number(harga);
-		$('#pbl_total_harga').val(total_harga);
-	}
 
 	function reset_form() {
 		$("#frm_konfirm")[0].reset();

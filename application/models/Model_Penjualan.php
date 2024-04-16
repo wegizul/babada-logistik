@@ -6,13 +6,10 @@ class Model_Penjualan extends CI_Model
 	var $column_search = array('pjl_id', 'pjl_date_created', 'mtl_nama', 'pjl_jumlah', 'pjl_jenis_bayar', 'log_nama', 'pjl_status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('pjl_date_created' => 'desc'); // default order
 
-	private $db_dreampos;
-
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->db_dreampos = $this->load->database('dreampos', TRUE);
 	}
 
 	private function _get_datatables_query($bln)
@@ -147,14 +144,6 @@ class Model_Penjualan extends CI_Model
 		$query = $this->db->get();
 
 		return $query->row();
-	}
-
-	public function get_biller_dreampos()
-	{
-		$this->db_dreampos->from('companies');
-		$query = $this->db_dreampos->get();
-
-		return $query->result();
 	}
 
 	public function export_excel($bln)

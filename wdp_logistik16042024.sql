@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2024 at 05:15 AM
+-- Generation Time: Apr 16, 2024 at 10:04 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -85,8 +85,8 @@ CREATE TABLE `material` (
 --
 
 INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_satuan`, `mtl_harga_modal`, `mtl_harga_jual`, `mtl_foto`, `mtl_barcode`, `mtl_date_created`, `mtl_date_updated`) VALUES
-(6, 'Abon Ayam', '', -10, 5, 158, 164.32, NULL, NULL, '2024-03-05 11:09:53', '2024-04-05 11:15:27'),
-(7, 'Abon Ayam Alfa', '', 0, 3, 151000, 157040, NULL, NULL, '2024-03-05 11:13:43', '2024-04-05 11:15:27'),
+(6, 'Abon Ayam', '', -20, 5, 158, 164.32, NULL, NULL, '2024-03-05 11:09:53', '2024-04-05 11:15:27'),
+(7, 'Abon Ayam Alfa', '', -20, 3, 151000, 157040, NULL, NULL, '2024-03-05 11:13:43', '2024-04-05 11:15:27'),
 (8, 'Abon Sapi Bengawan', '', 0, 5, 135340, 140753.6, NULL, NULL, '2024-03-05 11:20:14', '2024-03-05 11:20:14'),
 (9, 'Ajinomoto', '', 0, 5, 48, 49.92, NULL, NULL, '2024-03-05 11:20:44', '2024-04-04 14:58:56'),
 (10, 'ALBA RED', '', 0, 4, 1300000, 1352000, NULL, NULL, '2024-03-05 11:21:35', '2024-04-05 11:15:27'),
@@ -335,7 +335,7 @@ CREATE TABLE `pembelian` (
   `pbl_tanggal` date DEFAULT NULL,
   `pbl_no_faktur` varchar(100) DEFAULT NULL,
   `pbl_total_item` bigint(20) DEFAULT NULL,
-  `pbl_total_harga` bigint(20) DEFAULT NULL,
+  `pbl_total_harga` double DEFAULT NULL,
   `pbl_user` bigint(20) DEFAULT NULL,
   `pbl_date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -361,7 +361,7 @@ CREATE TABLE `pembelian_detail` (
   `pbd_mtl_id` bigint(20) DEFAULT NULL,
   `pbd_qty` int(11) DEFAULT NULL,
   `pbd_satuan` varchar(20) DEFAULT NULL,
-  `pbd_harga` bigint(20) DEFAULT NULL
+  `pbd_harga` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -420,7 +420,7 @@ CREATE TABLE `penjualan` (
   `pjl_customer` varchar(150) DEFAULT NULL,
   `pjl_total_item` bigint(20) DEFAULT NULL,
   `pjl_jenis_harga` smallint(1) DEFAULT NULL COMMENT '1=4%, 2=hpp',
-  `pjl_jumlah_bayar` bigint(20) DEFAULT NULL,
+  `pjl_jumlah_bayar` double DEFAULT NULL,
   `pjl_jenis_bayar` smallint(1) DEFAULT NULL COMMENT '1=tf, 2=cash',
   `pjl_status_bayar` smallint(1) DEFAULT NULL COMMENT '0=tertunda, 1=jatuh tempo, 2=lunas',
   `pjl_status` smallint(1) DEFAULT NULL COMMENT '1=menunggu, 2=dikirim, 3=ditolak, 4=selesai',
@@ -434,7 +434,8 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`pjl_id`, `pjl_faktur`, `pjl_tanggal`, `pjl_customer`, `pjl_total_item`, `pjl_jenis_harga`, `pjl_jumlah_bayar`, `pjl_jenis_bayar`, `pjl_status_bayar`, `pjl_status`, `pjl_barcode`, `pjl_user`, `pjl_date_created`) VALUES
-(1, 'INV0001', '2024-04-05', 'ROTTE BAKERY AIR MOLEK', 1, 1, 1650, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401806e04a061184ce855244a47170102a62e0e88dfa175cab24ab98258160ea5404a54aa78398fc86fe83968a150cbd55108760e9adca2d0d1cf7995217d345459ceed67beefd5ebe2bc0a3fbb2bf7e7bd1ddadde1f96ae1ae6ce53b7d6b87b782e1d552f0f6ebae6d668139a05c514534c31c514534cb1bf67df393f621a0a5d217d0c2d96480f22b44c59bfb786f05746cbe1c9d4ab63a80d62e1f89532b48701e8699463aba1691b01962e091dbb5e8ea1d892bece699ec554ef500c2992a75640c66dca843c76f3691b9f8c2331b108195b94bd8bd7856e73863486d291d5218c676929907cda76324fa388f7f4eb9519933674f2ddf692896d441822925de3209e318b2d32fe36f530063ca0d2f1c34ad62da0dcc80dd5104f85f48a728935cfb2f5e2a276dea7d9c35f7d96628afd13fb002ca7f6c0acdc56b00000000049454e44ae426082, 1, '2024-04-05 11:37:58');
+(1, 'INV0001', '2024-04-05', 'ROTTE BAKERY AIR MOLEK', 1, 1, 1650, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401806e04a061184ce855244a47170102a62e0e88dfa175cab24ab98258160ea5404a54aa78398fc86fe83968a150cbd55108760e9adca2d0d1cf7995217d345459ceed67beefd5ebe2bc0a3fbb2bf7e7bd1ddadde1f96ae1ae6ce53b7d6b87b782e1d552f0f6ebae6d668139a05c514534c31c514534cb1bf67df393f621a0a5d217d0c2d96480f22b44c59bfb786f05746cbe1c9d4ab63a80d62e1f89532b48701e8699463aba1691b01962e091dbb5e8ea1d892bece699ec554ef500c2992a75640c66dca843c76f3691b9f8c2331b108195b94bd8bd7856e73863486d291d5218c676929907cda76324fa388f7f4eb9519933674f2ddf692896d441822925de3209e318b2d32fe36f530063ca0d2f1c34ad62da0dcc80dd5104f85f48a728935cfb2f5e2a276dea7d9c35f7d96628afd13fb002ca7f6c0acdc56b00000000049454e44ae426082, 1, '2024-04-05 11:37:58'),
+(2, 'INV0002', '2024-04-16', 'ROTTE BAKERY BUKIT BARISAN', 2, 1, 3142443, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401407f04a06172173a12a48318e42a4b470249b2e62e7e256a1b738885952284d3611942a9d02f1ee33e41b0805412cbed5c5214bb25632d88370cfaa93c952419ceecd3f1efff77f157ceabf1e6cdd5d468ded934ef5badbdb7b89cceec3e171b5513fed44e6fefad10efa15c514534c31c514534cb1bf67cbccaf9846583f97c34dbc486339406eeb20fc593eb77f32a8b1b3f980009a9369ee7a1b161dbdf1c4757881adb19ed30a52d90f98eb5835f2aec71c4c1b8a6c0ac6185214449ed3901384c7db84f2e2b6fa1703cc489ed08093110457b39415b37db3504b8978a6634e28b464afbc6d37fe643602c9ee8d1b9d6450916d8317b335e3c469310ff9e20cc7e60b2658bb7c42339b2d0a41b427205d8f5b14c4b45c884632914b7755aea4fe7080a1ae6b222ed7bbe4b31453ec9fd8072f1a5dfb862748370000000049454e44ae426082, 147, '2024-04-16 14:58:03');
 
 -- --------------------------------------------------------
 
@@ -458,7 +459,9 @@ CREATE TABLE `penjualan_detail` (
 --
 
 INSERT INTO `penjualan_detail` (`pjd_id`, `pjd_pjl_id`, `pjd_mtl_id`, `pjd_qty`, `pjd_smt_id`, `pjd_harga`, `pjd_status`, `pjd_date_created`) VALUES
-(1, 1, 6, 10, 5, 1650, 1, '2024-04-05 11:37:58');
+(1, 1, 6, 10, 5, 1650, 1, '2024-04-05 11:37:58'),
+(2, 2, 6, 10, 5, 1643.2, 1, '2024-04-16 14:58:03'),
+(3, 2, 7, 20, 3, 3140800, 1, '2024-04-16 14:58:03');
 
 -- --------------------------------------------------------
 
@@ -829,13 +832,13 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `pjl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `pjl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `penjualan_detail`
 --
 ALTER TABLE `penjualan_detail`
-  MODIFY `pjd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `pjd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `premix`
