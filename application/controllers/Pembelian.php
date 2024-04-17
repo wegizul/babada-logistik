@@ -82,7 +82,11 @@ class Pembelian extends CI_Controller
 			$row[] = $pembelian->pbl_total_item . " Item";
 			$row[] = "Rp " . number_format($pembelian->pbl_total_harga, 0, ",", ".");
 			$row[] = $pembelian->log_nama;
+
+			if ($this->session->userdata('level') == 1) {
 			$row[] = "<a href='#' onClick='hapus_pembelian(" . $pembelian->pbl_id . ")' class='btn btn-danger btn-xs mb-1' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
+			}
+			
 			$data[] = $row;
 		}
 
@@ -186,26 +190,5 @@ class Pembelian extends CI_Controller
 			$resp['desc'] = "Gagal menghapus data !";
 		}
 		echo json_encode($resp);
-	}
-
-	public function cetak_resi()
-	{
-		$get_last_pembelian = $this->pembelian->get_last_pembelian();
-		$data = [
-			'data' => $this->pembelian->ambil_pembelian($get_last_pembelian->pbl_id),
-			'jumlah' => $this->pembelian->get_jumlah_pbd($get_last_pembelian->pbl_id),
-		];
-		$this->load->view('cetak_resi', $data);
-	}
-
-	public function cetak_resi2($pbl_id)
-	{
-		$jumlah = $this->pembelian->get_jumlah_pbd($pbl_id);
-		$ambil = $this->pembelian->ambil_pembelian($pbl_id);
-		$data = [
-			'data' => $ambil,
-			'jumlah' => $jumlah,
-		];
-		$this->load->view('cetak_resi', $data);
 	}
 }

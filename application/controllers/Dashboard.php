@@ -90,4 +90,17 @@ class Dashboard extends CI_Controller
 		}
 		echo json_encode(array("dataset" => $dataset, "label" => $label, "satuan" => $satuan));
 	}
+
+	public function detail_pesanan($id)
+	{
+		$getPenjualan = $this->penjualan->ambil_penjualan($id);
+		foreach ($getPenjualan as $p) {
+			$data[$p->pjd_id] = [
+				'mtl_nama' => $p->mtl_nama,
+				'qty' => $p->pjd_qty,
+				'satuan' => $p->smt_nama,
+			];
+		}
+		echo json_encode($data);
+	}
 }

@@ -127,8 +127,8 @@ $bulan = [
 							<div class="form-group">
 								<label>Status Penjualan</label>
 								<select class="form-control form-control-sm" name="pjl_status" id="pjl_status">
-									<option value="1">Menunggu Konfirmasi</option>
 									<option value="2">Dikirim</option>
+									<option value="1">Menunggu Konfirmasi</option>
 									<option value="3">Ditolak</option>
 									<option value="4">Selesai</option>
 								</select>

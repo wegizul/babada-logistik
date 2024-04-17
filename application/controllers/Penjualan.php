@@ -118,60 +118,6 @@ class Penjualan extends CI_Controller
 		echo json_encode($output);
 	}
 
-	public function ajax_list_laporan($bln)
-	{
-		$list = $this->riwayat->get_datatables($bln);
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $riwayat) {
-			$no++;
-			$status = '';
-			$pembayaran = '';
-			switch ($riwayat->pjl_status) {
-				case 1:
-					$status = "<span class='badge badge-warning'>Menunggu Konfirmasi</span>";
-					break;
-				case 2:
-					$status = "<span class='badge badge-success'>Dikonfirmasi</span>";
-					break;
-				case 3:
-					$status = "<span class='badge badge-danger'>Ditolak</span>";
-					break;
-			}
-			switch ($riwayat->pjl_status_bayar) {
-				case 0:
-					$pembayaran = "<span class='badge badge-warning'>Tertunda</span>";
-					break;
-				case 1:
-					$pembayaran = "<span class='badge badge-danger'>Jatuh Tempo</span>";
-					break;
-				case 2:
-					$pembayaran = "<span class='badge badge-success'>Lunas</span>";
-					break;
-			}
-
-			$row = array();
-			$row[] = $no;
-			$row[] = $riwayat->pjl_date_created;
-			$row[] = "<a href='" . base_url('PenjualanDetail/tampil/') . $riwayat->pjl_id . "'>" . $riwayat->pjl_faktur . "</a>";
-			$row[] = $riwayat->pjl_customer;
-			$row[] = $riwayat->pjl_total_item . " Item";
-			$row[] = "Rp " . number_format($riwayat->pjl_jumlah_bayar, 0, ",", ".");
-			$row[] = $pembayaran;
-			$row[] = $status;
-			$data[] = $row;
-		}
-
-		$output = array(
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->riwayat->count_all(),
-			"recordsFiltered" => $this->riwayat->count_filtered($bln),
-			"data" => $data,
-			"query" => $this->riwayat->getlastquery(),
-		);
-		echo json_encode($output);
-	}
-
 	public function cari()
 	{
 		$id = $this->input->post('pjl_id');
@@ -245,7 +191,7 @@ class Penjualan extends CI_Controller
 		/*get content from url*/
 		$content = file_get_contents($fileImage);
 		/*save file */
-		file_put_contents($target_path, $content);
+		// file_put_contents($target_path, $content);
 		$data4['pjl_barcode'] = $content;
 
 		$update = [
@@ -278,30 +224,31 @@ class Penjualan extends CI_Controller
 	{
 		$data = $this->input->post();
 
-		if (!isset($data['pjd_harga'])) {
-			$total_harga = 0;
-			foreach ($data['pjd_harga'] as $idx => $kd) {
+		$total_harga = 0;
+		foreach ($data['pjd_harga'] as $idx => $kd) {
+			if (isset($data['pjd_harga'])) {
 				$update = [
 					'pjd_harga' => $data['pjd_harga'][$idx],
 				];
 				$where = [
 					'pjd_id' => $data['pjd_id'][$idx],
 				];
-				$this->penjualan->update("penjualan_detail", $where, $update);
+				$total_harga += (int)$data['pjd_harga'][$idx];
 
-				$total_harga += $data['pjd_harga'][$idx];
+				$edit = [
+					'pjl_jumlah_bayar' => $total_harga,
+				];
+
+				if ($total_harga > 0) {
+					$this->penjualan->update("penjualan_detail", $where, $update);
+					$this->penjualan->update("penjualan", array('pjl_id' => $id), $edit);
+				}
 			}
-
-			$edit = [
-				'pjl_jumlah_bayar' => $total_harga,
-			];
-			$this->penjualan->update("penjualan", array('pjl_id' => $id), $edit);
 		}
 
-		$get_last = $this->penjualan->getLast($this->session->userdata('id_user'));
 		$cetak = [
-			'data' => $this->penjualan->ambil_penjualan($get_last->pjl_id),
-			'penjualan' => $this->penjualan->cari_penjualan($get_last->pjl_id),
+			'data' => $this->penjualan->ambil_penjualan($id),
+			'penjualan' => $this->penjualan->cari_penjualan($id),
 		];
 		$this->load->view('cetak_resi_pdf', $cetak);
 	}

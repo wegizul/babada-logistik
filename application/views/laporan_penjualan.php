@@ -111,7 +111,7 @@ $bulan = [
 			"serverSide": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_laporan/" + bulan,
+				"url": "ajax_list_penjualan/" + bulan,
 				"type": "POST"
 			},
 			"columnDefs": [{

@@ -88,7 +88,7 @@
  											<td>: <?= $manifest->mf_nopol ?></td>
  										</tr>
  										<tr>
- 											<td style="width: 20%;">Total Paket</td>
+ 											<td style="width: 20%;">Total Item</td>
  											<td>: <?= $manifest->mf_total_paket ?></td>
  											<td style="width: 20%;"></td>
  											<td></td>
@@ -101,16 +101,18 @@
  									<table id="paket">
  										<tr>
  											<th>No.</th>
- 											<th>Nomor Invoice</th>
  											<th>Tanggal</th>
- 											<th>Destination</th>
+ 											<th>Nomor Invoice</th>
+ 											<th>Jumlah Item</th>
+ 											<th>Tujuan</th>
  										</tr>
  										<?php $i = 1;
 											foreach ($tracking as $tr) { ?>
  											<tr>
  												<td><?= $i++ ?></td>
- 												<td><?= $tr->tr_pjl_faktur ?></td>
  												<td><?= $tr->tr_waktu_scan ?></td>
+ 												<td><?= $tr->tr_pjl_faktur ?></td>
+ 												<td><?= $tr->pjl_total_item ?></td>
  												<td><?= $tr->tr_tujuan ?></td>
  											</tr>
  										<?php } ?>

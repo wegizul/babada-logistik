@@ -41,12 +41,12 @@ class Manifest extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = "<a href='" . base_url('ManifestDetail/tampil/') . $manifest->mf_kode . "'>" . $manifest->mf_kode . "</a>";
-			$row[] = $manifest->mf_tujuan;
+			// $row[] = $manifest->mf_tujuan;
 			$row[] = $manifest->mf_tgl_pickup;
 			$row[] = $manifest->mf_supir;
 			$row[] = $manifest->mf_telp_supir;
 			$row[] = $manifest->mf_total_paket;
-			$row[] = "<a href='" . base_url('ScanKirim/cetak_manifest/' . $manifest->mf_kode) . "' class='btn btn-warning btn-xs' target='_blank'><i class='fas fa-print'></i> </a> ";
+			$row[] = "<a href='" . base_url('ScanKirim/cetak_manifest/' . $manifest->mf_kode) . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Manifest'><i class='fas fa-print'></i> </a> ";
 			$data[] = $row;
 		}
 

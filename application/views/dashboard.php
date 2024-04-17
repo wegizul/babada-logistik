@@ -87,7 +87,7 @@
 				<div class="card-header">
 					<h6 style="font-weight:bold"><i class="fas fa-cart-plus"></i> Pesanan Baru</h6>
 				</div>
-				<div class="card-body">
+				<div class="card-body" style="overflow-y: scroll; height: 420px">
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 							<th>Tanggal</th>
@@ -98,12 +98,14 @@
 							<?php if ($pesanan) foreach ($pesanan as $odr) { ?>
 								<tr>
 									<td><?= $odr->pjl_tanggal ?></td>
-									<td><?= $odr->pjl_customer ?></td>
-									<td style="text-align: center;"><button class="btn btn-dark btn-xs"> <i class="fas fa-check-circle"></i></button></td>
+									<td onClick="detail(<?= $odr->pjl_id ?>)" style="cursor:pointer;"><?= $odr->pjl_customer ?></td>
+									<td style="text-align: center;"><button class="btn btn-dark btn-xs" onClick='konfirmasi(<?= $odr->pjl_id ?>)' title="Konfirmasi"> <i class="fas fa-check-circle"></i></button></td>
 								</tr>
 							<?php } ?>
 						</tbody>
 					</table>
+				</div>
+				<div class="card-footer">
 				</div>
 			</div>
 		</div>
@@ -193,17 +195,79 @@
 							<th>Sisa Stok</th>
 						</thead>
 						<tbody style="font-size:small;">
-							<?php foreach ($stok as $s) { ?>
+							<?php $i = 0;
+							foreach ($stok as $idx => $s) { ?>
 								<tr>
-									<td><?= $s->mtl_nama ?></td>
-									<td><?= $s->mtl_stok ?></td>
+									<td style="width:70%;"><?= $s->mtl_nama ?></td>
+									<td id="barisStok<?= $idx ?>"><?= $s->mtl_stok ?></td>
 								</tr>
-							<?php } ?>
+							<?php $i++;
+							} ?>
+							<input type="hidden" id="idx" value="<?= $i ?>">
 						</tbody>
 					</table>
 				</div>
 				<div class="card-footer">
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_konfirm" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title"><i class="fas fa-exclamation-circle"></i> Konfirmasi pesanan ini</h6>
+				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
+			</div>
+			<form role="form col-lg" name="TambahEdit" id="frm_konfirm">
+				<div class="modal-body form">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<input type="hidden" name="pjl_id" id="pjl_id2" value="">
+								<select class="form-control" name="pjl_status" id="pjl_status2">
+									<option value="2">Konfirmasi Pesanan</option>
+									<option value="3">Tolak Pesanan</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_detail" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title"><i class="fas fa-list"></i> Detail Pesanan</h6>
+				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close">&times;</span>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<th>Tanggal</th>
+						<th>Konsumen</th>
+						<th>Aksi</th>
+					</thead>
+					<tbody style="font-size:small;">
+						<tr>
+							<td id="mtl_nama"></td>
+							<td id="qty"></td>
+							<td id="satuan"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" id="simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
 			</div>
 		</div>
 	</div>
@@ -224,9 +288,6 @@
 
 <!-- Custom Java Script -->
 <script>
-	var save_method; //for save method string
-	var table;
-
 	$('.tgl').daterangepicker({
 		locale: {
 			format: 'DD/MM/YYYY'
@@ -240,6 +301,88 @@
 	$('.select2').select2({
 		className: "form-control"
 	});
+
+	var index = $('#idx').val();
+
+	for (let i = 0; i < index; i++) {
+		var stok = $('#barisStok' + i).html();
+		if (stok < 0) {
+			document.getElementById("barisStok" + i).style.backgroundColor = '#FF4500';
+		} else if (stok == 0) {
+			document.getElementById("barisStok" + i).style.backgroundColor = '#FF8C00';
+		} else if (stok < 5) {
+			document.getElementById("barisStok" + i).style.backgroundColor = '#DAA520';
+		} else {
+			document.getElementById("barisStok" + i).style.backgroundColor = '#FFD700';
+		}
+	}
+
+	function konfirmasi(id) {
+		$("#pjl_id2").val(id);
+		$("frm_konfirm").trigger("reset");
+		$('#modal_konfirm').modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+	}
+
+	$("#frm_konfirm").submit(function(e) {
+		e.preventDefault();
+		$("#simpan").html("Menyimpan...");
+		$(".btn").attr("disabled", true);
+		$.ajax({
+			type: "POST",
+			url: "konfirmasi",
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(d) {
+				var res = JSON.parse(d);
+				if (res.status == 1) {
+					toastr.success(res.desc);
+					$("#modal_konfirm").modal("hide");
+					window.location.reload();
+				} else {
+					toastr.error(res.desc);
+				}
+				$("#simpan").html("<i class='fas fa-check-circle'></i> Simpan");
+				$(".btn").attr("disabled", false);
+			},
+			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#simpan").html("Error");
+				$(".btn").attr("disabled", false);
+				alert('Error get data from ajax');
+			}
+		});
+	});
+
+	function detail(id) {
+		event.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: "detail_pesanan/" + id,
+			dataType: "json",
+			success: function(data) {
+				var obj = Object.entries(data);
+				obj.map((dt) => {
+					console.log(dt[1]);
+					$("#" + dt[0]).html(dt[1]['mtl_nama']);
+				});
+				$(".inputan").attr("disabled", false);
+				$("#modal_detail").modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				return false;
+			}
+		});
+	}
+
+	function reset_form() {
+		$("#frm_konfirm")[0].reset();
+	}
 
 	$(document).ready(function() {});
 </script>

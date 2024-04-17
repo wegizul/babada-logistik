@@ -63,12 +63,14 @@
 								<input type="number" min="0" class="form-control" name="mtl_kode" id="mtl_kode" required>
 							</div>
 						</div>
-						<div class="col-lg-2">
-							<div class="form-group">
-								<label>Jumlah Stok</label>
-								<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok">
+						<?php if ($this->session->userdata('level') == 1) { ?>
+							<div class="col-lg-2">
+								<div class="form-group">
+									<label>Jumlah Stok</label>
+									<input type="number" min="0" class="form-control" name="mtl_stok" id="mtl_stok">
+								</div>
 							</div>
-						</div>
+						<?php } ?>
 						<div class="col-lg-2">
 							<div class="form-group">
 								<label>Satuan</label>

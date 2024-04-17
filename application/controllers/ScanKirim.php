@@ -65,26 +65,24 @@ class ScanKirim extends CI_Controller
 	{
 		$data = $this->penjualan->lacak_paket($kode);
 		if ($data) {
-			$result = $data->pjl_faktur;
+			$result = [
+				'faktur' => $data->pjl_faktur,
+				'cust' => $data->pjl_customer,
+			];
 		} else {
 			$result = '';
 		}
-		echo $result;
+		echo json_encode($result);
 	}
 
 	public function simpan()
 	{
-		$log_id = $this->input->post('tr_tujuan');
-
 		$data['tr_pjl_faktur'] = $this->input->post('tr_pjl_faktur');
 		$data['tr_waktu_scan'] = date('Y-m-d H:i:s');
 		$data['tr_jenis'] = 2;
 		$data['tr_sp_kode'] = "TR";
 		$data['tr_user'] = $this->session->userdata('id_user');
-
-		$ambil = $this->pengguna->cari_pengguna($log_id);
-
-		$data['tr_tujuan'] = $ambil->log_unit_kerja;
+		$data['tr_tujuan'] = $this->input->post('tr_tujuan');
 
 		$insert = $this->tracking->simpan("tracking", $data);
 
@@ -127,10 +125,11 @@ class ScanKirim extends CI_Controller
 		$update = $this->tracking->update("tracking", $where, $update);
 
 		$ambil_paket = $this->tracking->ambil_paket($data['mf_kode']);
-
+		$total = 0;
 		foreach ($ambil_paket as $ap) {
-			$data['mf_total_paket'] = $ap->pjl_total_item;
+			$total += $ap->pjl_total_item;
 		}
+		$data['mf_total_paket'] = $total;
 
 		$insert = '';
 		if ($update) $insert = $this->tracking->simpan("manifest", $data);

@@ -50,7 +50,9 @@ $bulan = [
 								<th>Total Item</th>
 								<th>Total Harga</th>
 								<th>User Input</th>
-								<th>Aksi</th>
+								<?php if ($this->session->userdata('level') == 1) { ?>
+									<th>Aksi</th>
+								<?php } ?>
 							</tr>
 						</thead>
 						<tbody>

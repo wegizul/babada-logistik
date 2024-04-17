@@ -259,7 +259,7 @@
                 </p>
               </a>
             </li>
-            <?php if ($this->session->userdata("level") == 1) : ?>
+            <?php if ($this->session->userdata("level") < 3) : ?>
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="nav-icon fas fa-suitcase"></i>

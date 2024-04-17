@@ -56,7 +56,6 @@ class Model_Dashboard extends CI_Model
 		$this->db->from("material");
 		$this->db->where('mtl_stok < 10000');
 		$this->db->order_by("mtl_stok", "asc");
-		$this->db->limit(10);
 		$query = $this->db->get();
 
 		return $query->result();
@@ -66,8 +65,7 @@ class Model_Dashboard extends CI_Model
 	{
 		$this->db->from("penjualan");
 		$this->db->where('pjl_status', 1);
-		$this->db->order_by("pjl_tanggal", "asc");
-		$this->db->limit(5);
+		$this->db->order_by("pjl_tanggal", "desc");
 		$query = $this->db->get();
 
 		return $query->result();

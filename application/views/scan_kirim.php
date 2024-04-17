@@ -13,7 +13,6 @@
 						</div>
 						<div class="col-lg-3">
 							<label>Tujuan</label><br>
-							<span id="error_tujuan"></span>
 						</div>
 					</div>
 					<div class="row">
@@ -21,12 +20,7 @@
 							<input type="text" name="tr_pjl_faktur" id="tr_pjl_faktur" class="form-control" oninput="get_resi()" autofocus required>
 						</div>
 						<div class="col-lg-5">
-							<select name="tr_tujuan" id="tujuan" class="form-control select2" onchange="get_resi()" required>
-								<option value="">Pilih</option>
-								<?php foreach ($tujuan as $t) { ?>
-									<option value=<?= $t->log_id ?>><?= $t->log_unit_kerja ?></option>
-								<?php } ?>
-							</select>
+							<input type="text" name="tr_tujuan" id="tujuan" class="form-control" readonly required>
 						</div>
 						<hr size="2" width="100%">
 						<div class="col-lg-7">
@@ -279,20 +273,20 @@
 	}
 
 	function get_resi() {
+		event.preventDefault();
 		var kode = $('#tr_pjl_faktur').val();
 		var resi = decodeURIComponent(kode);
-		var tujuan = $('#tujuan').val();
-		$.get("get_resi/" + resi, {}, function(data) {
-			if (data) {
-				$('#error').html('');
-				if (tujuan == "") {
-					$('#error_tujuan').html('<small style="color: red;"><i>Tujuan Harus Dipilih</i></small>');
+		$.ajax({
+			type: "POST",
+			url: "get_resi/" + resi,
+			dataType: "json",
+			success: function(data) {
+				if (data) {
+					$('#tujuan').val(data.cust);
+					simpan(data.faktur, data.cust);
 				} else {
-					$('#error_tujuan').html('');
-					simpan(data, tujuan);
+					$('#error').html('<small style="color: red;"><i>Nomor Invoice Tidak Ditemukan</i></small>');
 				}
-			} else {
-				$('#error').html('<small style="color: red;"><i>Nomor Invoice Tidak Ditemukan</i></small>');
 			}
 		});
 	}

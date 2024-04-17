@@ -44,7 +44,7 @@ $bulan = [
 							<tr>
 								<th style="width:5%;">No</th>
 								<th>Kode Manifest</th>
-								<th>Tujuan</th>
+								<!-- <th>Tujuan</th> -->
 								<th>Tgl Pickup</th>
 								<th>Nama Supir</th>
 								<th>No. Telp Supir</th>

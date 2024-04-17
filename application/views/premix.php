@@ -80,15 +80,17 @@
 								<input type="number" min="0" class="form-control" name="pmx_harga_jual" id="pmx_harga_jual" required>
 							</div>
 						</div>
-						<!-- <div class="col-lg-4">
-							<label>Stok</label>
-							<div class="input-group">
-								<input type="number" min="0" class="form-control" name="pmx_stok" id="pmx_stok">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><small>Karung</small></span>
+						<?php if ($this->session->userdata('level') == 1) { ?>
+							<div class="col-lg-4">
+								<label>Stok</label>
+								<div class="input-group">
+									<input type="number" min="0" class="form-control" name="pmx_stok" id="pmx_stok">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><small>Karung</small></span>
+									</div>
 								</div>
 							</div>
-						</div> -->
+						<?php } ?>
 					</div>
 				</div>
 				<div class="modal-footer">
