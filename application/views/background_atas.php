@@ -423,6 +423,16 @@
                     </a>
                   </li>
                 </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("LapOrderan/tampil") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Orderan Outlet
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
             <?php endif;
             if ($this->session->userdata('level') == 3) : ?>

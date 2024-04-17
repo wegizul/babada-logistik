@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 10:04 AM
+-- Generation Time: Apr 17, 2024 at 11:58 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -55,10 +55,17 @@ CREATE TABLE `manifest` (
   `mf_telp_supir` varchar(20) DEFAULT NULL,
   `mf_nopol` varchar(10) DEFAULT NULL,
   `mf_tgl_pickup` date DEFAULT NULL,
-  `mf_tujuan` varchar(100) DEFAULT NULL,
+  `mf_tujuan` varchar(255) DEFAULT NULL,
   `mf_total_paket` int(11) DEFAULT NULL,
   `mf_user` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `manifest`
+--
+
+INSERT INTO `manifest` (`mf_id`, `mf_kode`, `mf_supir`, `mf_telp_supir`, `mf_nopol`, `mf_tgl_pickup`, `mf_tujuan`, `mf_total_paket`, `mf_user`) VALUES
+(2, 'PUM240417152616', 'Regi Frank', '08132456798', 'BM 2024 VI', '2024-04-17', NULL, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -85,11 +92,11 @@ CREATE TABLE `material` (
 --
 
 INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_satuan`, `mtl_harga_modal`, `mtl_harga_jual`, `mtl_foto`, `mtl_barcode`, `mtl_date_created`, `mtl_date_updated`) VALUES
-(6, 'Abon Ayam', '', -20, 5, 158, 164.32, NULL, NULL, '2024-03-05 11:09:53', '2024-04-05 11:15:27'),
-(7, 'Abon Ayam Alfa', '', -20, 3, 151000, 157040, NULL, NULL, '2024-03-05 11:13:43', '2024-04-05 11:15:27'),
+(6, 'Abon Ayam', '', 0, 5, 158, 164.32, NULL, NULL, '2024-03-05 11:09:53', '2024-04-17 11:41:06'),
+(7, 'Abon Ayam Alfa', '', -40, 3, 151000, 157040, NULL, NULL, '2024-03-05 11:13:43', '2024-04-05 11:15:27'),
 (8, 'Abon Sapi Bengawan', '', 0, 5, 135340, 140753.6, NULL, NULL, '2024-03-05 11:20:14', '2024-03-05 11:20:14'),
-(9, 'Ajinomoto', '', 0, 5, 48, 49.92, NULL, NULL, '2024-03-05 11:20:44', '2024-04-04 14:58:56'),
-(10, 'ALBA RED', '', 0, 4, 1300000, 1352000, NULL, NULL, '2024-03-05 11:21:35', '2024-04-05 11:15:27'),
+(9, 'Ajinomoto', '', -10, 5, 48, 49.92, NULL, NULL, '2024-03-05 11:20:44', '2024-04-04 14:58:56'),
+(10, 'ALBA RED', '', -10, 4, 1300000, 1352000, NULL, NULL, '2024-03-05 11:21:35', '2024-04-05 11:15:27'),
 (11, 'Albared REF', '', 0, 4, 1300000, 1352000, NULL, NULL, '2024-03-05 11:23:12', '2024-04-05 11:15:27'),
 (12, 'Almon Slice', '', 0, 5, 118, 122.89, NULL, NULL, '2024-03-05 11:23:59', '2024-03-05 11:23:59'),
 (13, 'Baker Mix', '', -10, 4, 800000, 832000, NULL, NULL, '2024-03-05 11:25:11', '2024-03-05 11:25:11'),
@@ -158,7 +165,7 @@ INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_
 (116, 'Elmer Flake Chubky Dark', '', 1, 5, 59, 61, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (117, 'Easy Rotte', '', 10000, 5, 59, 61, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (118, 'FR', '', 1, 11, 272.7, 283.608, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
-(119, 'Gula Pasir ', '', 870, 5, 16, 16, '', '', '2024-03-22 15:52:41', '2024-03-22 15:52:41'),
+(119, 'Gula Pasir ', '', 720, 5, 16, 16, '', '', '2024-03-22 15:52:41', '2024-03-22 15:52:41'),
 (120, 'Gula Halus Wallet', '', 1, 6, 162, 168.48, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (121, 'Gula Halus Rose brand', '', 0, 0, 180, 187.2, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (122, 'Gula Aren Cair', '', 1, 2, 67, 0, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
@@ -167,7 +174,7 @@ INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_
 (125, 'Gula Mint Donat', '', 1, 5, 31, 32, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (126, 'Isolasi', '', 1, 15, 31.25, 32.5, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (127, 'Improver S 500', '', 10, 5, 95, 99, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
-(128, 'Improver Soft Cotton', '', 1460, 5, 127, 131, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
+(128, 'Improver Soft Cotton', '', 1455, 5, 127, 131, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
 (129, 'Improver Gold Plus', '', 10, 5, 48, 49, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (130, 'Keju Slice', '', 1, 3, 138.972, 144.53, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (131, 'kacang hijau', '', 1, 5, 24, 24, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
@@ -249,7 +256,7 @@ INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_
 (207, 'Pasta Black Forest', '', 1, 2, 165.833, 172.466, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (208, 'Pisau Cake', '', 1, 3, 18, 18.72, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (209, 'Potato', '', 1, 10, 351.9, 365.976, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
-(210, 'Plastik Premix', '', 990, 14, 1.75, 1.82, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
+(210, 'Plastik Premix', '', 989, 14, 1.75, 1.82, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
 (211, 'Puratos tegral Swiss Roll Cake', '', 1, 16, 508.38, 528.715, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (212, 'Puratos Tegral Cake Banana', '', 1, 16, 306.36, 318.614, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (213, 'Puratos Cream Cake Vanila', '', 1, 16, 440, 457.6, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
@@ -271,7 +278,7 @@ INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_
 (231, 'Sosis Virgo', '', 1, 3, 32, 33.28, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (232, 'Sukade', '', 1, 3, 29, 30.16, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (233, 'SP Olimpik', '', 1, 11, 54, 56.16, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
-(234, 'Susu Bubuk', '', 970, 5, 33, 33, '', '', '2024-03-22 15:52:41', '2024-03-22 15:52:41'),
+(234, 'Susu Bubuk', '', 940, 5, 33, 33, '', '', '2024-03-22 15:52:41', '2024-03-22 15:52:41'),
 (235, 'SKM', '', 1, 8, 13.125, 13.65, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (236, 'Smoke Beef Vila', '', 1, 3, 130.5, 135.72, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (237, 'Sabun Cuci', '', 1, 3, 90, 93.6, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
@@ -296,8 +303,8 @@ INSERT INTO `material` (`mtl_id`, `mtl_nama`, `mtl_deskripsi`, `mtl_stok`, `mtl_
 (256, 'Saus Sambel AKU', '', 1, 3, 98.547, 102.488, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (257, 'Susu Bubuk NZMP', '', 1, 5, 103, 107, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (258, 'Saus Tomat 1 Kg', '', 1, 3, 16.501, 17.161, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
-(259, 'Tepung Protein Rendah ', '', 725, 5, 10, 10, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
-(260, 'Tepung Protein Tinggi', '', 825, 5, 11, 11, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
+(259, 'Tepung Protein Rendah ', '', 425, 5, 10, 10, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
+(260, 'Tepung Protein Tinggi', '', 625, 5, 11, 11, '', '', '2024-03-20 15:29:41', '2024-03-20 14:19:11'),
 (261, 'Tepung Panir', '', 1, 5, 19, 19, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (262, 'Tuna Chuck', '', 1, 8, 17.37, 18.064, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
 (263, 'Taro 100gr', '', 1, 2, 15, 15.6, '', '', '2024-03-07 11:10:53', '0000-00-00 00:00:00'),
@@ -347,7 +354,8 @@ CREATE TABLE `pembelian` (
 INSERT INTO `pembelian` (`pbl_id`, `pbl_supplier`, `pbl_tanggal`, `pbl_no_faktur`, `pbl_total_item`, `pbl_total_harga`, `pbl_user`, `pbl_date_created`) VALUES
 (19, 'PT Puratos Indonesia', '2024-03-18', '012345689', 6, 1946800, 1, '2024-03-20 14:19:11'),
 (20, 'PT Fonterra Brands Indonesia', '2024-04-04', '038526', 3, 15116280, 1, '2024-04-04 14:58:56'),
-(21, 'PT Puratos Indonesia', '2024-04-05', '5354863254', 4, 29024740, 1, '2024-04-05 11:15:27');
+(21, 'PT Puratos Indonesia', '2024-04-05', '5354863254', 4, 29024740, 1, '2024-04-05 11:15:27'),
+(22, 'PT Puratos Indonesia', '2024-04-10', '465865', 1, 15000, 6, '2024-04-17 11:41:06');
 
 -- --------------------------------------------------------
 
@@ -381,7 +389,8 @@ INSERT INTO `pembelian_detail` (`pbd_id`, `pbd_pbl_id`, `pbd_mtl_id`, `pbd_qty`,
 (28, 21, 6, 30, 'Gram', 4740),
 (29, 21, 7, 20, 'Bungkus', 3020000),
 (30, 21, 10, 10, 'Dus', 13000000),
-(31, 21, 11, 10, 'Dus', 13000000);
+(31, 21, 11, 10, 'Dus', 13000000),
+(32, 22, 6, 40, 'Gram', 15000);
 
 -- --------------------------------------------------------
 
@@ -405,7 +414,8 @@ CREATE TABLE `pengeluaran` (
 
 INSERT INTO `pengeluaran` (`kel_id`, `kel_tanggal`, `kel_nama`, `kel_jml`, `kel_ket`, `kel_user`, `kel_date_created`) VALUES
 (1, '2024-03-19', 'Gas 2kg', 250000, 'beli gas di warung', 1, '2024-03-27 00:00:00'),
-(2, '2024-03-26', 'Air Galon', 30000, '3 galon', 1, '2024-03-27 00:00:00');
+(2, '2024-03-26', 'Air Galon', 30000, '3 galon', 1, '2024-03-27 00:00:00'),
+(3, '2024-04-17', 'BBM', 500000, 'bbm parkir', 6, '2024-04-17 11:42:27');
 
 -- --------------------------------------------------------
 
@@ -434,8 +444,13 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`pjl_id`, `pjl_faktur`, `pjl_tanggal`, `pjl_customer`, `pjl_total_item`, `pjl_jenis_harga`, `pjl_jumlah_bayar`, `pjl_jenis_bayar`, `pjl_status_bayar`, `pjl_status`, `pjl_barcode`, `pjl_user`, `pjl_date_created`) VALUES
-(1, 'INV0001', '2024-04-05', 'ROTTE BAKERY AIR MOLEK', 1, 1, 1650, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401806e04a061184ce855244a47170102a62e0e88dfa175cab24ab98258160ea5404a54aa78398fc86fe83968a150cbd55108760e9adca2d0d1cf7995217d345459ceed67beefd5ebe2bc0a3fbb2bf7e7bd1ddadde1f96ae1ae6ce53b7d6b87b782e1d552f0f6ebae6d668139a05c514534c31c514534cb1bf67df393f621a0a5d217d0c2d96480f22b44c59bfb786f05746cbe1c9d4ab63a80d62e1f89532b48701e8699463aba1691b01962e091dbb5e8ea1d892bece699ec554ef500c2992a75640c66dca843c76f3691b9f8c2331b108195b94bd8bd7856e73863486d291d5218c676929907cda76324fa388f7f4eb9519933674f2ddf692896d441822925de3209e318b2d32fe36f530063ca0d2f1c34ad62da0dcc80dd5104f85f48a728935cfb2f5e2a276dea7d9c35f7d96628afd13fb002ca7f6c0acdc56b00000000049454e44ae426082, 1, '2024-04-05 11:37:58'),
-(2, 'INV0002', '2024-04-16', 'ROTTE BAKERY BUKIT BARISAN', 2, 1, 3142443, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401407f04a06172173a12a48318e42a4b470249b2e62e7e256a1b738885952284d3611942a9d02f1ee33e41b0805412cbed5c5214bb25632d88370cfaa93c952419ceecd3f1efff77f157ceabf1e6cdd5d468ded934ef5badbdb7b89cceec3e171b5513fed44e6fefad10efa15c514534c31c514534cb1bf67cbccaf9846583f97c34dbc486339406eeb20fc593eb77f32a8b1b3f980009a9369ee7a1b161dbdf1c4757881adb19ed30a52d90f98eb5835f2aec71c4c1b8a6c0ac6185214449ed3901384c7db84f2e2b6fa1703cc489ed08093110457b39415b37db3504b8978a6634e28b464afbc6d37fe643602c9ee8d1b9d6450916d8317b335e3c469310ff9e20cc7e60b2658bb7c42339b2d0a41b427205d8f5b14c4b45c884632914b7755aea4fe7080a1ae6b222ed7bbe4b31453ec9fd8072f1a5dfb862748370000000049454e44ae426082, 147, '2024-04-16 14:58:03');
+(1, 'INV0001', '2024-04-05', 'ROTTE BAKERY AIR MOLEK', 1, 1, 1650, 1, 0, 2, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401806e04a061184ce855244a47170102a62e0e88dfa175cab24ab98258160ea5404a54aa78398fc86fe83968a150cbd55108760e9adca2d0d1cf7995217d345459ceed67beefd5ebe2bc0a3fbb2bf7e7bd1ddadde1f96ae1ae6ce53b7d6b87b782e1d552f0f6ebae6d668139a05c514534c31c514534cb1bf67df393f621a0a5d217d0c2d96480f22b44c59bfb786f05746cbe1c9d4ab63a80d62e1f89532b48701e8699463aba1691b01962e091dbb5e8ea1d892bece699ec554ef500c2992a75640c66dca843c76f3691b9f8c2331b108195b94bd8bd7856e73863486d291d5218c676929907cda76324fa388f7f4eb9519933674f2ddf692896d441822925de3209e318b2d32fe36f530063ca0d2f1c34ad62da0dcc80dd5104f85f48a728935cfb2f5e2a276dea7d9c35f7d96628afd13fb002ca7f6c0acdc56b00000000049454e44ae426082, 1, '2024-04-05 11:37:58'),
+(2, 'INV0002', '2024-04-16', 'ROTTE BAKERY BUKIT BARISAN', 2, 1, 3142443, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1314bc3401407f04a06172173a12a48318e42a4b470249b2e62e7e256a1b738885952284d3611942a9d02f1ee33e41b0805412cbed5c5214bb25632d88370cfaa93c952419ceecd3f1efff77f157ceabf1e6cdd5d468ded934ef5badbdb7b89cceec3e171b5513fed44e6fefad10efa15c514534c31c514534cb1bf67cbccaf9846583f97c34dbc486339406eeb20fc593eb77f32a8b1b3f980009a9369ee7a1b161dbdf1c4757881adb19ed30a52d90f98eb5835f2aec71c4c1b8a6c0ac6185214449ed3901384c7db84f2e2b6fa1703cc489ed08093110457b39415b37db3504b8978a6634e28b464afbc6d37fe643602c9ee8d1b9d6450916d8317b335e3c469310ff9e20cc7e60b2658bb7c42339b2d0a41b427205d8f5b14c4b45c884632914b7755aea4fe7080a1ae6b222ed7bbe4b31453ec9fd8072f1a5dfb862748370000000049454e44ae426082, 147, '2024-04-16 14:58:03'),
+(3, 'INV0003', '2024-04-17', 'ROTTE BAKERY BUKIT BARISAN', 1, 1, 1643.2, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1bd4ac3501407f096ac42700c140356ac63a1522c1c9ad1a5e803b87548141cd42c0904db4d1ca462a740bdf719fa0642c0c5e0597570c8928c46efa08170af693753870ae274cf70a61f7fce47453cb82fbbebb797d3f6e6e1b376d537b79fa6adfe7def40ab1ff78ea637edd5bd2d31ac48269964924926996492fd3d5ba67ec514206ece3d5d5c2411f7043554acb2344ff5ef0c6be4e4d3eba0680561ee0cd6bad6c888628795d2708598768726dcf58963776bf0a11a21361759888d31a2c8809f59130a02eb641fde8d12db98335d30c863cba730428d98f0467f64a19240f6688d29589893d322b3c49ad18c250281dd35ae5560051b2cb29d289ead20a89f70dba00583f0b5e865c6d2f9418c00b933a05d0bfd28f6b2d26c0ab06c765e5e4d86e79e98a8aa12b03485d2a64b3e4b32c9fe897d01af6d92422c9b43470000000049454e44ae426082, 147, '2024-04-16 15:09:15'),
+(4, 'INV0004', '2024-04-17', 'ROTTE BAKERY BUKIT BARISAN', 1, 1, 1570400, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000142494441544889edd1b14b026118c771e58696e08620102422431b838b5078b8776c119ca3cdc12370a85c14c4738b8630703ab2f7fd1bfc0f02218c8e7bd696861bba1b136e28e1789fceb1d3c1209ade67fe2cbfef93a197cedbc9dec3cdf8b8d83ccdddd61b47af63a3fe543dcb159ad5f3fbede2bb7740fd8c628a29a698628a29a6d8dfb375ee574c03de89a58d741dfab24b82e9988d6664da3f19e6f9c557970dc898b871dbde31ad01f3831eb014dbe48d5645e8b2e3f076cbccc3a7ce5c848a4833174b43af46739057d648006181d72a06a6d8fe82b94811c481e50818608e378cd5ecd9d542987bd650808531bf2c2db1433f61d30d42881e4b773a4409b377b7d2acec07c90424e184b2c544c2c0fd604b13cad12c0982c42628dbb6302d74fcc04e07d1209a2ff2ca6cd8ef7569a4ebda6445de359fa59862ffc4be01bd119663b28e50200000000049454e44ae426082, 147, '2024-04-16 15:09:40'),
+(5, 'INV0005', '2024-04-17', 'ROTTE BAKERY BUKIT BARISAN', 1, 1, 1570400, 1, 0, 1, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000144494441544889edd1314bc3401407f096ac42e642b160c5380a15b1f0e86dbaf80ddc4ae92d0e62960442db4d1ca44aa740cd7d867e834240144b8e6e3a082dd566156e308170cfd6cdeb52419ceecd3ffeefff78397c725f8fb7eeae06073b472f85eb7a73ff7950a9df9f9c16ca678df1eda0f91eed6227a799669a69a699669a69f6f76c9df91533207033e99878194fa5878c983c2f2613203f192f06e7895745ac84a3cc696fd66897cc229a32856d044dbbeaa374fdc0b16b45f834498896e02a1b71abf758c214e405ed33405e16b2e1aa69db4bf6c0514036a73e832e2f8864b6d2ed9bf137238634a23d06946742b67d356d6fba6431721043ebc604b160487a6ab7c3e97c71428ccc8fa54dd88281406b95898fc4038e24e4d269b31ae5be88ecaab2d4009166b25592f9b8d3f2b06f9a46389c249e72c29acfd24cb37f625f7962fbde0b96c9980000000049454e44ae426082, 147, '2024-04-16 15:13:58'),
+(6, 'INV0006', '2024-04-17', 'ROTTE BAKERY BUKIT BARISAN', 1, 1, 1700, 1, 0, 2, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000146494441544889edd1314bc34014c0f196ac42e642b1608b75142a62e0918c2ea21fc0458af41607314b0221e9260e52218b819adbdcfb0d0a01511a7ab8d5c12108c9a878830d863bd36ea60e15c4e96efef11eef7f253e329f77d76e2e06dbebeda7ca65bbb33519b4da777b8795fac9f1e4faf1b6b1bfc1bb25c104134c30c104134cb0bf67cbbc5f31097c3363768d9f2711b338d66452a6ccb0b4ef8c54fdd3a90584b78230339c5515f5b4974c577081adf81d5df15e99e9f986ae56e143d6822972499185a4e93e709e023b437d0c9cd4e9bbb3c01a7356e314b21879187aa4426347e9fdc4ee432981748c5c0c8864746c5b0705b619cda6259c001d36af64a0391be6ab0b6c278af313128ebd84e91ace1950667e2e30fa360fa20584190e5611f128d3d3421009683acbcbca49d7b6785f96a560c88eaa85bc4b7e966082fd13fb028787d38fa73833cf0000000049454e44ae426082, 147, '2024-04-16 15:14:29'),
+(7, 'INV0007', '2024-04-17', 'ROTTE BAKERY PANGKALAN KERINCI 1', 2, 1, 13520499.2, 1, 0, 2, 0x89504e470d0a1a0a0000000d49484452000001290000005501030000002fc080cf00000006504c5445000000ffffffa5d99fdd000000097048597300000ec400000ec401952b0e1b00000140494441544889edd1b14bc3401406f04a069742e74a1194621d858a1838fa16d1cdceae159ac5a1982581e0d5a9888a4aa74accfd0dfd0f8452152c7dab8b4396de1ac8d242b867d1c9735111a77bf30f3ebeefe5e8d97fdd5bbd3beb6fad950f8a978de6e64bbfda78d8392f1e968f86b7d5a595fd756ae70c33cc30c30c33cc30c3fe9e7de77ec42c16f999f216a9236315906016ca769204f09961296a4d0390541d8c328f2f437af528268e2d34968f9aae2da4f27b91e7d64a90163a0279177536c24a1791664c1d3ba10089f2060974567e678252964d9c9e004479f194713df483314bb2d9d8e90a1028d52e07bdc2463c67634ec8d2fbca750160ceea10718d6dc713d70e89444f2a17448da38cea1092ced2641ad8443040e571c108e5683ec89779d359a67c520bb27d12509827eb344e9256e157cf32ccb07f626ff6566efb71e7ed250000000049454e44ae426082, 161, '2024-04-17 11:56:32');
 
 -- --------------------------------------------------------
 
@@ -461,7 +476,13 @@ CREATE TABLE `penjualan_detail` (
 INSERT INTO `penjualan_detail` (`pjd_id`, `pjd_pjl_id`, `pjd_mtl_id`, `pjd_qty`, `pjd_smt_id`, `pjd_harga`, `pjd_status`, `pjd_date_created`) VALUES
 (1, 1, 6, 10, 5, 1650, 1, '2024-04-05 11:37:58'),
 (2, 2, 6, 10, 5, 1643.2, 1, '2024-04-16 14:58:03'),
-(3, 2, 7, 20, 3, 3140800, 1, '2024-04-16 14:58:03');
+(3, 2, 7, 20, 3, 3140800, 1, '2024-04-16 14:58:03'),
+(4, 3, 6, 10, 5, 1643.2, 1, '2024-04-16 15:09:15'),
+(5, 4, 7, 10, 3, 1570400, 1, '2024-04-16 15:09:40'),
+(6, 5, 7, 10, 3, 1570400, 1, '2024-04-16 15:13:58'),
+(7, 6, 6, 10, 5, 1700, 1, '2024-04-16 15:14:29'),
+(8, 7, 9, 10, 5, 499.2, 1, '2024-04-17 11:56:32'),
+(9, 7, 10, 10, 4, 13520000, 1, '2024-04-17 11:56:32');
 
 -- --------------------------------------------------------
 
@@ -483,7 +504,7 @@ CREATE TABLE `premix` (
 --
 
 INSERT INTO `premix` (`pmx_id`, `pmx_nama`, `pmx_harga`, `pmx_harga_jual`, `pmx_stok`, `pmx_status`) VALUES
-(1, 'Premix Roti Bagelan 1 Kg', 11062, 0, 1, 1),
+(1, 'Premix Roti Bagelan 1 Kg', 11062, 0, 3, 1),
 (2, 'Premix Roti Bagelan 2 Kg', 20374, 0, 0, 1);
 
 -- --------------------------------------------------------
@@ -542,7 +563,8 @@ CREATE TABLE `premix_stok` (
 INSERT INTO `premix_stok` (`pxs_id`, `pxs_pmx_id`, `pxs_tipe`, `pxs_qty`, `pxs_user`, `pxs_date_created`) VALUES
 (5, 1, 1, 1, 1, '2024-03-20 15:29:41'),
 (6, 1, 1, 1, 1, '2024-03-26 15:04:56'),
-(7, 1, 2, 1, 1, '2024-03-26 15:06:31');
+(7, 1, 2, 1, 1, '2024-03-26 15:06:31'),
+(8, 1, 1, 2, 6, '2024-04-17 11:41:43');
 
 -- --------------------------------------------------------
 
@@ -643,7 +665,7 @@ CREATE TABLE `sys_login` (
 INSERT INTO `sys_login` (`log_id`, `log_nama`, `log_user`, `log_pass`, `log_level`, `log_unit_kerja`, `log_aktif`) VALUES
 (1, 'Administrator', 'administrator', 'ea60fc010787079d8aa3163ad9ef55e8', 1, NULL, 1),
 (5, 'Bobby Saputra', 'bobby', '72b4aef5d1778c6d8151a4589ba57b68', 3, 'PT Logistik Olah Gemilang', 1),
-(6, 'Ulani Handa', 'ulani', '82745d38846a29b727e410a3b6a0e821', 2, 'PT Logistik Olah Gemilang', 1);
+(6, 'Ulani Handinata', 'ulani', '827ccb0eea8a706c4c34a16891f84e7b', 2, 'PT Logistik Olah Gemilang', 1);
 
 -- --------------------------------------------------------
 
@@ -681,6 +703,15 @@ CREATE TABLE `tracking` (
   `tr_tujuan` varchar(255) DEFAULT NULL,
   `tr_kode_manifest` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tracking`
+--
+
+INSERT INTO `tracking` (`tr_id`, `tr_pjl_faktur`, `tr_sp_kode`, `tr_waktu_scan`, `tr_jenis`, `tr_user`, `tr_tujuan`, `tr_kode_manifest`) VALUES
+(1, 'INV0007', 'TR', '2024-04-17 15:12:01', 2, 6, 'ROTTE BAKERY PANGKALAN KERINCI 1', 'PUM240417152616'),
+(2, 'INV0006', 'TR', '2024-04-17 15:14:08', 2, 6, 'ROTTE BAKERY BUKIT BARISAN', 'PUM240417152616'),
+(3, 'INV0001', 'TR', '2024-04-17 15:14:16', 2, 6, 'ROTTE BAKERY AIR MOLEK', 'PUM240417152616');
 
 --
 -- Indexes for dumped tables
@@ -802,7 +833,7 @@ ALTER TABLE `jenis_produk`
 -- AUTO_INCREMENT for table `manifest`
 --
 ALTER TABLE `manifest`
-  MODIFY `mf_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `mf_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `material`
@@ -814,31 +845,31 @@ ALTER TABLE `material`
 -- AUTO_INCREMENT for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  MODIFY `pbl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `pbl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `pembelian_detail`
 --
 ALTER TABLE `pembelian_detail`
-  MODIFY `pbd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `pbd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-  MODIFY `kel_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `kel_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `pjl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pjl_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `penjualan_detail`
 --
 ALTER TABLE `penjualan_detail`
-  MODIFY `pjd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `pjd_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `premix`
@@ -856,7 +887,7 @@ ALTER TABLE `premix_detail`
 -- AUTO_INCREMENT for table `premix_stok`
 --
 ALTER TABLE `premix_stok`
-  MODIFY `pxs_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `pxs_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `satuan_material`
@@ -892,7 +923,7 @@ ALTER TABLE `tipe_alamat`
 -- AUTO_INCREMENT for table `tracking`
 --
 ALTER TABLE `tracking`
-  MODIFY `tr_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tr_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
