@@ -306,7 +306,7 @@ $bulan = [
 
 	document.addEventListener('DOMContentLoaded', function() {
 		// Mengambil data dari API menggunakan fetch
-		fetch('http://localhost/posbabada/Api/getWarehouses')
+		fetch('https://dreampos.id/admin/Api/getWarehouses')
 			.then(response => response.json())
 			.then(data => {
 				// Memproses data yang diterima

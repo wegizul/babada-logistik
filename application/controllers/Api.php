@@ -14,11 +14,12 @@ class Api extends CI_Controller
     public function getMaterial()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $data = $this->material->get_material();
+            $data = $this->material->ambil_material();
 
             $json_data = json_encode($data);
 
             header('Content-Type: application/json');
+            header('Access-Control-Allow-Origin: *');
             echo $json_data;
         } else {
             http_response_code(405);
@@ -35,6 +36,7 @@ class Api extends CI_Controller
             $json_data = json_encode($data);
 
             header('Content-Type: application/json');
+            header('Access-Control-Allow-Origin: *');
             echo $json_data;
         } else {
             http_response_code(405);
@@ -125,6 +127,8 @@ class Api extends CI_Controller
                 $resp['desc'] = "Ada kesalahan dalam transaksi!";
                 $resp['error'] = $err;
             }
+
+            header('Access-Control-Allow-Origin: *');
             echo json_encode($resp);
         } else {
             http_response_code(405);
