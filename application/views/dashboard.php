@@ -253,21 +253,15 @@
 			<div class="modal-body">
 				<table class="table table-striped table-bordered table-hover">
 					<thead>
-						<th>Tanggal</th>
-						<th>Konsumen</th>
-						<th>Aksi</th>
+						<th>Nama Barang</th>
+						<th>Qty</th>
+						<th>Satuan</th>
 					</thead>
-					<tbody style="font-size:small;">
-						<tr>
-							<td id="mtl_nama"></td>
-							<td id="qty"></td>
-							<td id="satuan"></td>
-						</tr>
+					<tbody id="isi" style="font-size:small;">
 					</tbody>
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" id="simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
 			</div>
 		</div>
 	</div>
@@ -358,6 +352,7 @@
 	});
 
 	function detail(id) {
+		$('#isi').html('')
 		event.preventDefault();
 		$.ajax({
 			type: "POST",
@@ -365,9 +360,8 @@
 			dataType: "json",
 			success: function(data) {
 				var obj = Object.entries(data);
-				obj.map((dt) => {
-					console.log(dt[1]);
-					$("#" + dt[0]).html(dt[1]['mtl_nama']);
+				obj.forEach((dt) => {
+					$("#isi").append(dt[1]);
 				});
 				$(".inputan").attr("disabled", false);
 				$("#modal_detail").modal({

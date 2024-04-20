@@ -95,11 +95,7 @@ class Dashboard extends CI_Controller
 	{
 		$getPenjualan = $this->penjualan->ambil_penjualan($id);
 		foreach ($getPenjualan as $p) {
-			$data[$p->pjd_id] = [
-				'mtl_nama' => $p->mtl_nama,
-				'qty' => $p->pjd_qty,
-				'satuan' => $p->smt_nama,
-			];
+			$data[$p->pjd_id] = "<tr><td>" . $p->mtl_nama . "</td><td>" . $p->pjd_qty . "</td><td>" . $p->smt_nama . "</td></tr>";
 		}
 		echo json_encode($data);
 	}
