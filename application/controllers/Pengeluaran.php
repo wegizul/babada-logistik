@@ -19,11 +19,11 @@ class Pengeluaran extends CI_Controller
 	public function tampil()
 	{
 		$total = 0;
-		$getTotal = $this->pengeluaran->total_pengeluaran();
-		if ($getTotal) $total = $getTotal->total;
+		// $getTotal = $this->pengeluaran->total_pengeluaran();
+		// if ($getTotal) $total = $getTotal->total;
 		$d = [
 			'page' => 'Data Pengeluaran Operasional',
-			'total_pengeluaran' => $total,
+			// 'total_pengeluaran' => $total,
 		];
 		$this->load->helper('url');
 		$this->load->view('background_atas');
@@ -31,9 +31,9 @@ class Pengeluaran extends CI_Controller
 		$this->load->view('background_bawah');
 	}
 
-	public function ajax_list_pengeluaran()
+	public function ajax_list_pengeluaran($bln, $tipe)
 	{
-		$list = $this->pengeluaran->get_datatables();
+		$list = $this->pengeluaran->get_datatables($bln, $tipe);
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $pengeluaran) {
@@ -43,6 +43,7 @@ class Pengeluaran extends CI_Controller
 			$row[] = $pengeluaran->kel_tanggal;
 			$row[] = $pengeluaran->kel_nama;
 			$row[] = "Rp " . number_format($pengeluaran->kel_jml, 0, ',', '.');
+			$row[] = $pengeluaran->kel_tipe;
 			$row[] = "<a href='#' onClick='ubah_pengeluaran(" . $pengeluaran->kel_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_pengeluaran(" . $pengeluaran->kel_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
@@ -50,7 +51,7 @@ class Pengeluaran extends CI_Controller
 		$output = array(
 			"draw" => $_POST['draw'],
 			"recordsTotal" => $this->pengeluaran->count_all(),
-			"recordsFiltered" => $this->pengeluaran->count_filtered(),
+			"recordsFiltered" => $this->pengeluaran->count_filtered($bln, $tipe),
 			"data" => $data,
 			"query" => $this->pengeluaran->getlastquery(),
 		);
@@ -105,5 +106,17 @@ class Pengeluaran extends CI_Controller
 			$resp['desc'] = "Gagal menghapus data !";
 		}
 		echo json_encode($resp);
+	}
+
+	public function total_pengeluaran($bln)
+	{
+		$getTotal = $this->pengeluaran->total_pengeluaran($bln);
+		if ($getTotal->total) {
+			echo "<h6 style='margin-bottom: 0px;'><b>Total Pengeluaran " . $this->pengeluaran->bulan($bln) . "</b></h6>
+			<h1 style='font-weight: bolder;'>Rp " . number_format($getTotal->total, 0, ',', '.') . "</h1>";
+		} else {
+			echo "<h6 style='margin-bottom: 0px;'><b>Total Pengeluaran " . $this->pengeluaran->bulan($bln) . "</b></h6>
+			<h1 style='font-weight: bolder;'>Rp 0</h1>";
+		}
 	}
 }

@@ -1,3 +1,19 @@
+<?php
+$bulan = [
+	'1' => 'Januari',
+	'2' => 'Februari',
+	'3' => 'Maret',
+	'4' => 'April',
+	'5' => 'Mei',
+	'6' => 'Juni',
+	'7' => 'Juli',
+	'8' => 'Agustus',
+	'9' => 'September',
+	'10' => 'Oktober',
+	'11' => 'November',
+	'12' => 'Desember',
+]
+?>
 <div class="inner">
 	<div class="row">
 		<div class="col-lg-12">
@@ -9,14 +25,32 @@
 							<div class="form-group">
 								<a href="javascript:tambah()" class="btn btn-dark btn-sm"><i class="fa fa-plus-circle"></i> &nbsp; Tambah Pengeluaran</a>
 							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div class="form-group">
+										<select class="form-control form-control-sm" name="filter" id="filter" onChange="drawTable()">
+											<option value="">Pilih Bulan</option>
+											<?php foreach ($bulan as $key => $val) { ?>
+												<option value="<?= $key ?>"><?= $val ?></option>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<select class="form-control form-control-sm" name="filter_tipe" id="filter_tipe" onChange="drawTable()">
+											<option value="">Pilih Tipe</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2 col-xs-12">
+									<div class="form-group">
+										<button class="btn btn-sm btn-dark" onClick="ekspor()"><i class="fas fa-file-excel"></i> Export to Excel</button>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-3 pl-0">
-							<h6 style="margin-bottom: 0px;"><b>Total Pengeluaran <?= date('F') ?></b></h6>
-							<h1 style="font-weight: bolder;">Rp <?php if ($total_pengeluaran) {
-																	echo number_format($total_pengeluaran, 0, ',', '.');
-																} else {
-																	echo 0;
-																} ?></h1>
+						<div class="col-md-3 pl-0" id="topeng">
 						</div>
 					</div>
 				</div>
@@ -28,6 +62,7 @@
 								<th>Tanggal</th>
 								<th>Pengeluaran</th>
 								<th>Jumlah</th>
+								<th>Tipe</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -54,13 +89,21 @@
 				<div class="modal-body form">
 					<div class="row">
 						<input type="hidden" id="kel_id" name="kel_id" value="">
-						<div class="col-lg-12 mb-3">
+						<div class="col-lg-6 mb-3">
 							<label>Tanggal</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
 								</div>
 								<input type="date" class="form-control" name="kel_tanggal" id="kel_tanggal" autocomplete="off" required>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<label>Tipe</label>
+							<div class="form-group">
+								<select class="form-control" id="kel_tipe" name="kel_tipe">
+									<option value="">Pilih</option>
+								</select>
 							</div>
 						</div>
 						<div class="col-lg-12">
@@ -125,6 +168,13 @@
 	var table;
 
 	function drawTable() {
+		var bulan = $('#filter').val();
+		if (!bulan) bulan = <?= date('n') ?>;
+		var tipe = $('#filter_tipe').val();
+		if (!tipe) tipe = null;
+
+		$('#topeng').load("<?= base_url('Pengeluaran/total_pengeluaran/') ?>" + bulan);
+
 		$('#tabel-data').DataTable({
 			"destroy": true,
 			lengthMenu: [
@@ -139,7 +189,7 @@
 			"searching": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_pengeluaran/",
+				"url": "ajax_list_pengeluaran/" + bulan + "/" + tipe,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -178,9 +228,9 @@
 				var res = JSON.parse(d);
 				if (res.status == 1) {
 					toastr.success(res.desc);
+					$("#modal_pengeluaran").modal("hide");
 					drawTable();
 					reset_form();
-					$("#modal_pengeluaran").modal("hide");
 				} else {
 					toastr.error(res.desc);
 				}

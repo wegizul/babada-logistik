@@ -82,6 +82,9 @@ class Penjualan extends CI_Controller
 				case 3:
 					$status = "<span class='badge badge-danger'>Ditolak</span>";
 					break;
+				case 4:
+					$status = "<span class='badge badge-success'>Selesai</span>";
+					break;
 			}
 			switch ($penjualan->pjl_status_bayar) {
 				case 0:
@@ -95,6 +98,21 @@ class Penjualan extends CI_Controller
 					break;
 			}
 
+			$kon = '';
+			$res = '';
+			$inv = '';
+			$pay = '';
+			if ($penjualan->pjl_status == 2) {
+				$kon = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a>";
+				$res = " <a href='" . base_url('Penjualan/cetak_resi_cust/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
+				$inv = " <a href='" . base_url('Penjualan/cetak_invoice/') . $penjualan->pjl_id . "' class='btn btn-success btn-xs' target='_blank' title='Cetak Invoice'><i class='fas fa-file-invoice'></i> Invoice</a>";
+				$pay = " <a href='#' onClick='pembayaran(" . $penjualan->pjl_id . ")' class='btn btn-success btn-xs' title='Tambah Pembayaran'><i class='fa fa-hand-holding-usd'></i> Payment</a>";
+			} elseif ($penjualan->pjl_status == 4 && $penjualan->pjl_status_bayar == 2) {
+				$res = " <a href='" . base_url('Penjualan/cetak_resi_cust/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
+			} else {
+				$kon = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a>";
+			}
+
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_date_created;
@@ -104,7 +122,7 @@ class Penjualan extends CI_Controller
 			$row[] = "Rp " . number_format($penjualan->pjl_jumlah_bayar, 0, ",", ".");
 			$row[] = $pembayaran;
 			$row[] = $status;
-			$row[] = "<a href='#' onClick='konfirmasi(" . $penjualan->pjl_id . ")' class='btn btn-dark btn-xs' title='Konfirmasi Pembelian'><i class='fa fa-check-circle'></i></a> <a href='" . base_url('Penjualan/cetak_resi_cust/') . $penjualan->pjl_id . "' class='btn btn-warning btn-xs' target='_blank' title='Cetak Resi'><i class='fa fa-print'></i></a>";
+			$row[] = $kon . $res . $inv . $pay;
 			$data[] = $row;
 		}
 
@@ -275,9 +293,9 @@ class Penjualan extends CI_Controller
 
 	public function konfirmasi()
 	{
-		$id = $this->input->post('pjl_id');
+		$id = $this->input->post('pjl_id2');
 		$data = [
-			'pjl_status' => $this->input->post('pjl_status'),
+			'pjl_status' => $this->input->post('pjl_status2'),
 		];
 
 		$insert = $this->penjualan->update("penjualan", array('pjl_id' => $id), $data);
@@ -294,6 +312,36 @@ class Penjualan extends CI_Controller
 		} else {
 			$resp['status'] = 0;
 			$resp['desc'] = "Ada kesalahan dalam konfirmasi!";
+			$resp['error'] = $err;
+		}
+		echo json_encode($resp);
+	}
+
+	public function pembayaran()
+	{
+		$id = $this->input->post('pjl_id3');
+		$data = [
+			'pjl_tanggal_bayar' => $this->input->post('pjl_tanggal3'),
+			'pjl_jenis_bayar' => $this->input->post('pjl_jenis_bayar3'),
+			'pjl_status_bayar' => $this->input->post('pjl_status_bayar3'),
+			'pjl_status' => $this->input->post('pjl_status3'),
+			'pjl_user_bayar' => $this->session->userdata('id_user'),
+		];
+
+		$insert = $this->penjualan->update("penjualan", array('pjl_id' => $id), $data);
+
+		$error = $this->db->error();
+		if (!empty($error)) {
+			$err = $error['message'];
+		} else {
+			$err = "";
+		}
+		if ($insert) {
+			$resp['status'] = 1;
+			$resp['desc'] = "Berhasil menambahkan pembayaran";
+		} else {
+			$resp['status'] = 0;
+			$resp['desc'] = "Ada kesalahan dalam proses simpan!";
 			$resp['error'] = $err;
 		}
 		echo json_encode($resp);
@@ -316,5 +364,14 @@ class Penjualan extends CI_Controller
 			'penjualan' => $this->penjualan->cari_penjualan($id),
 		];
 		$this->load->view('cetak_resi', $data);
+	}
+
+	public function cetak_invoice($id)
+	{
+		$data = [
+			'data' => $this->penjualan->ambil_penjualan($id),
+			'penjualan' => $this->penjualan->cari_penjualan($id),
+		];
+		$this->load->view('cetak_invoice', $data);
 	}
 }

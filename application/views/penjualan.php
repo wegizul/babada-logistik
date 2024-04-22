@@ -185,8 +185,8 @@ $bulan = [
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="form-group">
-								<input type="hidden" name="pjl_id" id="pjl_id2" value="">
-								<select class="form-control" name="pjl_status" id="pjl_status2">
+								<input type="hidden" name="pjl_id2" id="pjl_id2" value="">
+								<select class="form-control" name="pjl_status2" id="pjl_status2">
 									<option value="2">Konfirmasi Penjualan</option>
 									<option value="3">Tolak Penjualan</option>
 								</select>
@@ -196,6 +196,66 @@ $bulan = [
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="simpan" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_pembayaran" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title"><i class="fas fa-hand-holding-usd"></i> Tambah Pembayaran</h6>
+				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close" onclick="reset_form()">&times;</span>
+			</div>
+			<form role="form col-lg" name="TambahEdit" id="frm_pembayaran">
+				<div class="modal-body form">
+					<div class="row">
+						<input type="hidden" name="pjl_id3" id="pjl_id3" value="">
+						<div class="col-lg-6">
+							<label>Tanggal</label> <span class="text-danger">*</span>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="fas fa-calendar-days"></i></span>
+								</div>
+								<input type="date" class="form-control form-control-sm" name="pjl_tanggal3" id="pjl_tanggal3" autocomplete="off" required>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Tipe Pembayaran</label>
+								<select class="form-control form-control-sm" name="pjl_jenis_bayar3" id="pjl_jenis_bayar3">
+									<option value="1">Transfer</option>
+									<option value="2">Cash</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Status Pembayaran</label>
+								<select class="form-control form-control-sm" name="pjl_status_bayar3" id="pjl_status_bayar3">
+									<option value="2">Lunas</option>
+									<option value="0">Tertunda</option>
+									<option value="1">Jatuh Tempo</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Status Penjualan</label>
+								<select class="form-control form-control-sm" name="pjl_status3" id="pjl_status3">
+									<option value="4">Selesai</option>
+									<option value="2">Dikirim</option>
+									<option value="1">Menunggu Konfirmasi</option>
+									<option value="3">Ditolak</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="simpan_pembayaran" class="btn btn-dark btn-sm"><i class="fas fa-check-circle"></i> Simpan</button>
 				</div>
 			</form>
 		</div>
@@ -289,6 +349,47 @@ $bulan = [
 					toastr.success(res.desc);
 					drawTable();
 					$("#modal_konfirm").modal("hide");
+					reset_form();
+				} else {
+					toastr.error(res.desc);
+				}
+				$("#simpan").html("<i class='fas fa-check-circle'></i> Simpan");
+				$(".btn").attr("disabled", false);
+			},
+			error: function(jqXHR, namaStatus, errorThrown) {
+				$("#simpan").html("Error");
+				$(".btn").attr("disabled", false);
+				alert('Error get data from ajax');
+			}
+		});
+	});
+
+	function pembayaran(id) {
+		$("#pjl_id3").val(id);
+		$("frm_pembayaran").trigger("reset");
+		$('#modal_pembayaran').modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+	}
+
+	$("#frm_pembayaran").submit(function(e) {
+		e.preventDefault();
+		$("#simpan_pembayaran").html("Menyimpan...");
+		$(".btn").attr("disabled", true);
+		$.ajax({
+			type: "POST",
+			url: "pembayaran",
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(d) {
+				var res = JSON.parse(d);
+				if (res.status == 1) {
+					toastr.success(res.desc);
+					drawTable();
+					$("#modal_pembayaran").modal("hide");
 					reset_form();
 				} else {
 					toastr.error(res.desc);
@@ -421,6 +522,7 @@ $bulan = [
 	function reset_form() {
 		$("#frm_konfirm")[0].reset();
 		$("#frm_penjualan")[0].reset();
+		$("#frm_pembayaran")[0].reset();
 	}
 
 	$(document).ready(function() {

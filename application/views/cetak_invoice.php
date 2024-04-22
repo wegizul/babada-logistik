@@ -92,20 +92,34 @@
  											</td>
  										</tr>
  									</table>
- 									<table>
- 										<tr>
- 											<th style="width: 60%;">Item</th>
- 											<th>Qty</th>
- 											<th>Satuan</th>
- 										</tr>
- 										<?php foreach ($data as $d) { ?>
+ 									<form method="POST" action="<?= base_url('Penjualan/edit_harga_resi/' . $penjualan->pjl_id) ?>">
+ 										<table>
  											<tr>
- 												<td><?= $d->mtl_nama ?></td>
- 												<td><?= $d->pjd_qty ?></td>
- 												<td><?= $d->smt_nama ?></td>
+ 												<th style="width: 60%;">Item</th>
+ 												<th>Qty</th>
+ 												<th>Satuan</th>
+ 												<th>Harga</th>
  											</tr>
- 										<?php } ?>
- 									</table>
+ 											<?php foreach ($data as $d) { ?>
+ 												<tr>
+ 													<td><?= $d->mtl_nama ?></td>
+ 													<td><?= $d->pjd_qty ?></td>
+ 													<td><?= $d->smt_nama ?></td>
+ 													<td>
+ 														<div class="input-group input-group-sm col-lg-12">
+ 															<div class="input-group-prepend">
+ 																<span class="input-group-text">Rp </span>
+ 															</div>
+ 															<input type="text" name="pjd_harga[]" id="pjd_harga" class="form-control form-control-sm" placeholder="<?= $d->pjd_harga ?>">
+ 															<input type="hidden" name="pjd_id[]" id="pjd_id" value="<?= $d->pjd_id ?>">
+ 														</div>
+ 													</td>
+ 												</tr>
+ 											<?php } ?>
+ 										</table>
+ 										<button type="submit" class="btn btn-dark mt-3" style="float: right;"><i class="fas fa-print"></i> Cetak</button>
+ 										<a href="javascript:window.close()" class="btn btn-danger mt-3 mr-2" style="float: right;"><i class="fas fa-times-circle"></i> Batal</a>
+ 									</form>
  								</td>
  							</tr>
  						</tbody>
@@ -116,10 +130,3 @@
  		</div>
  	</div>
  </div>
-
- <script>
- 	window.print()
- 	setTimeout(function() {
- 		window.close();
- 	}, 100);
- </script>

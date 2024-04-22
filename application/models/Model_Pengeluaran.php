@@ -4,7 +4,7 @@ class Model_Pengeluaran extends CI_Model
 	var $table = 'pengeluaran';
 	var $column_order = array('kel_id', 'kel_tanggal', 'kel_nama', 'kel_jml'); //set column field database for datatable orderable
 	var $column_search = array('kel_id', 'kel_tanggal', 'kel_nama', 'kel_jml'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('kel_tanggal' => 'desc'); // default order
+	var $order = array('kel_id' => 'desc'); // default order
 
 	public function __construct()
 	{
@@ -12,9 +12,13 @@ class Model_Pengeluaran extends CI_Model
 		$this->load->database();
 	}
 
-	private function _get_datatables_query()
+	private function _get_datatables_query($bln, $tipe)
 	{
 		$this->db->from($this->table);
+		$this->db->where('MONTH(kel_tanggal)', $bln);
+		if ($tipe != 'null') {
+			$this->db->like('kel_tipe', $tipe);
+		}
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 
@@ -45,18 +49,18 @@ class Model_Pengeluaran extends CI_Model
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($bln, $tipe)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln, $tipe);
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($bln, $tipe)
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($bln, $tipe);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -85,14 +89,20 @@ class Model_Pengeluaran extends CI_Model
 		return $query->row();
 	}
 
-	public function total_pengeluaran()
+	public function total_pengeluaran($bln)
 	{
 		$this->db->select("sum(kel_jml) as total");
 		$this->db->from($this->table);
-		$this->db->where("MONTH(kel_tanggal)", date('n'));
+		$this->db->where('MONTH(kel_tanggal)', $bln);
 		$query = $this->db->get();
 
 		return $query->row();
+	}
+
+	public function bulan($bln)
+	{
+		$arr = array(1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+		return $arr[$bln];
 	}
 
 	public function getlastquery()
