@@ -14,7 +14,6 @@ class Model_OrderanOutlet extends CI_Model
 
 	private function _get_datatables_query($bln)
 	{
-		$this->db->select('*, SUM(pjl_total_item) as total_item, SUM(pjl_jumlah_bayar) as total_bayar');
 		$this->db->from($this->table);
 		$this->db->group_by('pjl_customer');
 		if ($bln != 'null') {
@@ -73,21 +72,34 @@ class Model_OrderanOutlet extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	public function get_penjualan()
+	public function getTotalItem($cust)
 	{
+		$this->db->select("SUM(pjl_total_item) as total");
 		$this->db->from($this->table);
-		$query = $this->db->get();
-
-		return $query->result();
-	}
-
-	public function cari_penjualan($id)
-	{
-		$this->db->from($this->table);
-		$this->db->where('pjl_id', $id);
+		$this->db->where('pjl_customer', $cust);
 		$query = $this->db->get();
 
 		return $query->row();
+	}
+
+	public function getTotalBayar($cust)
+	{
+		$this->db->select("SUM(pjl_jumlah_bayar) as total");
+		$this->db->from($this->table);
+		$this->db->where('pjl_customer', $cust);
+		$this->db->where('pjl_status_bayar', 2);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	public function getTotalTransaksi($cust)
+	{
+		$this->db->from($this->table);
+		$this->db->where('pjl_customer', $cust);
+		$query = $this->db->get();
+
+		return $query->num_rows();
 	}
 
 	public function getlastquery()

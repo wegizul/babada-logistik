@@ -47,7 +47,7 @@ $bulan = [
 								<th>Customer</th>
 								<th>Total Item</th>
 								<th>Total Bayar</th>
-								<th>Status</th>
+								<th>Total Pemesanan</th>
 							</tr>
 						</thead>
 						<tbody>

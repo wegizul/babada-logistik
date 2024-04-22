@@ -55,28 +55,18 @@ class LapOrderan extends CI_Controller
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $penjualan) {
-			print_r($penjualan);
-			die();
 			$no++;
-			$status = '';
-			switch ($penjualan->pjl_status) {
-				case 1:
-					$status = "<span class='badge badge-warning'>Menunggu Konfirmasi</span>";
-					break;
-				case 2:
-					$status = "<span class='badge badge-success'>Dikonfirmasi</span>";
-					break;
-				case 3:
-					$status = "<span class='badge badge-danger'>Ditolak</span>";
-					break;
-			}
+
+			$total_transaksi = $this->laporan->getTotalTransaksi($penjualan->pjl_customer);
+			$total_item = $this->laporan->getTotalItem($penjualan->pjl_customer);
+			$total_bayar = $this->laporan->getTotalBayar($penjualan->pjl_customer);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_customer;
-			$row[] = $penjualan->total_item . " Item";
-			$row[] = "Rp " . number_format($penjualan->total_bayar, 0, ",", ".");
-			$row[] = $status;
+			$row[] = $total_item->total ? $total_item->total . " Item" : "0 Item";
+			$row[] = $total_bayar->total ? "Rp " . number_format($total_bayar->total, 0, ",", ".") : "Rp 0";
+			$row[] = $total_transaksi;
 			$data[] = $row;
 		}
 
