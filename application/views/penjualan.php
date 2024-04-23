@@ -81,7 +81,7 @@ $bulan = [
 						<div class="col-lg-4">
 							<div class="form-group">
 								<label>Customer</label> <span class="text-danger">*</span>
-								<select class="form-control form-control-sm select2" name="pjl_customer" id="pjl_customer" style="width:100%;line-height:100px;" required>
+								<select class="form-control form-control-sm select2" name="pjl_cust_id" id="pjl_cust_id" style="width:100%;line-height:100px;" required>
 									<option value="">Pilih Customer</option>
 								</select>
 							</div>
@@ -407,15 +407,15 @@ $bulan = [
 
 	document.addEventListener('DOMContentLoaded', function() {
 		// Mengambil data dari API menggunakan fetch
-		fetch('https://dreampos.id/admin/Api/getWarehouses')
+		fetch('https://dreampos.id/admin/Api/getCustomer')
 			.then(response => response.json())
 			.then(data => {
 				// Memproses data yang diterima
-				var select = document.getElementById('pjl_customer');
-				data.forEach(product => {
+				var select = document.getElementById('pjl_cust_id');
+				data.forEach(customer => {
 					var opt = document.createElement('option');
-					opt.value = product.name;
-					opt.innerHTML = product.name;
+					opt.value = customer.id;
+					opt.innerHTML = customer.name;
 					select.appendChild(opt);
 				});
 			})

@@ -19,7 +19,7 @@
 					<table class="table table-striped table-bordered table-hover" id="tabel-data" width="100%" style="font-size:100%;">
 						<thead>
 							<tr>
-								<th>No</th>
+								<th style="width: 5%;">No</th>
 								<th>Gambar</th>
 								<th>Nama Material</th>
 								<th>Stok</th>

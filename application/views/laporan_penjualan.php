@@ -126,35 +126,6 @@ $bulan = [
 		});
 	}
 
-	function lihat_penjualan(id) {
-		event.preventDefault();
-		$.ajax({
-			type: "POST",
-			url: "lihat",
-			data: "pjl_id=" + id,
-			dataType: "json",
-			success: function(data) {
-				var obj = Object.entries(data);
-				console.log(data);
-				obj.map((dt) => {
-					$("#" + dt[0]).val(dt[1]);
-				});
-				$(".inputan").attr("disabled", false);
-				$("#modal_rincian").modal({
-					show: true,
-					keyboard: false,
-					backdrop: 'static'
-				});
-				return false;
-			}
-		});
-	}
-
-	function reset_form() {
-		$("#pjl_id").val(0);
-		$("#frm_penjualan")[0].reset();
-	}
-
 	$('.tgl').daterangepicker({
 		locale: {
 			format: 'YYYY-MM-DD'

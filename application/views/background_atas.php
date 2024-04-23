@@ -261,7 +261,7 @@
             </li>
             <?php if ($this->session->userdata("level") < 3) : ?>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-suitcase"></i>
                   <p>
                     Data Master
@@ -377,7 +377,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-file-excel"></i>
                   <p>
                     Laporan
@@ -429,6 +429,16 @@
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
                         Laporan Orderan Outlet
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("Material/laporan") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Rekap Barang
                       </p>
                     </a>
                   </li>
@@ -510,4 +520,19 @@
               backdrop: 'static'
             });
           }
+
+          /** add active class and stay opened when selected */
+          var url = window.location;
+
+          // for sidebar menu entirely but not cover treeview
+          $('ul.nav-sidebar a').filter(function() {
+            return this.href == url;
+          }).addClass('active');
+
+          // for treeview
+          $('ul.nav-treeview a').filter(function() {
+            return this.href == url;
+          }).parentsUntil(".sidebar-menu > .treeview-menu").siblings().removeClass('active menu-open').end().addClass('active menu-open').css({
+            display: "block"
+          });
         </script>

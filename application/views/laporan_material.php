@@ -16,7 +16,6 @@ $bulan = [
 ?>
 <div class="inner">
 	<div class="row">
-		<input type="hidden" name="pjl_id" id="pjl_id">
 		<div class="col-lg-12">
 			<span class="text-secondary" style="margin: 25px;"><i class="fas fa-home"></i> / <b class="text-dark"><?= $page ?></b></span>
 			<div class="card mt-3">
@@ -44,10 +43,10 @@ $bulan = [
 						<thead>
 							<tr>
 								<th style="width: 5%;">No</th>
-								<th>Customer</th>
-								<th>Total Item</th>
-								<th>Total Bayar</th>
-								<th>Total Pemesanan</th>
+								<th>Nama Material</th>
+								<th>Total Pembelian</th>
+								<th>Total Penjualan</th>
+								<th>Stok</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -57,31 +56,6 @@ $bulan = [
 						</tbody>
 					</table>
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="modal_detail" role="dialog">
-	<div class="modal-dialog modal-md">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h6 class="modal-title"><i class="fas fa-list"></i> Item Pesanan</h6>
-				<span type="button" aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close">&times;</span>
-			</div>
-			<div class="modal-body">
-				<table class="table table-striped table-bordered table-hover">
-					<thead>
-						<th>Nama Barang</th>
-						<th>Qty</th>
-						<th>Satuan</th>
-						<th>Keterangan</th>
-					</thead>
-					<tbody id="isi" style="font-size:small;">
-					</tbody>
-				</table>
-			</div>
-			<div class="modal-footer">
 			</div>
 		</div>
 	</div>
@@ -133,7 +107,7 @@ $bulan = [
 			"serverSide": true,
 			"order": [],
 			"ajax": {
-				"url": "ajax_list_penjualan/" + bulan,
+				"url": "ajax_list_laporan/" + bulan,
 				"type": "POST"
 			},
 			"columnDefs": [{
@@ -144,29 +118,6 @@ $bulan = [
 				$("#process").html("Process...")
 				$(".btn").attr("disabled", false);
 				$("#isidata").fadeIn();
-			}
-		});
-	}
-
-	function detail(cust) {
-		$('#isi').html('')
-		event.preventDefault();
-		$.ajax({
-			type: "POST",
-			url: "detail_laporderan/" + cust,
-			dataType: "json",
-			success: function(data) {
-				var obj = Object.entries(data);
-				obj.forEach((dt) => {
-					$("#isi").append(dt[1]);
-				});
-				$(".inputan").attr("disabled", false);
-				$("#modal_detail").modal({
-					show: true,
-					keyboard: false,
-					backdrop: 'static'
-				});
-				return false;
 			}
 		});
 	}
@@ -184,7 +135,7 @@ $bulan = [
 	function ekspor() {
 		var bln = $('#filter').val();
 		if (!bln) bln = null;
-		window.open("<?= base_url('Penjualan/export/') ?>" + bln);
+		window.open("<?= base_url('Material/export/') ?>" + bln);
 	}
 
 	$(document).ready(function() {

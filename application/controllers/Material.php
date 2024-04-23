@@ -31,6 +31,21 @@ class Material extends CI_Controller
 		$this->load->view('background_bawah');
 	}
 
+	public function laporan()
+	{
+		$d = [
+			'page' => 'Laporan Rekap Material',
+			'satuan' => $this->satuan_material->get_satuan_material(),
+		];
+		$notif = [
+			'notifikasi' => $this->penjualan->notifikasi(),
+		];
+		$this->load->helper('url');
+		$this->load->view('background_atas', $notif);
+		$this->load->view('laporan_material', $d);
+		$this->load->view('background_bawah');
+	}
+
 	public function ajax_list_material()
 	{
 		$list = $this->material->get_datatables();
@@ -59,14 +74,39 @@ class Material extends CI_Controller
 		echo json_encode($output);
 	}
 
-	public function cari()
+	public function ajax_list_laporan()
 	{
-		$id = $this->input->post('mtl_id');
-		$data = $this->material->cari_material($id);
-		echo json_encode($data);
+		$list = $this->material->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $material) {
+			$no++;
+
+			$total_pembelian = $this->material->getTobel($material->mtl_id);
+			$total_penjualan = $this->material->getToju($material->mtl_id);
+
+			$row = array();
+			$row[] = $no;
+			$row[] = $material->mtl_nama;
+			$row[] = $total_pembelian->tot ? $total_pembelian->tot . ' ' . $material->smt_nama : "0 " . $material->smt_nama;
+			$row[] = $total_penjualan->tot ? $total_penjualan->tot . ' ' . $material->smt_nama : "0 " . $material->smt_nama;
+			$row[] = $material->mtl_stok . ' ' . $material->smt_nama;
+			$row[] = "Rp " . number_format($material->mtl_harga_modal, 2, ",", ".");
+			$row[] = "Rp " . number_format($material->mtl_harga_jual, 2, ",", ".");
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->material->count_all(),
+			"recordsFiltered" => $this->material->count_filtered(),
+			"data" => $data,
+			"query" => $this->material->getlastquery(),
+		);
+		echo json_encode($output);
 	}
 
-	public function detail()
+	public function cari()
 	{
 		$id = $this->input->post('mtl_id');
 		$data = $this->material->cari_material($id);

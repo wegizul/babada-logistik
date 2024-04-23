@@ -76,7 +76,7 @@ class Model_OrderanOutlet extends CI_Model
 	{
 		$this->db->select("SUM(pjl_total_item) as total");
 		$this->db->from($this->table);
-		$this->db->where('pjl_customer', $cust);
+		$this->db->where('pjl_cust_id', $cust);
 		$query = $this->db->get();
 
 		return $query->row();
@@ -86,7 +86,7 @@ class Model_OrderanOutlet extends CI_Model
 	{
 		$this->db->select("SUM(pjl_jumlah_bayar) as total");
 		$this->db->from($this->table);
-		$this->db->where('pjl_customer', $cust);
+		$this->db->where('pjl_cust_id', $cust);
 		$this->db->where('pjl_status_bayar', 2);
 		$query = $this->db->get();
 
@@ -96,10 +96,24 @@ class Model_OrderanOutlet extends CI_Model
 	public function getTotalTransaksi($cust)
 	{
 		$this->db->from($this->table);
-		$this->db->where('pjl_customer', $cust);
+		$this->db->where('pjl_cust_id', $cust);
 		$query = $this->db->get();
 
 		return $query->num_rows();
+	}
+
+	public function ambil_penjualan($cust)
+	{
+		$this->db->select("*, SUM(pjd_qty) as total, COUNT(pjd_mtl_id) as total_dipesan");
+		$this->db->from('penjualan_detail');
+		$this->db->join('penjualan', 'pjl_id = pjd_pjl_id', 'left');
+		$this->db->join("material", "mtl_id = pjd_mtl_id", "left");
+		$this->db->join("satuan_material", "smt_id = pjd_smt_id", "left");
+		$this->db->where('pjl_cust_id', $cust);
+		$this->db->group_by('mtl_id');
+		$query = $this->db->get();
+
+		return $query->result();
 	}
 
 	public function getlastquery()

@@ -152,10 +152,25 @@ class Penjualan extends CI_Controller
 	
 	public function simpan()
 	{
+		$id_cust = $this->input->post('pjl_cust_id');
+
+		// Mendefinisikan URL API yang akan diakses
+		$api_url = 'https://dreampos.id/admin/Api/findCustomer/' . $id_cust;
+
+		// Membuat request menggunakan cURL
+		$curl = curl_init($api_url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($curl);
+		curl_close($curl);
+
+		// Mengubah respons JSON menjadi array PHP
+		$cust = json_decode($response, true);
+		
 		$user = $this->session->userdata('id_user');
 
 		$data = $this->input->post();
 		$data['pjl_user'] = $user;
+		$data['pjl_customer'] = $cust['name'];
 
 		unset($data['pjd_mtl_id']);
 		unset($data['pjd_qty']);

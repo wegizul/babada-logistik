@@ -96,6 +96,28 @@ class Model_Material extends CI_Model
 		return $query->result();
 	}
 
+	public function getTobel($id)
+	{
+		$this->db->select("SUM(pbd_qty) as tot");
+		$this->db->from("pembelian");
+		$this->db->join("pembelian_detail", "pbl_id = pbd_pbl_id", "left");
+		$this->db->where('pbd_mtl_id', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	public function getToju($id)
+	{
+		$this->db->select("SUM(pjd_qty) as tot");
+		$this->db->from("penjualan");
+		$this->db->join("penjualan_detail", "pjl_id = pjd_pjl_id", "left");
+		$this->db->where('pjd_mtl_id', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
 	public function getlastquery()
 	{
 		$query = str_replace(array("\r", "\n", "\t"), '', trim($this->db->last_query()));

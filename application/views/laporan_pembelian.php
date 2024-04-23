@@ -159,30 +159,6 @@ $bulan = [
 		});
 	}
 
-	function rincian(id) {
-		event.preventDefault();
-		$.ajax({
-			type: "POST",
-			url: "cari",
-			data: "pbl_id=" + id,
-			dataType: "json",
-			success: function(data) {
-				var obj = Object.entries(data);
-				obj.map((dt) => {
-					console.log(dt[1]);
-					$("#" + dt[0]).html(dt[1]);
-				});
-				$(".inputan").attr("disabled", false);
-				$("#modal_rincian").modal({
-					show: true,
-					keyboard: false,
-					backdrop: 'static'
-				});
-				return false;
-			}
-		});
-	}
-
 	function reset_form() {
 		$("#pbl_id").val(0);
 		$("#frm_pembelian")[0].reset();

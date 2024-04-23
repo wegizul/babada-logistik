@@ -57,16 +57,16 @@ class LapOrderan extends CI_Controller
 		foreach ($list as $penjualan) {
 			$no++;
 
-			$total_transaksi = $this->laporan->getTotalTransaksi($penjualan->pjl_customer);
-			$total_item = $this->laporan->getTotalItem($penjualan->pjl_customer);
-			$total_bayar = $this->laporan->getTotalBayar($penjualan->pjl_customer);
+			$total_transaksi = $this->laporan->getTotalTransaksi($penjualan->pjl_cust_id);
+			$total_item = $this->laporan->getTotalItem($penjualan->pjl_cust_id);
+			$total_bayar = $this->laporan->getTotalBayar($penjualan->pjl_cust_id);
 
 			$row = array();
 			$row[] = $no;
 			$row[] = $penjualan->pjl_customer;
-			$row[] = $total_item->total ? $total_item->total . " Item" : "0 Item";
+			$row[] = $total_item->total ? "<a href='#' onClick='detail($penjualan->pjl_cust_id)' style='cursor:pointer;'>" . $total_item->total . " Item</a>" : "0 Item";
 			$row[] = $total_bayar->total ? "Rp " . number_format($total_bayar->total, 0, ",", ".") : "Rp 0";
-			$row[] = $total_transaksi;
+			$row[] = $total_transaksi . " Invoice";
 			$data[] = $row;
 		}
 
@@ -78,5 +78,14 @@ class LapOrderan extends CI_Controller
 			"query" => $this->penjualan->getlastquery(),
 		);
 		echo json_encode($output);
+	}
+
+	public function detail_laporderan($cust)
+	{
+		$getPenjualan = $this->laporan->ambil_penjualan($cust);
+		foreach ($getPenjualan as $p) {
+			$data[$p->pjd_id] = "<tr><td>" . $p->mtl_nama . "</td><td>" . $p->total . "</td><td>" . $p->smt_nama . "</td><td>Dipesan " . $p->total_dipesan . "x</td></tr>";
+		}
+		echo json_encode($data);
 	}
 }
