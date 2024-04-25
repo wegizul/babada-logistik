@@ -2,8 +2,8 @@
 class Model_Material extends CI_Model
 {
 	var $table = 'material';
-	var $column_order = array('mtl_id', 'mtl_foto', 'mtl_nama', 'mtl_stok', 'mtl_harga_modal', 'mtl_harga_jual'); //set column field database for datatable orderable
-	var $column_search = array('mtl_id', 'mtl_foto', 'mtl_nama', 'mtl_stok', 'mtl_harga_modal', 'mtl_harga_jual'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $column_order = array('mtl_id', 'jp_nama', 'mtl_nama', 'mtl_harga_modal', 'mtl_harga_jual', 'mtl_stok'); //set column field database for datatable orderable
+	var $column_search = array('mtl_id', 'jp_nama', 'mtl_nama', 'mtl_harga_modal', 'mtl_harga_jual', 'mtl_stok'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('mtl_nama' => 'asc'); // default order
 
 	public function __construct()
@@ -16,6 +16,7 @@ class Model_Material extends CI_Model
 	{
 		$this->db->from($this->table);
 		$this->db->join("satuan_material", "smt_id = mtl_satuan", "left");
+		$this->db->join("jenis_produk", "jp_id = mtl_jenis", "left");
 		$i = 0;
 
 		foreach ($this->column_search as $item) // loop column 

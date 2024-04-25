@@ -42,7 +42,6 @@ class Login extends CI_Controller
 					$sess_data['password'] = $qad->log_pass;
 					$sess_data['nama'] = $qad->log_nama;
 					$sess_data['level'] = $qad->log_level;
-					$sess_data['agen'] = $qad->log_agen;
 					$this->session->set_userdata($sess_data);
 				}
 				$this->session->set_flashdata("success", "Login Berhasil, welcome {$sess_data['nama']}");

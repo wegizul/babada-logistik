@@ -22,9 +22,9 @@
 								<th style="width: 5%;">No</th>
 								<th>Gambar</th>
 								<th>Nama Material</th>
-								<th>Stok</th>
 								<th>Harga Modal</th>
 								<th>Harga Jual</th>
+								<th>Stok</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -82,23 +82,40 @@
 								</select>
 							</div>
 						</div>
+						<div class="col-lg-2">
+							<div class="form-group">
+								<label>Jenis</label>
+								<select class="form-control" name="mtl_jenis" id="mtl_jenis" required>
+									<option value="">Pilih</option>
+									<?php foreach ($jenis as $j) { ?>
+										<option value="<?= $j->jp_id ?>"><?= $j->jp_nama ?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
 								<label>Deskripsi</label>
 								<textarea rows="4" class="form-control" name="mtl_deskripsi" id="mtl_deskripsi"></textarea>
 							</div>
 						</div>
-						<div class="input-group input-group col-lg-6 mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Rp. </span>
+						<div class="col-lg-6">
+							<label>Harga Modal</label>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Rp. </span>
+								</div>
+								<input type="text" class="form-control" name="mtl_harga_modal" id="mtl_harga_modal" placeholder="Harga Modal" required>
 							</div>
-							<input type="text" class="form-control" name="mtl_harga_modal" id="mtl_harga_modal" placeholder="Harga Modal" required>
 						</div>
-						<div class="input-group input-group col-lg-6 mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Rp. </span>
+						<div class="col-lg-6">
+							<label>Harga Jual</label>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Rp. </span>
+								</div>
+								<input type="text" class="form-control" name="mtl_harga_jual" id="mtl_harga_jual" placeholder="Harga Jual" required>
 							</div>
-							<input type="text" class="form-control" name="mtl_harga_jual" id="mtl_harga_jual" placeholder="Harga Jual" required>
 						</div>
 						<div class="col-lg-6">
 							<div class="form-group">

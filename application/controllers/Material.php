@@ -11,6 +11,7 @@ class Material extends CI_Controller
 		}
 		$this->load->model('Model_Material', 'material');
 		$this->load->model('Model_SatuanMaterial', 'satuan_material');
+		$this->load->model('Model_JenisProduk', 'jenis_produk');
 		$this->load->model('Model_Penjualan', 'penjualan');
 		$this->load->model('Model_Premix', 'premix');
 		date_default_timezone_set('Asia/Jakarta');
@@ -21,6 +22,7 @@ class Material extends CI_Controller
 		$d = [
 			'page' => 'Data Material',
 			'satuan' => $this->satuan_material->get_satuan_material(),
+			'jenis' => $this->jenis_produk->get_jenis_produk(),
 		];
 		$notif = [
 			'notifikasi' => $this->penjualan->notifikasi(),
@@ -57,9 +59,9 @@ class Material extends CI_Controller
 			$row[] = $no;
 			$row[] = "<img src= " . base_url("assets/files/material/{$material->mtl_foto}") . " width='50px'>";
 			$row[] = $material->mtl_nama;
-			$row[] = $material->mtl_stok . ' ' . $material->smt_nama;
 			$row[] = "Rp " . number_format($material->mtl_harga_modal, 2, ",", ".");
 			$row[] = "Rp " . number_format($material->mtl_harga_jual, 2, ",", ".");
+			$row[] = $material->mtl_stok . ' ' . $material->smt_nama;
 			$row[] = "<a href='#' onClick='ubah_material(" . $material->mtl_id . ")' class='btn btn-dark btn-xs' title='Ubah Data'><i class='fa fa-edit'></i></a>&nbsp;<a href='#' onClick='hapus_material(" . $material->mtl_id . ")' class='btn btn-danger btn-xs' title='Hapus Data'><i class='fa fa-trash-alt'></i></a>";
 			$data[] = $row;
 		}
@@ -87,12 +89,11 @@ class Material extends CI_Controller
 
 			$row = array();
 			$row[] = $no;
+			$row[] = $material->jp_nama;
 			$row[] = $material->mtl_nama;
 			$row[] = $total_pembelian->tot ? $total_pembelian->tot . ' ' . $material->smt_nama : "0 " . $material->smt_nama;
 			$row[] = $total_penjualan->tot ? $total_penjualan->tot . ' ' . $material->smt_nama : "0 " . $material->smt_nama;
 			$row[] = $material->mtl_stok . ' ' . $material->smt_nama;
-			$row[] = "Rp " . number_format($material->mtl_harga_modal, 2, ",", ".");
-			$row[] = "Rp " . number_format($material->mtl_harga_jual, 2, ",", ".");
 			$data[] = $row;
 		}
 

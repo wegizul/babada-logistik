@@ -43,6 +43,7 @@ $bulan = [
 						<thead>
 							<tr>
 								<th style="width: 5%;">No</th>
+								<th>Jenis</th>
 								<th>Nama Material</th>
 								<th>Total Pembelian</th>
 								<th>Total Penjualan</th>
