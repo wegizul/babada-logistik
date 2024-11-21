@@ -10,8 +10,7 @@
 
   <link rel="icon" href="<?= base_url("assets/"); ?>files/logo.png" type="image/jpg">
   <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/c1fd40eeb3.js" crossorigin="anonymous"></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url("assets"); ?>/dist/css/adminlte.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
@@ -328,6 +327,8 @@
                   </li>
                 </ul>
               </li>
+            <?php endif;
+            if ($this->session->userdata('level') < 4) : ?>
               <li class="nav-item">
                 <a href="<?= base_url("Material/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-database"></i>
@@ -344,6 +345,8 @@
                   </p>
                 </a>
               </li>
+            <?php endif; ?>
+            <?php if ($this->session->userdata('level') < 3) { ?>
               <li class="nav-item">
                 <a href="<?= base_url("Pengeluaran/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-chart-pie"></i>
@@ -352,6 +355,8 @@
                   </p>
                 </a>
               </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('level') < 4) { ?>
               <li class="nav-item">
                 <a href="<?= base_url("Pembelian/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-cart-plus"></i>
@@ -364,7 +369,15 @@
                 <a href="<?= base_url("Penjualan/tampil") ?>" class="nav-link">
                   <i class="nav-icon fas fa-cart-flatbed"></i>
                   <p>
-                    Penjualan
+                    Penjualan<?php if ($notifikasi > 0) { ?><sup><span class="badge badge-warning"><?= $notifikasi ?> Orderan Baru</span></sup><?php } ?>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url("Klaim/tampil") ?>" class="nav-link">
+                  <i class="nav-icon fas fa-exclamation-circle"></i>
+                  <p>
+                    Pengajuan Klaim<?php if ($klaim > 0) { ?><sup><span class="badge badge-warning"><?= $klaim ?> Klaim</span></sup><?php } ?>
                   </p>
                 </a>
               </li>
@@ -376,6 +389,8 @@
                   </p>
                 </a>
               </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('level') < 3) { ?>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-file-excel"></i>
@@ -383,6 +398,16 @@
                     Laporan
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item" style="padding-left: 20px;">
+                    <a href="<?= base_url("LapMaterial/tampil") ?>" class="nav-link">
+                      <i class="nav-icon fas fa-cube"></i>
+                      <p>
+                        Laporan Material
+                      </p>
+                    </a>
+                  </li>
+                </ul>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
                     <a href="<?= base_url("Premix/laporan") ?>" class="nav-link">
@@ -405,7 +430,7 @@
                 </ul>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" style="padding-left: 20px;">
-                    <a href="<?= base_url("Penjualan/laporan") ?>" class="nav-link">
+                    <a href="<?= base_url("LapPenjualan/tampil") ?>" class="nav-link">
                       <i class="nav-icon fas fa-cube"></i>
                       <p>
                         Laporan Penjualan
@@ -444,43 +469,7 @@
                   </li>
                 </ul>
               </li>
-            <?php endif;
-            if ($this->session->userdata('level') == 3) : ?>
-              <li class="nav-item">
-                <a href="<?= base_url("ScanKirim/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-upload"></i>
-                  <p>
-                    Scan Kirim
-                  </p>
-                </a>
-              </li>
-            <?php endif;
-            if ($this->session->userdata("level") == 4) : ?>
-              <li class="nav-item">
-                <a href="<?= base_url("ScanDelivered/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-box-open"></i>
-                  <p>
-                    Scan Delivered
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url("Penjualan/tampil") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-cart-plus"></i>
-                  <p>
-                    Order
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url("Penjualan/riwayat") ?>" class="nav-link">
-                  <i class="nav-icon fas fa-history"></i>
-                  <p>
-                    Riwayat Order
-                  </p>
-                </a>
-              </li>
-            <?php endif; ?>
+            <?php } ?>
           </ul>
         </nav>
         <nav class="mt-2 pt-3" style="border-top:1px solid #595959;">

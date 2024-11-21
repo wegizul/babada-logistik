@@ -1,0 +1,15 @@
+[04-May-2024 01:49:57 UTC] user denied: logq4697 (mysql-denied) from 2001:448a:8090:41c4:9bbf:a1e9:102e:8a68
+[28-May-2024 05:26:12 UTC] user denied: logq4697_zulwegi (no-activity) from 2001:448a:8090:42e6:315d:ae83:ea06:9f23
+[30-May-2024 01:16:11 UTC] user denied: logq4697 (mysql-denied) from 125.165.108.59
+[30-May-2024 04:53:58 UTC] user denied: logq4697_zulwegi (no-activity) from 2001:448a:8090:42e6:c487:c9ea:f868:70d9
+[30-May-2024 06:37:37 UTC] user denied: logq4697_zulwegi (mysql-denied) from 2001:448a:8090:42e6:c487:c9ea:f868:70d9
+[31-May-2024 10:11:19 UTC] user denied: logq4697_zulwegi (no-activity) from 2001:448a:8090:42e6:c3df:9e04:9d71:5fd0
+[01-Jun-2024 02:51:52 UTC] user denied: logq4697_zulwegi (no-activity) from 125.165.110.42
+[10-Jun-2024 05:19:59 UTC] user denied: logq4697_zulwegi (no-activity) from 2001:448a:8090:431c:9113:4dde:65eb:746c
+[12-Jun-2024 01:55:16 UTC] user denied: bobby (mysql-denied) from 125.165.109.185
+[18-Jun-2024 08:39:15 UTC] user denied: logq4697_zulwegi (mysql-denied) from 2001:448a:8080:238:543c:6e56:d274:dbb2
+[20-Jun-2024 02:30:03 UTC] user denied: logq4697_zulwegi (no-activity) from 125.165.108.215
+[20-Jun-2024 04:07:45 UTC] user denied: logq4697_zulwegi (no-activity) from 125.165.109.194
+[22-Jun-2024 02:30:31 UTC] user denied: logq4697_zulwegi (no-activity) from 36.77.209.165
+[24-Jul-2024 08:00:26 UTC] user denied: logq4697_zulwegi (mysql-denied) from 2001:448a:8080:f7a:1d7c:8305:2f02:37f9
+[05-Aug-2024 04:34:41 UTC] user denied: logq4697_zulwegi (mysql-denied) from 2001:448a:8080:83d:8675:796b:595c:53bd
